@@ -12,7 +12,7 @@ This folder contains the necessary information to utilize and build on the DAMIA
 
 ### Clone OpenArm Repository
 ```bash
-git clone --recurse-submodules https://github.com/enactic/OpenArm.git
+git clone --recurse-submodules https://github.com/enactic/openarm.git
 ```
 
 To build, you need to initialize and update submodules. By cloning the repository with `--recurse-submodules` option as shown above, all submodules will be automatically initialized and updated. 
