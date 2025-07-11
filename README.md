@@ -30,7 +30,7 @@ Watch [OpenArm v0.2](https://www.youtube.com/watch?v=2-Au7Sc0uKw?si=RIR9v3v0valV
 ## Quick Start
 
 ```sh
-git clone --recurse-submodules https://github.com/reazon-research/OpenArm.git
+git clone --recurse-submodules https://github.com/enactic/OpenArm.git
 ```
 
 ## About
@@ -65,17 +65,17 @@ Machined, sheet metal, and off-the-shelf components can be purchased through [Mi
 
 ### Arm Control
 OpenArm’s software stack includes real-time motor control examples, enabling users to quickly set up and start moving the arm. It also provides motor calibration tools, a SocketCAN driver, and a step-by-step tutorials on setting up the CAN interface.
-- [Arm Control](https://github.com/reazon-research/OpenArm/tree/main/control)
+- [Arm Control](https://github.com/enactic/OpenArm/tree/main/control)
 
 ### ROS2 Packages
 Packages for camera integration, hardware bringup, and MoveIt2 can all be found under ROS2 packages. URDF descriptions for single and bimanual arm setups are also located here.
-- [ROS2 Packages](https://github.com/reazon-research/openarm_ros2)
+- [ROS2 Packages](https://github.com/enactic/openarm_ros2)
 
 ### Simulation
 ![image](https://github.com/user-attachments/assets/38d35919-a526-4636-9b34-b4b4ad11a32e)
 To set up OpenArm in simulation environments, example documentation for MuJuCo, MoveIt2 (ROS2), and Genesis are provided.
 
-- [Arm Simulation with MuJuCo, MoveIt2, Genesis](https://github.com/reazon-research/openarm_simulation)
+- [Arm Simulation with MuJuCo, MoveIt2, Genesis](https://github.com/enactic/openarm_simulation)
 
 ### Teleoperation
 ![DSCF3195](https://github.com/user-attachments/assets/6bb219fa-276f-46a6-8c31-756a8cbc19bb)
@@ -88,6 +88,6 @@ If you would like to get in contact with the OpenArm team with more specific que
 - Email: [hi_public@reazon.jp](hi_public@reazon.jp)
 
 ## License
-OpenArm is open source under Apache-2.0 and open hardware under CERN-OHL-S, please see the [**LICENSE**](https://github.com/reazon-research/OpenArm/tree/main/LICENSE) and [**LICENSE-HW**](https://github.com/reazon-research/OpenArm/tree/main/LICENSE-HW) files for details
+OpenArm is open source under Apache-2.0 and open hardware under CERN-OHL-S, please see the [**LICENSE**](https://github.com/enactic/OpenArm/tree/main/LICENSE) and [**LICENSE-HW**](https://github.com/enactic/OpenArm/tree/main/LICENSE-HW) files for details
 
 <a href="#top">Back to top</a>

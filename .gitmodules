@@ -1,9 +1,9 @@
 [submodule "simulation"]
 	path = simulation
-	url = https://github.com/reazon-research/openarm_simulation.git
+	url = https://github.com/enactic/openarm_simulation.git
 [submodule "ros2_packages"]
 	path = ros2_packages
-	url = https://github.com/reazon-research/openarm_ros2.git
+	url = https://github.com/enactic/openarm_ros2.git
 [submodule "control/canfd_control/vendor/STM32CubeH7"]
 	path = control/canfd_control/vendor/STM32CubeH7
 	url = https://github.com/STMicroelectronics/STM32CubeH7
