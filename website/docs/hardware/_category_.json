@@ -1,0 +1,8 @@
+{
+  "label": "Hardware",
+  "position": 2,
+  "link": {
+    "type": "generated-index",
+    "description": "Complete hardware documentation for OpenArm v1.0, including bill of materials, assembly guides, and troubleshooting."
+  }
+}

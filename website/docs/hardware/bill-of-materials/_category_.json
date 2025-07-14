@@ -1,0 +1,8 @@
+{
+  "label": "Bill of Materials",
+  "position": 2,
+  "link": {
+    "type": "generated-index",
+    "description": "Complete lists of all components needed to build OpenArm v1.0, including mechanical parts, electronics, and off-the-shelf components."
+  }
+}
