@@ -1,5 +1,4 @@
 ---
-id: pedestal-assembly
 title: Pedestal Assembly
 sidebar_position: 1
 ---
