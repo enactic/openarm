@@ -97,9 +97,9 @@ const config: Config = {
       items: [
         {
           type: 'docSidebar',
-          sidebarId: 'gettingStartedSidebar',
+          sidebarId: 'hardwareSidebar',
           position: 'left',
-          label: 'Getting Started',
+          label: 'Hardware',
         },
         // {to: '/blog', label: 'Blog', position: 'left'},
         {
