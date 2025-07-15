@@ -98,7 +98,7 @@ export default function ManufacturedTable(): ReactNode {
               <td style={tableStyles.bodyCell}><strong>{component.name}</strong></td>
               <td style={tableStyles.bodyCell}>
                 <ComponentPhoto
-                  src={useBaseUrl(`/img/BOM/manufactured_components/${component.image}`)}
+                  src={useBaseUrl(`/img/bom/manufactured_components/${component.image}`)}
                   alt={component.name}
                 />
               </td>
