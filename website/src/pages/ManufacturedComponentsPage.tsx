@@ -15,10 +15,10 @@
 import React, {
   type ReactNode
 } from 'react';
-import ComponentPhoto from './ComponentPhoto';
-import useBaseUrl from '@docusaurus/useBaseUrl';
+import ComponentTable, { type ComponentTableColumn } from '../components/ComponentTable';
+import { formatTotalCost } from '../utils/priceUtils';
 
-interface ManufacturedComponent {
+export interface ManufacturedComponent {
   name: string;
   image: string;
   model: string;
@@ -59,95 +59,33 @@ const components: ManufacturedComponent[] = [
   { name: 'J8_B', image: 'J8_B.png', model: 'MVBLK-ASN-47X-PY1XN-L', quantity: 2, unitPrice: 12641, method: 'Metal Cutting (CNC)', material: 'Al6061', manufacturer: 'MiSUMi MEVIY' }
 ];
 
-const tableStyles = {
-  table: {
-    width: '100%',
-    borderCollapse: 'collapse' as const,
-  },
-  headerRow: {
-    height: '8em',
-    textAlign: 'center' as const,
-    borderBottom: '3px solid var(--ifm-color-primary)',
-    backgroundColor: 'var(--ifm-color-primary-lightest)',
-    color: 'var(--ifm-color-primary-darkest)',
-  },
-  headerCell: {
-    padding: '0.75rem',
-    fontWeight: 'bold' as const,
-    borderRight: '1px solid var(--ifm-color-primary)',
-  },
-  bodyRow: {
-    height: '10em',
-    textAlign: 'center' as const,
-    borderBottom: '1px solid var(--ifm-table-border-color)',
-  },
-  bodyCell: {
-    padding: '0.5rem',
-    borderRight: '1px solid var(--ifm-table-border-color)',
-    verticalAlign: 'middle' as const,
-  },
-};
+const columns: ComponentTableColumn<ManufacturedComponent>[] = [
+  { header: 'Name', key: 'name' },
+  { header: 'Photo', key: 'image' },
+  { header: 'Model Number', key: 'model' },
+  { header: 'Quantity', key: 'quantity' },
+  { header: 'Unit Price (JPY)', key: 'unitPrice' },
+  { header: 'Total Price (JPY)', key: 'totalPrice' },
+  { header: 'Manufacturing Method', key: 'method' },
+  { header: 'Material', key: 'material' },
+  { header: 'Manufacturer', key: 'manufacturer' }
+];
 
-export default function ManufacturedTable(): ReactNode {
-  const formatPrice = (price: number): string => (
-    price.toLocaleString('ja-JP', {
-      style: 'currency',
-      currency: 'JPY'})
-  );
-  const calculateTotalCost = (): string => {
-    const total = components.reduce(
-      (sum, component) => sum + (component.unitPrice * component.quantity),
-      0);
-    return formatPrice(total);
-  };
-
+export default function ManufacturedComponentsPage(): ReactNode {
+  const totalCost = formatTotalCost(components);
+  
   return (
-    <div style={{ overflowX: 'auto' }}>
+    <div>
+      <h1>Manufactured Components</h1>
       <p>
-        <ins>
-          {`The estimated total cost of manufactured components is ${calculateTotalCost()}`}
-        </ins>
+        <ins>The estimated total cost of manufactured components is {totalCost}</ins>
       </p>
-      <p>
-        Here is the list of the components that need to be manufactured:
-      </p>
-      <table style={tableStyles.table}>
-        <thead>
-          <tr style={tableStyles.headerRow}>
-            <th style={tableStyles.headerCell}>Name</th>
-            <th style={tableStyles.headerCell}>Photo</th>
-            <th style={tableStyles.headerCell}>Model Number</th>
-            <th style={tableStyles.headerCell}>Quantity</th>
-            <th style={tableStyles.headerCell}>Unit Price (JPY)</th>
-            <th style={tableStyles.headerCell}>Total Price (JPY)</th>
-            <th style={tableStyles.headerCell}>Manufacturing Method</th>
-            <th style={tableStyles.headerCell}>Material</th>
-            <th style={tableStyles.headerCell}>Manufacturer</th>
-          </tr>
-        </thead>
-        <tbody>
-          {components.map((component) => (
-            <tr key={component.name} style={tableStyles.bodyRow}>
-              <td style={tableStyles.bodyCell}><strong>{component.name}</strong></td>
-              <td style={tableStyles.bodyCell}>
-                <ComponentPhoto
-                  src={useBaseUrl(`/img/bom/manufactured_components/${component.image}`)}
-                  alt={component.name}
-                />
-              </td>
-              <td style={tableStyles.bodyCell}>{component.model}</td>
-              <td style={tableStyles.bodyCell}>{component.quantity}</td>
-              <td style={tableStyles.bodyCell}>{formatPrice(component.unitPrice)}</td>
-              <td style={tableStyles.bodyCell}>
-                <strong>{formatPrice(component.unitPrice * component.quantity)}</strong>
-              </td>
-              <td style={tableStyles.bodyCell}>{component.method}</td>
-              <td style={tableStyles.bodyCell}>{component.material}</td>
-              <td style={tableStyles.bodyCell}>{component.manufacturer}</td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
+      <p>Here is the list of the components that need to be manufactured:</p>
+      <ComponentTable
+        components={components}
+        columns={columns}
+        imageBasePath="/img/bom/manufactured_components"
+      />
     </div>
   );
 }
