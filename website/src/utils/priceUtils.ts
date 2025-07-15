@@ -22,8 +22,11 @@ export const formatPrice = (price: number): string => {
 export const calculateTotalCost = <T extends { unitPrice: number; quantity: number; }>(
   components: T[]
 ): number => {
-  return components.reduce(
-    (total, component) => (total + (component.unitPrice * component.quantity)),0);
+  const sumComponentCost = (total: number, component: T): number => {
+    return total + (component.unitPrice * component.quantity);
+  };
+
+  return components.reduce(sumComponentCost, 0);
 };
 
 export const formatTotalCost = <T extends { unitPrice: number; quantity: number; }>(
