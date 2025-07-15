@@ -60,7 +60,6 @@ export default function OffTheShelfComponentsPage(): ReactNode {
   
   return (
     <div>
-      <h1>Off-The-Shelf Components (Arm)</h1>
       <p>
         <ins>The estimated total cost of off-the-shelf arm components is {totalCost}</ins>
       </p>

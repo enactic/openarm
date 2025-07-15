@@ -76,7 +76,6 @@ export default function ManufacturedComponentsPage(): ReactNode {
   
   return (
     <div>
-      <h1>Manufactured Components</h1>
       <p>
         <ins>The estimated total cost of manufactured components is {totalCost}</ins>
       </p>
