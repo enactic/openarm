@@ -71,7 +71,7 @@ const columns: ComponentTableColumn<ManufacturedComponent>[] = [
   { header: 'Manufacturer', key: 'manufacturer' }
 ];
 
-export default function ManufacturedComponentsPage(): ReactNode {
+export default function ManufacturedComponents(): ReactNode {
   const totalCost = formatTotalCost(components);
   
   return (

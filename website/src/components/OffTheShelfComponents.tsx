@@ -55,7 +55,7 @@ const columns: ComponentTableColumn<OffTheShelfComponent>[] = [
   { header: 'Supplier', key: 'supplier' }
 ];
 
-export default function OffTheShelfComponentsPage(): ReactNode {
+export default function OffTheShelfComponents(): ReactNode {
   const totalCost = formatTotalCost(components);
   
   return (
