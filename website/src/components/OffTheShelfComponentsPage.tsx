@@ -15,7 +15,7 @@
 import React, {
   type ReactNode
 } from 'react';
-import ComponentTable, { type ComponentTableColumn } from '../components/ComponentTable';
+import ComponentTable, { type ComponentTableColumn } from './ComponentTable';
 import { formatTotalCost } from '../utils/priceUtils';
 
 export interface OffTheShelfComponent {
