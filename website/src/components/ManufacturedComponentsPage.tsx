@@ -83,7 +83,7 @@ export default function ManufacturedComponentsPage(): ReactNode {
       <ComponentTable
         components={components}
         columns={columns}
-        imageBasePath="/img/bom/manufactured_components"
+        imageBasePath="/img/bom/manufactured-components"
       />
     </div>
   );
