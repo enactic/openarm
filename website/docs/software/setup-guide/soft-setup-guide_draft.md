@@ -41,7 +41,9 @@ sudo cmake --install build
 ## Pre-Flight Configuration
 
 ### Motor ID Configuration
-**CRITICAL**: Configure Damiao motor IDs before running any code on the arm.
+:::warning
+Configure Damiao motor IDs before running any code on the arm.
+:::
 
 Follow the [Damiao motor configuration guide](https://wiki.seeedstudio.com/damiao_series/) to set up motor IDs as follows:
 
