@@ -110,7 +110,9 @@ Under the current firmware version of motors:
 
 Therefore during the baudrate transition process, it is strongly advised to perform the change using CAN 2.0.
 
-⚠️ **WARNING**: Motors have a hard limit of 10,000 parameter write cycles
+:::warning
+Motors have a hard limit of 10,000 parameter write cycles
+:::
 
 ```bash
 # Change motor baudrate (use sparingly)
