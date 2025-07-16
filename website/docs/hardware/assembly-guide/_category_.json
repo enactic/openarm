@@ -1,8 +1,8 @@
 {
   "label": "Assembly Guide",
-  "position": 3,
+  "position": 4,
   "link": {
     "type": "generated-index",
-    "description": "Step-by-step instructions for assembling OpenArm v1.0, from pedestal setup through final testing and calibration."
+    "description": "Step-by-step instructions for assembling OpenArm 1, from pedestal setup through final testing and calibration."
   }
 }
