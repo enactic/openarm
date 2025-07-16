@@ -1,24 +1,33 @@
 ---
 title: Parts List
 sidebar_position: 1
+description: ""
 ---
 
-# Parts List
+# 🧩 Parts List
 
-Here's a checklist of all components required for assembly.
+This checklist includes **all components** required for assembling the **OpenArm 1 bimanual setup**.
 
-## Mechanical
+---
 
-- [x] 2x DAMIAO DM-J8009-2EC
-- [x] 1x DAMIAO DM-J4340P-2EC
-- [x] 1x DAMIAO DM-J4340-2EC
-- [x] 4x DAMIAO DM-J4310-2EC V1.1
-- [x] [All the manufactured parts](manufactured-components)
-- [x] [All the off-the-shelf arm components](off-the-shelf-components)
+## ✅ Actuators
 
-## Electrical
+- [x] **4×** DAMIAO **DM-J8009-2EC**
+- [x] **2×** DAMIAO **DM-J4340P-2EC**
+- [x] **2×** DAMIAO **DM-J4340-2EC**
+- [x] **8×** DAMIAO **DM-J4310-2EC V1.1**
 
-- [x] Placeholder1 × 1
-- [x] Placeholder2 × 1
-- [x] Placeholder3 × 20
-- [x] Placeholder4 × 1
+---
+
+## 🛠️ Mechanical Components
+
+- [x] [All manufactured arm parts](arm-manufactured)
+- [x] [All off-the-shelf arm parts](arm-off-the-shelf)
+- [x] [All pedestal components](pedestal)
+- [x] [All end-effector components](end-effector)
+
+---
+
+## ⚡ Electrical Components
+
+- [x] [All electrical components](electrical)

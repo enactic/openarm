@@ -1,0 +1,30 @@
+---
+title: Installation
+sidebar_position: 5
+---
+
+import BlockImage from '@site/src/components/BlockImage';
+
+This installation guide provides instructions for setting up the leader-follower configuration of the OpenArm 1 system. The leader and follower systems are physically identical, with the only distinction being the end-effector configuration.
+
+## Power
+
+1. Each of the four arms (two leaders and two followers) is powered by its own dedicated power supply.
+2. The system includes two emergency stop (E-stop) buttons — one for the leader pair and one for the follower pair.
+3. Connect the power supplies of the two follower arms to a single E-stop button. Repeat the same process for the leader arms, ensuring that each pair is connected to its designated E-stop.
+4. The two output cables from each E-stop should be connected to the corresponding hubs of the arms.
+<BlockImage src="hardware/installation/power.png" alt="power" width="80%" />
+
+---
+
+## Communication
+
+For the USB-to-CAN converters, assign the CAN IDs as follows:
+- CAN ID 0: Right Leader
+- CAN ID 1: Left Leader
+- CAN ID 2: Right Follower
+- CAN ID 3: Left Follower
+
+Connect the <span style={{ color: 'red' }}>**red wires**</span> to <span style={{ color: 'red' }}>**CANH**</span> and the **black wires** to **CANL**. Then, plug each CAN connector into the hub of the corresponding arm.
+
+<BlockImage src="hardware/installation/communication.png" alt="communicaiton" width="80%" />

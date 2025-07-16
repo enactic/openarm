@@ -29,11 +29,9 @@ git submodule update --init --recursive
 ### 2. Build the CAN Library
 ```bash
 cd openarm_can
-mkdir build
-cd build
-cmake ..
-make
-sudo make install
+cmake -S . -B build -DCMAKE_BUILD_TYPE=Release
+cmake --build build
+sudo cmake --install build
 ```
 
 ### 3. Optional: ROS2 Integration
@@ -43,7 +41,9 @@ sudo make install
 ## Pre-Flight Configuration
 
 ### Motor ID Configuration
-**CRITICAL**: Configure Damiao motor IDs before running any code on the arm.
+:::warning
+Configure Damiao motor IDs before running any code on the arm.
+:::
 
 Follow the [Damiao motor configuration guide](https://wiki.seeedstudio.com/damiao_series/) to set up motor IDs as follows:
 
@@ -73,7 +73,7 @@ can interface can be configured using `ip link`:
 
 TODO: add package installation guid
 
-```
+```bash
 sudo ip link set $CAN_INTERFACE down
 
 # CAN 2.0
@@ -87,7 +87,7 @@ sudo ip link set $CAN_INTERFACE
 
 Here are some preset scripts [here](https://github.com/enactic/openarm_can/blob/main/scripts/can_setup.md) for CAN interface setup
 
-```
+```bash
 ./configure_socketcan.sh $CAN_INTERFACE
 ./configure_socketcan.sh can0 -fd -b 1000000 -d 5000000
 ```

@@ -1,0 +1,30 @@
+---
+title: End-Effector Specifications
+sidebar_position: 2
+---
+
+import BlockImage from '@site/src/components/BlockImage';
+
+## General Dimensions
+
+Maximum distance between the jaws is 88mm. Maximum closing is when the two jaws are in contact.
+
+<BlockImage src="hardware/end-effector/spec.png" alt="spec" width="90%" />
+
+---
+## Mechanism
+
+Starting at the 0° position of the motor `J8` (gripper is fully open), the gripper is fully closed at 60° angle. The ball-bearing based slider block and rails along with bearings at the linkages ensure a very smooth motion, ideal for force feedback and bilateral control.
+<figure style={{ textAlign: 'center' }}>
+  <BlockImage src="hardware/end-effector/fullyopen.png" alt="fully open" width="90%" />
+  <figcaption style={{ fontSize: '0.9em', color: '#666', marginTop: '0.5em' }}>
+    The gripper in the fully open position (considered as 0°).
+  </figcaption>
+</figure>
+
+<figure style={{ textAlign: 'center' }}>
+  <BlockImage src="hardware/end-effector/fullyclosed.png" alt="fully closed" width="90%" />
+  <figcaption style={{ fontSize: '0.9em', color: '#666', marginTop: '0.5em' }}>
+    The gripper in the fully open closed position (at 60° clockwise rotation).
+  </figcaption>
+</figure>
