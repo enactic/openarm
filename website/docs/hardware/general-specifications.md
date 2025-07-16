@@ -1,0 +1,63 @@
+---
+sidebar_position: 3
+---
+
+# General specifications
+
+## Key features
+
+- 7-DOF robotic arm with degrees of freedom similar to a human arm
+- Payload capacity of X kg per arm, X kg for both arms
+- High backdrivability enabled by QDD (Quasi-Direct Drive) motors in several joints
+- Safe and smooth form designed to prevent pinching and trapping
+- Simple design with hidden cables and screws
+- Fully open-source
+
+## Architecture
+
+OpenArm uses the DAMIAO 43 series and DAMIAO 8009P motors.
+To efficiently achieve high payload capacity, different motors are selected for each joint from the shoulder to the end-effector.
+To ensure greater rigidity and precision, motors equipped with cross-roller bearings are used in sections supported on one side.
+Although the DAMIAO 4340 series is not a QDD motor, it was chosen to balance high payload capacity with a clean, compact appearance.
+
+<div align="center">
+  <img src="/img/hardware/general-specifications/Architecture.png" alt="Architecture" width="700" />
+</div>
+
+## General dimensions
+
+OpenArm has a small human-like physique. The support pillars are made of MiSUMi aluminum frames, making it easy to adjust the dimensions and attach cameras, sensors, and other attachments.
+The base plate has evenly spaced M6 taps, allowing it to be fixed directly to a table or other surface.
+Each joint has a mechanical limit that restricts the range of motion for safety.
+
+<div align="center">
+  <img src="/img/hardware/general-specifications/Dimensions.png" alt="Dimensions" width="700" />
+</div>
+
+## Motor specifications
+
+
+
+| Parameter | **DM4310** | **DM4340 series** | **DM8009-2EC** |
+|---------------------------|----------------|----------------|----------------|
+| **Rated Voltage** | 24V | 24V | 24V (Supports 24–48V) |
+| **Rated Current** | 2.5A | 2.5A | 20A |
+| **Peak Current** | 7.5A | 8A | 50A |
+| **Rated Torque** | 3 Nm | 9 Nm | 20 Nm |
+| **Peak Torque** | 7 Nm | 27 Nm | 40 Nm |
+| **Rated Speed** | 120 rpm | 36 rpm | 24V: 100 rpm / 48V: 200 rpm |
+| **Max No-load Speed** | 200 rpm | 52 rpm | 24V: 160 rpm / 48V: 320 rpm |
+| **Reduction Ratio** | 10:1 | 40:1 | 9:1 |
+| **Number of Pole Pairs** | 14 | 14 | 21 |
+| **Phase Inductance** | 340 μH | 317 μH | 61 μH (at 25°C) |
+| **Phase Resistance** | 650 mΩ | 760 mΩ | 0.09 Ω (at 25°C) |
+| **Outer Diameter** | 56 mm | 57 mm | 98 mm |
+| **Height** | 46 mm | 53.3 mm | 61.7 mm |
+| **Motor Weight** | 300 g | 362 g | 896 g |
+| **Encoder Bits** | 14-bit | 14-bit | 14-bit |
+| **No. of Encoders** | 2 | 2 | 2 |
+| **Encoder Type** | Magnetic encoder (single-turn) | Magnetic encoder (single-turn) | Magnetic encoder (single-turn) |
+| **Control Interface** | CAN | CAN | CAN |
+<!--| **Parameter Adjustment Interface** | UART@921600 bps | UART@921600 bps | USB-to-CAN |
+<!--| **Control Modes** | MIT, Speed, Position | MIT, Speed, Position | MIT, Speed, Position | -->
+<!-- | **Protection** | Over-temp, over-voltage, over-current, under-voltage, comm loss | Same | Dual-temp protection, same features | -->
