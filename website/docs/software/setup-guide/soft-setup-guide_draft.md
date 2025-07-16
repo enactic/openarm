@@ -71,7 +71,7 @@ Configure your CAN device baudrate and motor baudrate and communication mode. $T
 
 can interface can be configured using `ip link`:
 
-```
+```bash
 sudo ip link set $CAN_INTERFACE down
 
 # CAN 2.0
