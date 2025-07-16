@@ -1,14 +1,19 @@
-# Robot Arm Starting Guide
+---
+title: Getting started 
+sidebar_position: 1
+---
+
+# Software setup guide
 
 ## Supported Environment
 
-### Core SDK Requirements
+### SDK Requirements
 - **openarm_sdk**: Works on Ubuntu with SocketCAN interface devices
   - Tested on Ubuntu 22.04 
   - **TODO**: Test compatibility on Ubuntu 24.04 (@kevin)
 - **CMake 3.22+** required for building
 
-### Peripheral Package Dependencies
+### Other Package Dependencies
 - **openarm_ros2**: Compatible with ROS2 Humble
 - **openarm_isaac** (Work in Progress): Requires Ubuntu 22.04 + ROS2 Humble-based bridge
 
@@ -16,7 +21,7 @@
 
 ### 1. Clone and Initialize Repository
 ```bash
-git clone [REPO_URL] openarm_sdk
+git clone https://github.com/enactic/openarm_sdk.git
 cd openarm_sdk
 git submodule update --init --recursive
 ```
@@ -55,29 +60,59 @@ Follow the [Damiao motor configuration guide](https://wiki.seeedstudio.com/damia
 
 ### Firmware Version Check
 Verify your motor firmware version is compatible:
-```bash
-./build/bin/check_firmware_version
-```
 **TODO**: Determine minimum required firmware version
 
 ## Arm Configuration
 
-### 1. CAN Interface Setup
-Configure your CAN device baudrate to match motor settings:
+Configure your CAN device baudrate and motor baudrate and communication mode. $They need to MATCH!$
 
-```bash
-# See openarm_can README for detailed CAN interface setup
-sudo ip link set can0 up type can bitrate 1000000
+
+### CAN Configuration
+
+can interface can be configured using `ip link`:
+
+```
+sudo ip link set $CAN_INTERFACE down
+
+# CAN 2.0
+# sudo ip link set $CAN_IF type can bitrate $BITRATE
+
+# CAN FD
+sudo ip link set $CAN_INTERFACE type can bitrate $BITRATE dbitrate $DBITRATE fd on
+
+sudo ip link set $CAN_INTERFACE
 ```
 
-**Reference**: See `openarm_can/README.md` for complete CAN interface configuration
+Here are some preset scripts [here](https://github.com/enactic/openarm_can/blob/main/scripts/can_setup.md) for CAN interface setup
 
-### 2. Motor Baudrate Configuration
+```
+./configure_socketcan.sh $CAN_INTERFACE
+./configure_socketcan.sh can0 -fd -b 1000000 -d 5000000
+```
+
+### Motor Baudrate Configuration
+
+To modify a motor's baudrate, the following procedure must be followed:
+
+1. Configure the CAN interface to operate at the current baudrate of the motor.
+2. Issue the command to update the baudrate 
+3. write the new value to the appropriate motor register.
+
+One need to ensure that the write operation is performed at a baudrate the motor can still interpret immediately after the change.
+
+Important considerations:
+
+Under the current firmware version of motors: 
+- CAN 2.0 frames → CAN FD motor: Motor respond to the commands but provides no feedback
+- CAN FD frames → CAN 2.0 motor: Motor doesn't respond
+
+Therefore during the baudrate transition process, it is strongly advised to perform the change using CAN 2.0.
+
 ⚠️ **WARNING**: Motors have a hard limit of 10,000 parameter write cycles
 
 ```bash
 # Change motor baudrate (use sparingly)
-./build/bin/change_baudrate [NEW_BAUDRATE]
+./build/bin/change_baudrate $SEND_CAN_ID $RECV_CAN_ID $FD$ $NEW_BAUDRATE
 ```
 **TODO**: Implement `build/bin/change_baudrate` utility
 
@@ -114,10 +149,11 @@ This example should demonstrate:
 
 ### Troubleshooting
 If communication fails:
-1. Verify CAN interface is up and configured correctly
+1. Verify CAN interface is up and configured correctly (Leverage `candump` to monitor the communication)
 2. Check motor ID configurations
 3. Confirm baudrate matching between CAN interface and motors
 4. Ensure zero position has been set
+5. Check wiring
 
 ## Additional Resources
 
@@ -136,6 +172,6 @@ If communication fails:
 
 ## Safety Notes
 - Always ensure emergency stops are accessible when testing
-- Start with low-speed movements during initial testing
+- Start with low-speed movements during initial testing:
 - Verify zero position is correctly set before attempting complex movements
 - Monitor motor temperatures during extended operation
