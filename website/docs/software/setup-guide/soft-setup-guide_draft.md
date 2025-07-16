@@ -29,11 +29,9 @@ git submodule update --init --recursive
 ### 2. Build the CAN Library
 ```bash
 cd openarm_can
-mkdir build
-cd build
-cmake ..
-make
-sudo make install
+cmake -S . -B build -DCMAKE_BUILD_TYPE=Release
+cmake --build build
+sudo cmake --install build
 ```
 
 ### 3. Optional: ROS2 Integration
