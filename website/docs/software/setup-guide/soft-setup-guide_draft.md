@@ -71,6 +71,8 @@ Configure your CAN device baudrate and motor baudrate and communication mode. $T
 
 can interface can be configured using `ip link`:
 
+TODO: add package installation guid
+
 ```
 sudo ip link set $CAN_INTERFACE down
 
@@ -158,6 +160,7 @@ If communication fails:
 ## Additional Resources
 
 ### TODO Items
+- [ ] **DEPENDENCYU**: package for can and ip link
 - [ ] **REPO_URL**: Add actual repository URL
 - [ ] **Firmware version**: Determine and document minimum required version
 - [ ] **change_baudrate**: Implement baudrate configuration utility
