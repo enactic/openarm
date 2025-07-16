@@ -85,7 +85,7 @@ sudo ip link set $CAN_INTERFACE
 
 Here are some preset scripts [here](https://github.com/enactic/openarm_can/blob/main/scripts/can_setup.md) for CAN interface setup
 
-```
+```bash
 ./configure_socketcan.sh $CAN_INTERFACE
 ./configure_socketcan.sh can0 -fd -b 1000000 -d 5000000
 ```
