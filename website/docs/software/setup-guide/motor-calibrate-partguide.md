@@ -9,7 +9,7 @@ Download the [Damiao Debugging Tools](https://files.seeedstudio.com/wiki/robotic
 If Windows Defender Blocks It:  
 Head to Windows Security -> Virus & Threat Protection -> Protection History -> Select this file -> Actions -> Allow  
 
-Running it should open a window like so:
+Running it should open a window like so:  
 <img width="624" height="506" alt="image" src="https://github.com/user-attachments/assets/25991adf-1779-4394-bde4-5a1c10e13b41" />  
 Toggle English with the green/red toggle button at the bottom left
 
@@ -19,7 +19,7 @@ Configuring IDs + quick calibrate to test if the motor runs
 Make sure your hardware is set up correctly by following the guide at the bottom  
 
 Open the port:
-(If it does not detect the correct serial port, it's usually the last one in the drop-down list)
+(If it does not detect the correct serial port, it's usually the last one in the drop-down list)  
 <img width="186" height="217" alt="image" src="https://github.com/user-attachments/assets/80196185-8345-4d26-b4c7-ca85d7f036b9" />
 
 You can see the motor info on initial boot:  
