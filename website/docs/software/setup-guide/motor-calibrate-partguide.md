@@ -45,4 +45,7 @@ Hit calibrate, and the motor should start moving
 <img width="392" height="317" alt="image" src="https://github.com/user-attachments/assets/98196bf3-aec8-4fd3-9a08-bd0c480ddf49" />  
 **Use an XT30U-M or split a M/F cable and solder the ends to connect with a 24V psu:  
 <img width="533" height="151" alt="image" src="https://github.com/user-attachments/assets/3f07cada-b93c-491b-9b43-c61359ce483d" />  
+***For the J8009P motors, you can plug the wires directly in (Calibrate might not work but writing ID should still be ok):
+<img width="773" height="458" alt="image" src="https://github.com/user-attachments/assets/1681c75c-b2f2-4a7c-94e7-206988c35382" />
+
 
