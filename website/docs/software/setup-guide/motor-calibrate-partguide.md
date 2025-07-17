@@ -13,8 +13,10 @@ Running it should open a window like so:
 <img width="624" height="506" alt="image" src="https://github.com/user-attachments/assets/25991adf-1779-4394-bde4-5a1c10e13b41" />  
 Toggle English with the green/red toggle button at the bottom left
 
-The tool will be mainly used for two tasks:  
-Configuring IDs + quick calibrate to test if the motor runs
+The tool will be mainly used for three tasks:  
+1. Configuring IDs
+2. Quick calibrate to test if the motor runs
+3. Firmware version and control mode check before sending commands
 
 Make sure your hardware is set up correctly by following the guide at the bottom  
 
