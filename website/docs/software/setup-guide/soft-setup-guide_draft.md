@@ -40,25 +40,13 @@ sudo cmake --install build
 
 ## Pre-Flight Configuration
 
-### Motor ID Configuration
+### Motor ID Configuration  
+Follow the [Motor Calibration Guide](website/docs/software/setup-guide/motor-calibrate-partguide.md)  
+
 :::warning
 Configure Damiao motor IDs before running any code on the arm.
 :::
 
-Follow the [Damiao motor configuration guide](https://wiki.seeedstudio.com/damiao_series/) to set up motor IDs as follows:
-
-| Joint | Sender CAN ID | Receiver (Master) ID |
-|-------|---------------|---------------------|
-| J1    | 0x01          | 0x11               |
-| J2    | 0x02          | 0x12               |
-| J3    | 0x03          | 0x13               |
-| J4    | 0x04          | 0x14               |
-| J5    | 0x05          | 0x15               |
-| J6    | 0x06          | 0x16               |
-| J7    | 0x07          | 0x17               |
-| J8 (Gripper) | 0x08   | 0x18               |
-
-### Firmware Version Check
 Verify your motor firmware version is compatible:
 **TODO**: Determine minimum required firmware version
 
