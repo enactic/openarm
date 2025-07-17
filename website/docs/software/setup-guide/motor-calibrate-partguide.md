@@ -27,9 +27,24 @@ You can see the motor info on initial boot:
 
 Config motor IDs:
 1. Read parameters from the motor
-2. Set the CAN ID using the ID table from the setup guide
-3. Set the Master ID using the ID table from the setup guide
-4. Write the new settings to the motor  
+2. Set the CAN ID using the ID table  
+3. Set the Master ID using the ID table  
+4. Write the new settings to the motor
+
+:::warning
+Configure Damiao motor IDs before running any code on the arm.
+:::
+| Joint | Sender CAN ID | Receiver (Master) ID |
+|-------|---------------|---------------------|
+| J1    | 0x01          | 0x11               |
+| J2    | 0x02          | 0x12               |
+| J3    | 0x03          | 0x13               |
+| J4    | 0x04          | 0x14               |
+| J5    | 0x05          | 0x15               |
+| J6    | 0x06          | 0x16               |
+| J7    | 0x07          | 0x17               |
+| J8 (Gripper) | 0x08   | 0x18               |
+
 <img width="925" height="259" alt="image" src="https://github.com/user-attachments/assets/b961beca-c1e7-4d92-aec5-44b8ccd45430" />  
 
 Simple test if the motor works:  
