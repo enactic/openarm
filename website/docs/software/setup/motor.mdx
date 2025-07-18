@@ -13,7 +13,7 @@ Excerpted from: https://wiki.seeedstudio.com/damiao_series/
 
 In Windows: Download the [Damiao Debugging Tools](https://files.seeedstudio.com/wiki/robotics/Actuator/damiao/Debugging_Tools_v.1.6.8.8.exe)
 
-<BlockImage src="software/setup-guide/damiao-debugging-tools-download.png" alt="Damiao Debugging Tools download" width="25%" />
+<BlockImage src="software/setup/damiao-debugging-tools-download.png" alt="Damiao Debugging Tools download" width="25%" />
 
 If Windows Defender blocks it:
 
@@ -26,7 +26,7 @@ If Windows Defender blocks it:
 
 Running it should open a window like so:
 
-<BlockImage src="software/setup-guide/damiao-debugging-tools-start.png" alt="Damiao Debugging Tools start" width="60%" />
+<BlockImage src="software/setup/damiao-debugging-tools-start.png" alt="Damiao Debugging Tools start" width="60%" />
 
 Toggle English with the green/red toggle button at the bottom left.
 
@@ -42,11 +42,11 @@ The tool will be mainly used for three tasks:
 
 If it does not detect the correct serial port, it's usually the last one in the drop-down list.
 
-<BlockImage src="software/setup-guide/damiao-debugging-tools-port.png" alt="Damiao Debugging Tools port" width="20%" />
+<BlockImage src="software/setup/damiao-debugging-tools-port.png" alt="Damiao Debugging Tools port" width="20%" />
 
 You can see the motor info on initial boot:
 
-<BlockImage src="software/setup-guide/damiao-debugging-tools-motor-info.png" alt="Damiao Debugging Tools motor info" width="35%" />
+<BlockImage src="software/setup/damiao-debugging-tools-motor-info.png" alt="Damiao Debugging Tools motor info" width="35%" />
 
 ### Configure motor IDs
 
@@ -69,34 +69,34 @@ Configure Damiao motor IDs before running any code on the arm.
 | J7    | 0x07          | 0x17               |
 | J8 (Gripper) | 0x08   | 0x18               |
 
-<BlockImage src="software/setup-guide/damiao-debugging-tools-config.png" alt="Damiao Debugging Tools config" width="95%" />
+<BlockImage src="software/setup/damiao-debugging-tools-config.png" alt="Damiao Debugging Tools config" width="95%" />
 
 ### Test the motor
 
 Hit calibrate, and the motor should start moving. (No need to save calibration after.)
 
-<BlockImage src="software/setup-guide/damiao-debugging-tools-calibrate.png" alt="Damiao Debugging Tools calibrate" width="20%" />
+<BlockImage src="software/setup/damiao-debugging-tools-calibrate.png" alt="Damiao Debugging Tools calibrate" width="20%" />
 
 ## Hardware Setup
 
-<BlockImage src="software/setup-guide/hardware-setup.png" alt="Hardware setup" width="95%" />
+<BlockImage src="software/setup/hardware-setup.png" alt="Hardware setup" width="95%" />
 
 :::note[NOTE *]
 Comes with only one end (like the above), will need to solder another male end.
 
-<BlockImage src="software/setup-guide/hardware-setup-can-wire.png" alt="CAN wire" width="50%" />
+<BlockImage src="software/setup/hardware-setup-can-wire.png" alt="CAN wire" width="50%" />
 :::
 
 :::note[NOTE **]
 Use an XT30U-M or split a M/F cable and solder the ends to connect with a 24V psu.
 
-<BlockImage src="software/setup-guide/hardware-setup-power.png" alt="Power" width="50%" />
+<BlockImage src="software/setup/hardware-setup-power.png" alt="Power" width="50%" />
 :::
 
 :::note[NOTE ***]
 For the J8009P motors, you can plug the wires directly in. (Calibrate might not work but writing ID should still be ok.)
 
-<BlockImage src="software/setup-guide/hardware-setup-motor.png" alt="Motor" width="75%" />
+<BlockImage src="software/setup/hardware-setup-motor.png" alt="Motor" width="75%" />
 :::
 
 

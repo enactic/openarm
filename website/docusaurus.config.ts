@@ -145,19 +145,19 @@ const config: Config = {
             },
             {
               label: 'Hardware',
-              to: '/hardware/introduction',
+              to: '/hardware/',
             },
             {
               label: 'Software',
-              to: '/software/introduction',
+              to: '/software/',
             },
             {
               label: 'Teleop',
-              to: '/teleop/introduction',
+              to: '/teleop/',
             },
             {
               label: 'Simulation',
-              to: '/simulation/isaac-lab',
+              to: '/simulation/',
             },
           ],
         },

@@ -1,15 +1,14 @@
 ---
-title: Getting started 
-sidebar_position: 1
+description: ...
 ---
 
-# Software setup guide
+# Setup guide
 
 ## Supported Environment
 
 ### SDK Requirements
 - **openarm_sdk**: Works on Ubuntu with SocketCAN interface devices
-  - Tested on Ubuntu 22.04 
+  - Tested on Ubuntu 22.04
   - **TODO**: Test compatibility on Ubuntu 24.04 (@kevin)
 - **CMake 3.22+** required for building
 
@@ -160,7 +159,7 @@ If communication fails:
 - [ ] **Ubuntu 24.04 testing**: Verify compatibility (@kevin)
 
 ### Links to be Instantiated
-- [Hardware documentation]: **TODO** - Add link to hardware setup guide
+- [Hardware documentation](/hardware/)
 - [Damiao motor configuration guide](https://wiki.seeedstudio.com/damiao_series/) - ✅ Active link
 - [openarm_can README]: **TODO** - Ensure detailed CAN setup instructions exist
 
