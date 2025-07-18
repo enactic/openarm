@@ -16,6 +16,7 @@ import React, {
   type ReactNode
 } from 'react';
 import BoMTable, { type BoMTableColumn } from './BoMTable';
+import { calculateTotalCost } from '../utils/priceUtils';
 
 export interface ElectricalComponent {
   name: string;
@@ -48,6 +49,10 @@ const columns: BoMTableColumn<ElectiricalComponent>[] = [
   { header: 'Total Price (JPY)', key: 'totalPrice' },
   { header: 'Supplier', key: 'supplier' }
 ];
+
+export function ElectricalTotalCost(): number {
+  return calculateTotalCost(components);
+}
 
 export default function ElectricalTable(): ReactNode {
   return (

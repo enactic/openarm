@@ -16,6 +16,7 @@ import React, {
   type ReactNode
 } from 'react';
 import BoMTable, { type BoMTableColumn } from './BoMTable';
+import { calculateTotalCost } from '../utils/priceUtils';
 
 export interface GripperOffTheShelfComponent {
   name: string;
@@ -44,6 +45,10 @@ const columns: BoMTableColumn<GripperOffTheShelfComponent>[] = [
   { header: 'Total Price (JPY)', key: 'totalPrice' },
   { header: 'Supplier', key: 'supplier' },
 ];
+
+export function GripperOffTheShelfTotalCost(): number {
+  return calculateTotalCost(components);
+}
 
 export default function GripperOffTheShelfTable(): ReactNode {
   return (

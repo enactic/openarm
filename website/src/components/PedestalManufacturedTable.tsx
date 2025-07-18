@@ -16,6 +16,7 @@ import React, {
   type ReactNode
 } from 'react';
 import BoMTable, { type BoMTableColumn } from './BoMTable';
+import { calculateTotalCost } from '../utils/priceUtils';
 
 export interface PedestalManufacturedComponent {
   name: string;
@@ -43,6 +44,10 @@ const columns: BoMTableColumn<PedestalManufacturedComponent>[] = [
   { header: 'Material', key: 'material' },
   { header: 'Manufacturer', key: 'manufacturer' }
 ];
+
+export function PedestalManufacturedTotalCost(): number {
+  return calculateTotalCost(components);
+}
 
 export default function PedestalManufacturedTable(): ReactNode {
   return (

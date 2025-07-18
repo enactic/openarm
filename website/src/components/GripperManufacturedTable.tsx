@@ -16,6 +16,7 @@ import React, {
   type ReactNode
 } from 'react';
 import BoMTable, { type BoMTableColumn } from './BoMTable';
+import { calculateTotalCost } from '../utils/priceUtils';
 
 export interface GripperManufacturedComponent {
   name: string;
@@ -46,6 +47,10 @@ const columns: BoMTableColumn<GripperManufacturedComponent>[] = [
   { header: 'Material', key: 'material' },
   { header: 'Manufacturer', key: 'manufacturer' }
 ];
+
+export function GripperManufacturedTotalCost(): number {
+  return calculateTotalCost(components);
+}
 
 export default function GripperManufacturedTable(): ReactNode {
   return (

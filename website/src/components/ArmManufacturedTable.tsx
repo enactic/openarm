@@ -16,6 +16,7 @@ import React, {
   type ReactNode
 } from 'react';
 import BoMTable, { type BoMTableColumn } from './BoMTable';
+import { calculateTotalCost } from '../utils/priceUtils';
 
 export interface ArmManufacturedComponent {
   name: string;
@@ -69,6 +70,10 @@ const columns: BoMTableColumn<ArmManufacturedComponent>[] = [
   { header: 'Material', key: 'material' },
   { header: 'Manufacturer', key: 'manufacturer' }
 ];
+
+export function ArmManufacturedTotalCost(): number {
+  return calculateTotalCost(components);
+}
 
 export default function ArmManufacturedTable(): ReactNode {
   return (

@@ -16,6 +16,7 @@ import React, {
   type ReactNode
 } from 'react';
 import BoMTable, { type BoMTableColumn } from './BoMTable';
+import { calculateTotalCost } from '../utils/priceUtils';
 
 export interface ArmOffTheShelfComponent {
   name: string;
@@ -53,6 +54,10 @@ const columns: BoMTableColumn<ArmOffTheShelfComponent>[] = [
   { header: 'Total Price (JPY)', key: 'totalPrice' },
   { header: 'Supplier', key: 'supplier' }
 ];
+
+export function ArmOffTheShelfTotalCost(): number {
+  return calculateTotalCost(components);
+}
 
 export default function ArmOffTheShelfTable(): ReactNode {
   return (
