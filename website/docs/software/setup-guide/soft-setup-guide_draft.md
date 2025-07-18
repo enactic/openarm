@@ -40,8 +40,9 @@ sudo cmake --install build
 
 ## Pre-Flight Configuration
 
-### Motor ID Configuration  
-Follow the [Motor Calibration Guide](website/docs/software/setup-guide/motor-calibrate-partguide.md)  
+### Motor ID Configuration
+
+Follow the [Motor Calibration Guide](motor)
 
 :::warning
 Configure Damiao motor IDs before running any code on the arm.

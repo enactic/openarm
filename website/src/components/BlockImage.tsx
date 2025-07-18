@@ -31,7 +31,6 @@ export default function BlockImage({ src, alt, width }: BlockImageProps): ReactN
         display: 'block',
         margin: '0 auto',
         width: width,
-        maxWidth:'600px'
       }}
     />
   );

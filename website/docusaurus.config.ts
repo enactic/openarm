@@ -101,6 +101,12 @@ const config: Config = {
           position: 'left',
           label: 'Hardware',
         },
+        {
+          type: 'docSidebar',
+          sidebarId: 'softwareSidebar',
+          position: 'left',
+          label: 'Software',
+        },
         // {to: '/blog', label: 'Blog', position: 'left'},
         {
           href: 'https://github.com/enactic/openarm',
@@ -122,6 +128,10 @@ const config: Config = {
             {
               label: 'Hardware',
               to: '/hardware/introduction',
+            },
+            {
+              label: 'Software',
+              to: '/software/introduction',
             },
           ],
         },
