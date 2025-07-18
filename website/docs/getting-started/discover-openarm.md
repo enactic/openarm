@@ -1,6 +1,6 @@
 ---
-sidebar_position: 1
 slug: /
+sidebar_position: 1
 ---
 # Discover OpenArm
 
