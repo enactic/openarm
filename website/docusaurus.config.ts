@@ -153,7 +153,7 @@ const config: Config = {
             },
             {
               label: 'Teleop',
-              to: '/teleop/set-up-guide',
+              to: '/teleop/introduction',
             },
             {
               label: 'Simulation',
