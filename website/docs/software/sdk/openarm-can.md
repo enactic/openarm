@@ -2,3 +2,145 @@
 title: Socket CAN Communication
 sidebar_position: 2
 ---
+
+# OpenArm CAN Library
+
+## Overview
+
+The OpenArm CAN Library serves as the primary communication bridge between high-level OpenArm control applications and low-level motor protocols. It abstracts CAN bus communication via utilizing Linux's SocketCAN interface, providing an API for motor control and state monitoring. The library allows extensibility for various CAN devices beyond motors.
+
+SocketCAN is Linux's implementation of the CAN (Controller Area Network) protocol stack, providing a socket-based interface for CAN communication. For detailed setup instructions including CAN interface configuration, library build, and verification steps, see [Setup Guide](../setup).
+
+## Table of Contents
+1. [CAN/Socket Library Overview](#1-cansocket-library-overview)
+2. [Usage Examples](#2-usage-examples)
+3. [Advanced Control](#3-advanced-control)
+
+---
+
+## 1. CAN/Socket Library Overview
+
+The OpenArm CAN library is organized in a three-layer architecture. Mostly only using can/socket should suffices
+```
+can/socket (High-level Components)
+├── OpenArm (Main orchestrator)
+├── ArmComponent (Multiple motor coordination)
+└── GripperComponent (Single motor with gripper logic)
+
+damiao_motor (Motor Protocol)
+├── DMDeviceCollection (Base class for motor groups)
+├── Motor (Individual motor interface)
+└── DMCANDevice (Motor device implementation)
+
+canbus (Low-level CAN Communication)
+├── CANSocket (SocketCAN interface)
+├── CANDeviceCollection (Generic device management)
+└── CANDevice (Generic CAN device)
+```
+
+### Key Classes
+
+**OpenArm**: Main interface managing CAN socket and motor components. Provides global operations across all connected motors.
+
+**ArmComponent**: Inherits from `DMDeviceCollection`, manages multiple arm motors as a coordinated system.
+
+**GripperComponent**: Inherits from `DMDeviceCollection`, manages a single motor with gripper-specific operations (`open()`, `close()`, `set_position()`).
+
+**DMDeviceCollection**: Base class providing common motor operations:
+- Bulk control (`enable_all()`, `mit_control_all()`)
+- Individual control (`mit_control_one()`, `refresh_one()`)
+- Parameter queries (`query_param_all()`)
+
+### Motor Control
+
+All motor control uses **Damiao Motor protocol** with MIT control mode:
+- **MITParam**: `{kp, kd, q, dq, tau}` for position/velocity/torque control
+- **State feedback**: Position, velocity, torque, and temperature monitoring
+- **Callback modes**: `STATE` for control responses, `PARAM` for parameter queries
+
+### Usage Pattern
+
+1. **Initialize** OpenArm with CAN interface
+2. **Register** motor devices with type and CAN IDs
+3. **Enable** motors and set callback mode
+4. **Control** via MIT parameters or high-level commands
+5. **Monitor** parse the received feedback frames
+---
+
+## 2. Usage Examples
+
+### Demo Overview
+
+The demo (`examples/demo.cpp`) demonstrates the complete OpenArm API workflow, from initialization to motor control.
+
+### Step-by-Step Breakdown
+
+#### 1. Initialization
+```cpp
+// Create OpenArm instance with CAN-FD support
+openarm::can::socket::OpenArm openarm("can0", true);
+
+// Initialize arm motors (example: 2x DM4310)
+std::vector<MotorType> motor_types = {MotorType::DM4310, MotorType::DM4310};
+std::vector<uint32_t> send_can_ids = {0x01, 0x02};
+std::vector<uint32_t> recv_can_ids = {0x11, 0x12};
+openarm.init_arm_motors(motor_types, send_can_ids, recv_can_ids);
+
+// Initialize gripper motor
+openarm.init_gripper_motor(MotorType::DM4310, 0x07, 0x17);
+```
+
+#### 2. Motor Parameter Query and Status Check
+
+See `openarm_can/examples/motor-check.cpp` for an example.
+
+#### 3. Motor Control
+```cpp
+// Set callback mode for state monitoring
+openarm.set_callback_mode_all(CallbackMode::STATE);
+
+// Return to zero position
+openarm.get_arm().mit_control_all({
+    MITParam{2, 1, 0, 0, 0},  // Motor 1: kp=2, kd=1, q=0 (~ Positon control)
+    MITParam{2, 1, 0, 0, 0}   // Motor 2: kp=2, kd=1, q=0 (~ Positon control)
+});
+openarm.recv_all();
+
+// Move to target position
+openarm.get_arm().mit_control_all({
+    MITParam{0, 0, 0, 0, 0.15},  // Motor 1: tau=0.15 Nm (~ Torque control)
+    MITParam{0, 0, 0, 0, 0.15}   // Motor 2: tau=0.15 Nm (~ Torque control)
+});
+```
+See `openarm_can/examples/demo.cpp` for an example.
+[Learn more about MIT control parameters in→](../setup/motor-can)
+
+#### 5. Real-time Monitoring
+```cpp
+// Monitor motor states for 1 second
+for (int i = 0; i < 100; i++) {
+    openarm.refresh_all();  // Query motor states
+    openarm.recv_all();     // Process responses
+
+    // Display positions
+    for (const auto& motor : openarm.get_arm().get_motors()) {
+        std::cout << "Arm Motor: " << motor.get_send_can_id()
+                  << " position: " << motor.get_position() << std::endl;
+    }
+
+    std::this_thread::sleep_for(std::chrono::milliseconds(10));
+}
+```
+
+### Key Points
+
+1. **Callback Mode Management**: Use `STATE` mode when receiving frames from motor control calls, and `PARAM` mode when receiving frames from motor parameter query calls.
+2. **Response Processing**: Always call `recv_all()` after commands.
+3. **Timing**: Monitor the frame communication by `candump`. When unexpected traffic occurs allow time for motor responses between commands (hundreds of microseconds should suffice)
+
+---
+
+## 3. Advanced Control
+
+- Add a sample for measuring contro frequency
+- TODO add timeout tuning instructions
