@@ -142,5 +142,51 @@ for (int i = 0; i < 100; i++) {
 
 ## 3. Advanced Control
 
-- Add a sample for measuring contro frequency
-- TODO add timeout tuning instructions
+
+### Tuning Timeout for Optimal Control Cycle
+
+One can tune the timeout for receiving CAN frames in `openarm_can/can/socket/openarm.cpp` within the `recv_all` function, specifically at the call to `is_data_available(timeout_in_us)`. Adjusting this timeout is crucial for achieving optimal control cycle performance.
+
+- **Recommended timeout values:** 100–500 microseconds.
+  - `100` is the minimum and may require you to manually insert a sleep of several hundred microseconds between control commands and `recv_all` (try increasing sleep progressively).
+  - `500` is relatively safe but may not be optimal for all setups.
+
+**Note:** For an 8-motor setup, exceeding a 1000 Hz control cycle can result in unstable CAN connections. Use this as a cue to adjust both the timeout and any sleep intervals for your application.
+
+Use the code snippet above and `candump` together can aid your control cycle frequency measurement and help guide your tuning.
+
+```cpp
+int frame_count = 0;
+auto start_time = std::chrono::high_resolution_clock::now();
+auto last_hz_display = start_time;
+
+for (int i = 0; i < 20000; i++) {
+    openarm.refresh_all();
+    openarm.recv_all();
+
+    frame_count++;
+    auto current_time = std::chrono::high_resolution_clock::now();
+
+    // Calculate and display Hz every second
+    auto time_since_last_display = std::chrono::duration_cast<std::chrono::milliseconds>(current_time - last_hz_display).count();
+    if (time_since_last_display >= 1000) {
+        auto total_time = std::chrono::duration_cast<std::chrono::milliseconds>(current_time - start_time).count();
+        double hz = (frame_count * 1000.0) / total_time;
+        std::cout << "=== Loop Frequency: " << hz << " Hz ===" << std::endl;
+
+        // Print only CAN ID and position
+        for (const auto& motor : openarm.get_arm().get_motors()) {
+            std::cout << "[Arm] CAN ID: " << motor.get_send_can_id()
+                      << " | Pos: " << motor.get_position()
+                      << std::endl;
+        }
+        for (const auto& motor : openarm.get_gripper().get_motors()) {
+            std::cout << "[Gripper] CAN ID: " << motor.get_send_can_id()
+                      << " | Pos: " << motor.get_position()
+                      << std::endl;
+        }
+
+        last_hz_display = current_time;
+    }
+}
+```
