@@ -19,7 +19,7 @@ How to use the [`openarm_can`](https://github.com/enactic/openarm_can) library.
 - **Power**: Supply power to all motors via PSU with 24V and ensure appropriate current is provided for number of motors connected
 - **CAN Adapter**: Ensure correct connection to PC (USB-to-CAN device)
 
-:::note[T30 2+2 Wiring Warning:]
+:::warning[T30 2+2 Wiring]
 If soldering your own connector wires, double check CANH is connected to CANH and CANL to CANL as the ports "flips" between motors due to mirroring
 :::
 
