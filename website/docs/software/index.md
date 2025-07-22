@@ -49,9 +49,9 @@ A C++ library for communicating with OpenArm motors through Linux's SocketCAN in
 
 Middleware for connecting OpenArm with the broader ROS2 ecosystem. Enables compatibility with existing robotics tools and frameworks.
 
-**Current features**: ROS2 control and hardware interfaces and moveit configurations for basic motion planning
-**In development**: Efficient hardware bridging node for direct control
-**Help wanted**: Support for additional ROS2 distributions, testing and validation
+- **Current features**: ROS2 control and hardware interfaces and moveit configurations for basic motion planning
+- **In development**: Efficient hardware bridging node for direct control
+- **Help wanted**: Support for additional ROS2 distributions, testing and validation
 
 ---
 
@@ -62,8 +62,8 @@ Middleware for connecting OpenArm with the broader ROS2 ecosystem. Enables compa
 
 Control guides and algorithms for OpenArm systems. This is an active area of development where we're implementing and testing various control approaches.
 
-**In development**: System identification guide, gravity compensation, cartesian space control
-**Help wanted**: Algorithm implementations, validation testing, control theory expertise
+- **In development**: System identification guide, gravity compensation, cartesian space control
+- **Help wanted**: Algorithm implementations, validation testing, control theory expertise
 
 ---
 
