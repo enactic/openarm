@@ -12,7 +12,7 @@ How to use the [`openarm_can`](https://github.com/enactic/openarm_can) library.
 
 ### Basic Connections
 
-[img to be added here]
+<!-- TODO: img to be added here -->
 
 - **CANH / CANL**: Connect all motors in a daisy-chain configuration
 - **GND**: Daisy-chain all motor grounds to PSU ground (GND from CAN adapter not required)
