@@ -1,0 +1,33 @@
+---
+sidebar_position: 1
+---
+import BlockImage from '@site/src/components/BlockImage';
+
+# Leader-Follower Teleoperation
+
+OpenArm supports 1:1 teleoperation from a **leader** arm to a **follower** arm in two control modes:
+
+## Unilateral Control
+
+The follower arm mimics the leader's movements using position commands. Simple one-way control with gravity compensation.
+
+- **Pros:** Simple setup, excellent for free-space tasks
+- **Cons:** No contact feedback; easy to over-push or misalign during delicate manipulation
+- **Best for:** Open environments with minimal obstacles, lightweight and fast movements, tasks without surface contact
+
+<BlockImage src="getting-started/safety-guidelines/leader-follower1.png" alt="Unilateral leader-follower control" width="100%" />
+
+## Bilateral Control
+
+Bilateral teleoperation enables **haptic feedback**. You feel what the robot feels. It exchanges both **position** and **force** data bidirectionally, allowing operators to sense the forces the follower arm experiences.
+
+This produces **high-quality demonstration data** (motion + force) essential for imitation learning and contact-rich policy training.
+
+- **Pros:** Precise contact manipulation, reduced operator fatigue, rich demonstration data (motion + force)
+- **Cons:** Requires additional setup and tuning, needs stable communication
+- **Best for:** Contact-rich tasks, force-sensitive manipulation, working with deformables, precision insertions, collaborative tasks near humans
+
+### How Our Bilateral Control Works?
+OpenArm's bilateral controller uses a **disturbance observer-based acceleration control** system for sensorless force estimation. This approach delivers accurate and responsive force feedback without dedicated torque sensors, enabling high-fidelity haptic teleoperation at low hardware cost.
+
+<BlockImage src="teleop/4ch_bilateral.png" alt="Bilateral control diagram" width="40%" />
