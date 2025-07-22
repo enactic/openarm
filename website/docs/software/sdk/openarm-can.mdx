@@ -24,7 +24,8 @@ SocketCAN is Linux's implementation of the CAN (Controller Area Network) protoco
 
 ## 1. CAN/Socket Library Overview
 
-The OpenArm CAN library is organized in a three-layer architecture. Mostly only using can/socket should suffices
+The OpenArm CAN library is organized in a three-layer architecture. Mostly only using can/socket should suffices.
+
 ```
 can/socket (High-level Components)
 ├── OpenArm (Main orchestrator)
@@ -69,6 +70,7 @@ All motor control uses **Damiao Motor protocol** with MIT control mode:
 3. **Enable** motors and set callback mode
 4. **Control** via MIT parameters or high-level commands
 5. **Monitor** parse the received feedback frames
+
 ---
 
 ## 2. Usage Examples
@@ -80,6 +82,7 @@ The demo (`examples/demo.cpp`) demonstrates the complete OpenArm API workflow, f
 ### Step-by-Step Breakdown
 
 #### 1. Initialization
+
 ```cpp
 // Create OpenArm instance with CAN-FD support
 openarm::can::socket::OpenArm openarm("can0", true);
@@ -99,6 +102,7 @@ openarm.init_gripper_motor(MotorType::DM4310, 0x07, 0x17);
 See `openarm_can/examples/motor-check.cpp` for an example.
 
 #### 3. Motor Control
+
 ```cpp
 // Set callback mode for state monitoring
 openarm.set_callback_mode_all(CallbackMode::STATE);
@@ -116,10 +120,12 @@ openarm.get_arm().mit_control_all({
     MITParam{0, 0, 0, 0, 0.15}   // Motor 2: tau=0.15 Nm (~ Torque control)
 });
 ```
+
 See `openarm_can/examples/demo.cpp` for an example.
 [Learn more about MIT control parameters in→](/software/setup/motor-can)
 
 #### 5. Real-time Monitoring
+
 ```cpp
 // Monitor motor states for 1 second
 for (int i = 0; i < 100; i++) {
@@ -145,7 +151,6 @@ for (int i = 0; i < 100; i++) {
 ---
 
 ## 3. Advanced Control
-
 
 ### Tuning Timeout for Optimal Control Cycle
 
