@@ -26,7 +26,9 @@ git submodule update --init --recursive
 ```
 
 ### 2. Build the CAN Library
+
 Or optionally: follow [CAN library Testing](test-can) for detailed setup and testing instructions.
+
 ```bash
 cd openarm_can
 cmake -S . -B build -DCMAKE_BUILD_TYPE=Release
