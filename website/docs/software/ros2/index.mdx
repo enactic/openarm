@@ -3,7 +3,7 @@ import BlockImage from '@site/src/components/BlockImage';
 
 # ROS2
 
-To get started, install ROS2 by following the official instructions. 
+To get started, install ROS2 by following the official instructions.
 
 We recommend using [Humble](https://docs.ros.org/en/humble/Installation.html) on Ubuntu 22.04, but other options may work as well. See below for a non-exhaustive [list of alternatives](#alternatives-to-the-recommended-setup).
 
@@ -35,14 +35,14 @@ source ~/ros2_ws/install/setup.bash
 ### Visualization
 
 
-<BlockImage src="software/ros2/bimanual_urdf_rviz.png" alt="Bimanual URDF Rviz" width="65%" />
+<BlockImage src="software/ros2/bimanual-urdf-rviz.png" alt="Bimanual URDF Rviz" width="65%" />
 
 Then, to visualize the bimanual URDF:
 ```sh
 ros2 launch openarm_description display_openarm.launch.py arm_type:=v10 bimanual:=true
 ```
 
-<BlockImage src="software/ros2/single_arm_urdf_rviz.png" alt="Single Arm URDF Rviz" width="65%" />
+<BlockImage src="software/ros2/single-arm-urdf-rviz.png" alt="Single Arm URDF Rviz" width="65%" />
 
 Or to visualize a single arm URDF:
 ```sh
@@ -67,9 +67,9 @@ xacro ~/ros2_ws/src/openarm_description/urdf/robot/v10.urdf.xacro arm_type:=v10 
 
 ## ROS2 Control
 
-The [openarm_ros2](https://github.com/enactic/openarm_ros2) repository contains a collection of packages for use with [ros2_control](https://control.ros.org/humble/index.html). 
+The [openarm_ros2](https://github.com/enactic/openarm_ros2) repository contains a collection of packages for use with [ros2_control](https://control.ros.org/humble/index.html).
 
-It abstracts away the hardware control to expose the arm as a interface that receives position, velocity, and torque commands and outputs joint states. 
+It abstracts away the hardware control to expose the arm as a interface that receives position, velocity, and torque commands and outputs joint states.
 
 To get started, clone the openarm_ros2 repository, build the packages, and source the workspace.
 ```sh
@@ -80,11 +80,11 @@ source ~/ros2_ws/install/setup.bash
 
 ### MoveIt2
 
-[MoveIt2](https://moveit.picknik.ai/main/index.html) is a framework for manipulators that combines inverse kinematics, perception, and control. 
+[MoveIt2](https://moveit.picknik.ai/main/index.html) is a framework for manipulators that combines inverse kinematics, perception, and control.
 
-<BlockImage src="software/ros2/bimanual_moveit2.png" alt="MoveIt2 Static" width="65%" />
+<BlockImage src="software/ros2/bimanual-moveit2.png" alt="MoveIt2 Static" width="65%" />
 
-After sourcing the workspace, launch a demo. 
+After sourcing the workspace, launch a demo.
 
 ```sh
 ros2 launch openarm_bimanual_moveit_config demo.launch.py
@@ -92,7 +92,7 @@ ros2 launch openarm_bimanual_moveit_config demo.launch.py
 
 #### Motion Planning
 
-<BlockImage src="software/ros2/bimanual_moveit2_planning.png" alt="MoveIt2 Planning" width="65%" />
+<BlockImage src="software/ros2/bimanual-moveit2-planning.png" alt="MoveIt2 Planning" width="65%" />
 
 Target positions can be set in the `Joints` tab in the MotionPlanning panel on the left. Alternatively, the targets on the arms can be dragged and rotated to a target pose, or the goal state can be selected from a list of preset keypoints under `Planning` > `Goal State`
 
@@ -114,14 +114,14 @@ After installing distrobox, run:
 xhost +local:root
 ```
 
-Then run the following command (you may need to [configure credentials to the Github Container Registry](https://docs.github.com/en/packages/working-with-a-github-packages-registry/working-with-the-container-registry)). 
+Then run the following command (you may need to [configure credentials to the Github Container Registry](https://docs.github.com/en/packages/working-with-a-github-packages-registry/working-with-the-container-registry)).
 
 ```sh
 docker run --env DISPLAY=$DISPLAY \
---volume /tmp/.X11-unix:/tmp/.X11-unix \
---network=host \
--it ghcr.io/enactic/openarm/ros2:latest-humble \
-/bin/bash
+  --volume /tmp/.X11-unix:/tmp/.X11-unix \
+  --network=host \
+  -it ghcr.io/enactic/openarm/ros2:latest-humble \
+  /bin/bash
 ```
 
 Inside of the container, make sure ros2 is working by sourcing the installation and running a RViz.
