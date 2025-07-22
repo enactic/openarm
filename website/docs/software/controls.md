@@ -1,5 +1,7 @@
 ---
+title: Conntrols
 description: ...
+sidebar_position: 5
 ---
 # Controls
 

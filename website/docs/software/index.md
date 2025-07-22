@@ -20,7 +20,7 @@ The OpenArm software ecosystem is continuously evolving, offering tools that bri
 
 ## 🛠️ Getting Started
 
-**New to OpenArm?** Start with our [Setup Guide](/software/setup) to configure your development environment.
+**New to OpenArm?** Start with our [Setup Guide](setup) to configure your development environment.
 
 **Want to contribute?** Each section below has opportunities for improvement and extension.
 
@@ -28,7 +28,7 @@ The OpenArm software ecosystem is continuously evolving, offering tools that bri
 
 ### Robot Description
 
-**[Learn more under Robot Description →](/software/openarm_description)**
+**[Learn more under Robot Description →](description)**
 
 URDF and XACRO files that provide representations of OpenArm. These models enable simulation, motion planning, and visualization. The package supports both single-arm and bimanual configurations.
 
@@ -36,7 +36,7 @@ URDF and XACRO files that provide representations of OpenArm. These models enabl
 
 ### SocketCAN Communication
 
-**[Learn more under SocketCAN Communication →](/software/openarm_can)**
+**[Learn more under SocketCAN Communication →](can)**
 
 A C++ library for communicating with OpenArm motors through Linux's SocketCAN interface. Enables real-time control loops and motor coordination. Offers Python bindings for seamless integration with other frameworks.
 
@@ -45,7 +45,7 @@ A C++ library for communicating with OpenArm motors through Linux's SocketCAN in
 
 ### ROS2 Integration
 
-**[Learn more under ROS2 →](/software/ros2)**
+**[Learn more under ROS2 →](ros2)**
 
 Middleware for connecting OpenArm with the broader ROS2 ecosystem. Enables compatibility with existing robotics tools and frameworks.
 
@@ -58,7 +58,7 @@ Middleware for connecting OpenArm with the broader ROS2 ecosystem. Enables compa
 
 ### Advanced Controls
 
-**[Learn more under Controls →](/software/controls)**
+**[Learn more under Controls →](controls)**
 
 Control guides and algorithms for OpenArm systems. This is an active area of development where we're implementing and testing various control approaches.
 
