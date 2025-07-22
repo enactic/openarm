@@ -163,8 +163,10 @@ Adjusting this timeout is crucial for achieving optimal control cycle performanc
   - `100` is the minimum and may require you to manually insert a sleep of several hundred microseconds between control commands and `recv_all` (try increasing sleep progressively).
   - `500` is relatively safe but may not be optimal for all setups.
 
-**Note:** For an 8-motor setup, exceeding a 1000 Hz control cycle can result in unstable CAN connections.
+:::note
+For an 8-motor setup, exceeding a 1000 Hz control cycle can result in unstable CAN connections.
 Use this as a cue to adjust both the timeout and any sleep intervals for your application.
+:::
 
 Use the code snippet above and `candump` together can aid your control cycle frequency measurement and help guide your tuning.
 
