@@ -35,14 +35,14 @@ source ~/ros2_ws/install/setup.bash
 ### Visualization
 
 
-<BlockImage src="software/ros2/bimanual_urdf_rviz.png" alt="Bimanual URDF Rviz" width="95%" />
+<BlockImage src="software/ros2/bimanual_urdf_rviz.png" alt="Bimanual URDF Rviz" width="65%" />
 
 Then, to visualize the bimanual URDF:
 ```sh
 ros2 launch openarm_description display_openarm.launch.py arm_type:=v10 bimanual:=true
 ```
 
-<BlockImage src="software/ros2/single_arm_urdf_rviz.png" alt="Single Arm URDF Rviz" width="95%" />
+<BlockImage src="software/ros2/single_arm_urdf_rviz.png" alt="Single Arm URDF Rviz" width="65%" />
 
 Or to visualize a single arm URDF:
 ```sh
@@ -82,7 +82,7 @@ source ~/ros2_ws/install/setup.bash
 
 [MoveIt2](https://moveit.picknik.ai/main/index.html) is a framework for manipulators that combines inverse kinematics, perception, and control. 
 
-<BlockImage src="software/ros2/bimanual_moveit2.png" alt="MoveIt2 Static" width="95%" />
+<BlockImage src="software/ros2/bimanual_moveit2.png" alt="MoveIt2 Static" width="65%" />
 
 After sourcing the workspace, launch a demo. 
 
@@ -92,7 +92,7 @@ ros2 launch openarm_bimanual_moveit_config demo.launch.py
 
 #### Motion Planning
 
-<BlockImage src="software/ros2/bimanual_moveit2_planning.png" alt="MoveIt2 Planning" width="95%" />
+<BlockImage src="software/ros2/bimanual_moveit2_planning.png" alt="MoveIt2 Planning" width="65%" />
 
 Target positions can be set in the `Joints` tab in the MotionPlanning panel on the left. Alternatively, the targets on the arms can be dragged and rotated to a target pose, or the goal state can be selected from a list of preset keypoints under `Planning` > `Goal State`
 
