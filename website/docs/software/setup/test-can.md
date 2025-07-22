@@ -4,8 +4,7 @@ sidebar_position: 3
 
 # CAN Library Testing
 
-How to use the `openarm_can` library.
-Excerpted from: The openarm_can README
+How to use the [`openarm_can`](https://github.com/enactic/openarm_can) library.
 
 ---
 
