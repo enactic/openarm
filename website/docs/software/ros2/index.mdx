@@ -1,0 +1,138 @@
+---
+description: Robot Operating System 2 Tutorial for OpenArm
+---
+# ROS2
+
+ROS2 is a framework to manage the complexity of robotics. To get started, install ROS2 by following the official instructions. 
+
+We recommend using [Humble](https://docs.ros.org/en/humble/Installation.html) on Ubuntu 22.04, but other options may work as well. See below for a non-exhaustive list of alternatives.
+
+Make sure to source the installation before continuing. **This is necessary each time a new terminal is opened.**
+
+Substitute `humble` for the name of your distribution.
+```sh
+source /opt/ros/humble/setup.bash
+```
+
+Then [create a colcon workspace](https://docs.ros.org/en/humble/Tutorials/Beginner-Client-Libraries/Creating-A-Workspace/Creating-A-Workspace.html). The rest of the tutorials assume the workspace name `ros2_ws`.
+
+```sh
+mkdir -p ~/ros2_ws/src
+```
+
+## Universal Robot Description Files (URDF)
+
+The coordinate transforms of each link and joint constraints of OpenArm are defined in the URDF. ROS2 uses a XML macro language called xacro to generate these files.
+
+To work with OpenArm URDFs, clone the [openarm_description](https://github.com/enactic/openarm_description) repository. Make sure to source the workspace install script after building.
+
+```sh
+git clone https://github.com/enactic/openarm_description.git ~/ros2_ws/src/openarm_description
+cd ~/ros2_ws && colcon build
+source ~/ros2_ws/install/setup.bash
+```
+
+### Visualization
+
+
+<BlockImage src="software/ros2/bimanual_urdf_rviz.png" alt="Bimanual URDF Rviz" width="95%" />
+
+Then, to visualize the bimanual URDF:
+```sh
+ros2 launch openarm_description display_openarm.launch.py arm_type:=v10 bimanual:=true
+```
+
+<BlockImage src="software/ros2/single_arm_urdf_rviz.png" alt="Single Arm URDF Rviz" width="95%" />
+
+Or to visualize a single arm URDF:
+```sh
+ros2 launch openarm_description display_openarm.launch.py arm_type:=v10
+```
+
+### Exporting URDFs
+
+Sometimes, it may be necessary to export a URDF for use in other applications. To generate a new URDF file, run the xacro command with arguments.
+
+To generate a bimanual URDF:
+```sh
+URDF_OUT=openarm_bimanual.urdf
+xacro ~/ros2_ws/src/openarm_description/urdf/robot/v10.urdf.xacro arm_type:=v10 bimanual:=true > $URDF_OUT
+```
+
+Or a single arm URDF:
+```sh
+URDF_OUT=openarm.urdf
+xacro ~/ros2_ws/src/openarm_description/urdf/robot/v10.urdf.xacro arm_type:=v10 > $URDF_OUT
+```
+
+## ROS2 Control
+
+The [openarm_ros2](https://github.com/enactic/openarm_ros2) repository contains a collection of packages for use with [ros2_control](https://control.ros.org/humble/index.html). 
+
+It abstracts away the hardware control to expose the arm as a interface that receives position, velocity, and torque commands and outputs joint states. 
+
+To get started, clone the openarm_ros2 repository, build the packages, and source the workspace.
+```sh
+git clone https://github.com/enactic/openarm_ros2 ~/ros2_ws/src/openarm_ros2
+cd ~/ros2_ws && colcon build
+source ~/ros2_ws/install/setup.bash
+```
+
+### MoveIt2
+
+[MoveIt2](https://moveit.picknik.ai/main/index.html) is a framework for manipulators that combines inverse kinematics, perception, and control. 
+
+<BlockImage src="software/ros2/bimanual_moveit2.png" alt="MoveIt2 Static" width="95%" />
+
+After sourcing the workspace, launch a demo. 
+
+```sh
+ros2 launch openarm_bimanual_moveit_config demo.launch.py
+```
+
+#### Motion Planning
+
+<BlockImage src="software/ros2/bimanual_moveit2_planning.png" alt="MoveIt2 Planning" width="95%" />
+
+Target positions can be set in the `Joints` tab in the MotionPlanning panel on the left. Alternatively, the targets on the arms can be dragged and rotated to a target pose, or the goal state can be selected from a list of preset keypoints under `Planning` > `Goal State`
+
+The `Planning` tab provides a GUI to generate trajectories to reach a goal position. Clicking on `Plan` to preview the path is recommended.
+
+## ROS2 Bridging Node
+
+...
+
+
+## Alternatives to the Recommended Setup
+
+### Distrobox (Linux)
+On other distributions of Linux, [distrobox](https://distrobox.it/) allows for the use of other distributions through Docker or Podman.
+
+After installing distrobox, run:
+
+```sh
+xhost +local:root
+```
+
+Then run the following command (you may need to [configure credentials to the Github Container Registry](https://docs.github.com/en/packages/working-with-a-github-packages-registry/working-with-the-container-registry)). 
+
+```sh
+docker run --env DISPLAY=$DISPLAY \
+--volume /tmp/.X11-unix:/tmp/.X11-unix \
+--network=host \
+-it ghcr.io/enactic/openarm/ros2:latest-humble \
+/bin/bash
+```
+
+Inside of the container, make sure ros2 is working by sourcing the installation and running a RViz.
+
+```sh
+source /opt/ros/humble/setup.bash
+rviz2
+```
+
+### MacOS
+
+If you are using an Apple Silicon Mac, it may be necessary to enable Rosetta for Docker.
+
+Follow the instructions at [github.com/tiryoh/docker-ros2-desktop-vnc](https://github.com/Tiryoh/docker-ros2-desktop-vnc/tree/master). This will not be very performant, but is good enough for simple experiments.
