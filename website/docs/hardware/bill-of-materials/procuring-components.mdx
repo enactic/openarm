@@ -10,31 +10,139 @@ import { PedestalOffTheShelfTotalCost } from '@site/src/components/PedestalOffTh
 import { GripperManufacturedTotalCost } from '@site/src/components/GripperManufacturedTable';
 import { GripperOffTheShelfTotalCost } from '@site/src/components/GripperOffTheShelfTable';
 import { ElectricalTotalCost } from '@site/src/components/ElectricalTable';
+import BlockImage from '@site/src/components/BlockImage';
 
 # Procuring Components
 
-This checklist includes **all components** required for assembling the **OpenArm bimanual setup**.
+This section outlines how to source all required components for this project.
+
+## 📦 Mechanical Components
+
+We divide components into:
+
+- **Off-the-shelf Components**: Standard items with a part number.
+- **Manufactured Components**: Machined on-demand using MISUMI’s MEVIY service.
+
+All required components are listed in the Bill of Materials section, with model numbers and recommended sources.
 
 ---
 
-## ✅ Actuators
+### ✅ Off-the-shelf Components
 
-- [x] **4×** DAMIAO **DM-J8009-2EC** (Cost: ¥205,790)
-- [x] **2×** DAMIAO **DM-J4340P-2EC** (Cost: ¥42,066)
-- [x] **2×** DAMIAO **DM-J4340-2EC** (Cost: ¥37,387)
-- [x] **8×** DAMIAO **DM-J4310-2EC V1.1** (Cost: ¥112,113)
+Most mechanical and fastener components are available as catalog items from **[MISUMI](https://jp.misumi-ec.com/)**.
 
----
+**Steps:**
+1. Go to **[MISUMI website](https://jp.misumi-ec.com/)**.
+2. Enter the model number (e.g., `CBE4-8`) in the search bar.
+3. Confirm dimensions/specs.
+4. Add to cart and order.
 
-## 🛠️ Mechanical Components
-
-- [x] [All manufactured arm parts](arm-manufactured) (Cost: { formatPrice(ArmManufacturedTotalCost()) })
-- [x] [All off-the-shelf arm parts](arm-off-the-shelf) (Cost: { formatPrice(ArmOffTheShelfTotalCost()) })
-- [x] [All pedestal components](pedestal) (Cost: { formatPrice(PedestalManufacturedTotalCost() + PedestalOffTheShelfTotalCost()) })
-- [x] [All gripper components](gripper) (Cost: { formatPrice(GripperManufacturedTotalCost() + GripperOffTheShelfTotalCost()) })
+> 💡 *No drawings needed for catalog parts — model numbers are sufficient.*
 
 ---
 
-## ⚡ Electrical Components
+### 🛠️ Manufactured Components
 
-- [x] [All electrical components](electrical) (Cost: { formatPrice(ElectricalTotalCost()) })
+Some components in this project are designed for custom manufacturing and are ordered through **MEVIY**, MISUMI’s automated 3D machining service.
+
+There are **two ways** to place orders:
+
+#### 📎 Method 1: Upload CAD File
+
+If you wish to review or customize the design:
+
+1. Go to **[MEVIY website](https://meviy.misumi-ec.com/)**.
+2. Upload the STEP file (available in **[our GitHub repo](https://github.com/enactic/openarm_hardware)**).
+3. Select material, finish, and tolerances.
+4. Review the quote and place order.
+
+#### 🔢 Method 2: Use Project Model Numbers (Recommended)
+
+We have pre-registered model numbers for all custom components. To order directly:
+
+1. Visit **[MISUMI's search page](https://jp.misumi-ec.com/order/part-number/create)**.
+2. Paste the model number provided in our BOM (e.g., `MVBLK-ASN-48S-4BGUX-L`).
+3. The MEVIY system will identify it as a custom part.
+4. Specify quantity and order (no CAD upload required).
+
+<BlockImage src="hardware/bom/procurement/procurement-meviy.png" alt="meviy" width="70%" />
+
+
+> ✅ *This method ensures you get the exact geometry we've validated for the project.*
+
+### 🔄 Alternatives & Local Options
+
+You may also:
+
+- Source equivalents from other vendors (check specs).
+- Manufacture custom parts locally using the provided STEP files.
+
+---
+## 🔌Electrical Components
+
+This project uses a mix of off-the-shelf electronic modules and custom PCBs and wiring harnesses. Below are recommendations on how to procure them.
+
+
+---
+
+### 🛒 Off-the-Shelf Components
+
+Below are the recommended product links to be used with OpenArm 01:
+
+- **[Power Supply](https://www.aliexpress.com/item/1005004204524395.html)**: Output Voltage: 24V; Output Current: 15A
+- **[USB to CANFD Converter](https://a.co/d/hIi0SI1)**
+- **[Emergency Stop](https://www.monotaro.com/p/6001/0711/)**
+
+> 🔍 Tip: Always check product ratings, reviews, and delivery estimates. Buy a few spares for time-sensitive builds.
+
+---
+
+### 🧩 Custom PCBs & Wiring
+
+For custom electronics, we provide pre-designed PCB layouts and wire harness diagrams.
+
+#### 🧾 PCB Fabrication + Assembly
+
+**[JLCPCB](https://jlcpcb.com/)** can be used to manufacture and optionally assemble the custom boards:
+
+1. Download the **[Gerber](/files/Gerber_For_Hub.zip) + [BOM](/files/BOM_For_Hub.csv) + [CPL](/files/CPL_For_Hub.xlsx)** files from the project repository.
+2. Go to **[JLCPCB](https://jlcpcb.com/)**.
+3. Upload the Gerber zip file to get a quote.
+<BlockImage src="hardware/bom/procurement/jlcpcb-step1.png" alt="jlcpcb-1" width="70%" />
+4. Follow the on-screen instructions to review options. We recommend leaving default settings unless you have specific requirements. Optionally choose `Remove Mark` in the `Mark on PCB` option.
+<BlockImage src="hardware/bom/procurement/jlcpcb-step2.png" alt="jlcpcb-2" width="70%" />
+5. Scroll down to the `PCB Assembly` tab and enable the option. 
+<BlockImage src="hardware/bom/procurement/jlcpcb-step3.png" alt="jlcpcb-3" width="70%" />
+5. Click on `Next`.
+<BlockImage src="hardware/bom/procurement/jlcpcb-step4.png" alt="jlcpcb-4" width="30%" />
+6. Click on `Next`.
+<BlockImage src="hardware/bom/procurement/jlcpcb-step5.png" alt="jlcpcb-5" width="70%" />
+7. Upload the BOM and CPL files, and click on `Process BOM & CPL`.
+<BlockImage src="hardware/bom/procurement/jlcpcb-step6.png" alt="jlcpcb-6" width="70%" />
+8. Review the parts on the next page and proceed. 
+9. Review the 2D and 3D models on the next page and click on `Next`.
+<BlockImage src="hardware/bom/procurement/jlcpcb-step7.png" alt="jlcpcb-7" width="70%" />
+10. Proceed to place the order.
+
+--- 
+
+#### 🔌 Custom Wires and Harnesses
+
+**[LCSC](https://lcsc.com/)** can be used to order custom wires and harnesses for OpenArm 01:
+
+1. Go to the **[customs cable page](https://lcsc.com/customcables/quote)**.
+2. Scroll down to the link where you can upload drawings.
+<BlockImage src="hardware/bom/procurement/lcsc-step1.png" alt="lcsc-1" width="70%" />
+3. Upload the **[drawings provided](electrical)** and scroll down to input the desired quantity and click on `Confirm your cable plan`.
+<BlockImage src="hardware/bom/procurement/lcsc-step2.png" alt="lcsc-2" width="70%" />
+<BlockImage src="hardware/bom/procurement/lcsc-step3.png" alt="lcsc-3" width="70%" />
+4. Proceed to click on `Submit cable order`. A request for quote will be generated and LCSC will send a quote which can be used to place the order.
+<BlockImage src="hardware/bom/procurement/lcsc-step4.png" alt="lcsc-4" width="70%" />
+<BlockImage src="hardware/bom/procurement/lcsc-step5.png" alt="lcsc-5" width="70%" />
+
+---
+
+## ⚙️ Motors
+
+If you are interested in purchasing motors, please **contact us directly via email** at **[openarm@enactic.ai](mailto:openarm@enactic.ai)**. We will assist you with pricing, availability, and shipping details.
+
