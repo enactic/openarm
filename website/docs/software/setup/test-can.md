@@ -41,13 +41,13 @@ cd openarm_can
 #### CAN 2.0
 
 ```bash
-./scripts/configure_socketcan.sh can0
+setup/configure_socketcan.sh can0
 ```
 
 #### CAN FD
 
 ```bash
-./scripts/configure_socketcan.sh can0 -fd
+setup/configure_socketcan.sh can0 -fd
 ```
 
 > Might require `can-utils`:
@@ -93,9 +93,8 @@ openarm_can/examples/demo.cpp
 ## Run the Demo
 
 ```bash
-cd examples
-g++ demo.cpp -std=c++17 -I../include -L/usr/local/lib -lopenarm_can -o demo
-./demo
+cmake --build build
+build/demo
 ```
 
 ---
