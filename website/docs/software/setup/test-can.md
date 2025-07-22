@@ -1,3 +1,7 @@
+---
+sidebar_position: 3
+---
+
 # CAN Library Testing
 
 How to use the `openarm_can` library.  
