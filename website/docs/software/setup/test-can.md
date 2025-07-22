@@ -4,7 +4,7 @@ sidebar_position: 3
 
 # CAN Library Testing
 
-How to use the `openarm_can` library.  
+How to use the `openarm_can` library.
 Excerpted from: The openarm_can README
 
 ---
@@ -40,16 +40,19 @@ cd openarm_can
 > Replace `can0` with your interface name if different
 
 #### CAN 2.0
+
 ```bash
 ./scripts/configure_socketcan.sh can0
 ```
 
 #### CAN FD
+
 ```bash
 ./scripts/configure_socketcan.sh can0 -fd
 ```
 
 > Might require `can-utils`:
+
 ```bash
 sudo apt install can-utils
 ```
@@ -67,11 +70,15 @@ sudo cmake --install build
 ---
 
 ## Configure Demo Script
-- Head to 
+
+- Head to
+
 ```bash
 openarm_can/examples/demo.cpp
 ```
+
 - Find this section:
+
 ``` cpp
 // Initialize arm motors
         std::vector<openarm::damiao_motor::MotorType> motor_types = {
