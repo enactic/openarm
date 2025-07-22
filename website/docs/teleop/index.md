@@ -1,8 +1,6 @@
 ---
-sidebar_position: 1
+title: VR
+sidebar_position: 2
 ---
-
-# Teleop
-
-...
-
+# VR Teleop
+coming soon!
