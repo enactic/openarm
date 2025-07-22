@@ -1,6 +1,6 @@
 ---
 title: Final Checks
-sidebar_position: 10
+sidebar_position: 9
 description: ""
 ---
 
@@ -66,7 +66,7 @@ Follow this sequence to safely power on the robotic arm:
 
 Need help or something’s not working?
 
-- 💬 Join the community on [Discord](https://discord.gg/FsZaZ4z3We)
+- 💬 Join the community on [Discord](https://discord.gg/tpnKxHuJY3)
 - 📬 Contact us through [openarm@enactic.ai](mailto:openarm@enactic.ai)
 
 Happy building!

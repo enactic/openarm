@@ -30,7 +30,7 @@ export interface PedestalManufacturedComponent {
 }
 
 const components: PedestalManufacturedComponent[] = [
-  { name: '250x190mm Base Plate', image: 'base-plate.png', model: 'MVBLK-ASN-47X-ALR8G-L', quantity: 1, unitPrice: 10081, method: 'Metal Cutting (CNC)', material: 'Al6061', manufacturer: 'MiSUMi MEVIY'},
+  { name: '250x190mm Base Plate', image: 'base-plate.png', model: 'MVBLK-ASN-48P-Y52TG-L', quantity: 1, unitPrice: 10081, method: 'Metal Cutting (CNC)', material: 'Al6061', manufacturer: 'MiSUMi MEVIY'},
 ];
 
 const columns: BoMTableColumn<PedestalManufacturedComponent>[] = [

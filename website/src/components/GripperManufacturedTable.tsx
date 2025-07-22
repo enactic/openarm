@@ -30,10 +30,10 @@ export interface GripperManufacturedComponent {
 }
 
 const components: GripperManufacturedComponent[] = [
-  { name: 'rail_connector', image: 'rail-connector.png', model: 'MVSHM-3N0304G-47X-2982S-L', quantity: 2, unitPrice: '2969', method: 'Sheet Metal Fabrication', material: 'SUS304', manufacturer: 'MiSUMi MEVIY'},
-  { name: 'rotor_controller', image: 'rotor-controller.png', model: 'MVBLK-ASN-487-ZX4P6-L', quantity: 2, unitPrice: '7414', method: 'Metal Cutting (CNC)', material: 'Al6061', manufacturer: 'MiSUMi MEVIY'},
-  { name: 'gripper_linkage', image: 'rotor-linkage.png', model: 'MVBLK-SUB-487-HZGNT-L', quantity: 4, unitPrice: '8133', method: 'Metal Cutting (CNC)', material: 'SUS304', manufacturer: 'MiSUMi MEVIY'},
-  { name: 'rail_CNC_attachment', image: 'rail-cnc-attachment.png', model: 'MVBLK-ASN-487-JNRUX-L', quantity: 4, unitPrice: '4600', method: 'Metal Cutting (CNC)', material: 'Al6061', manufacturer: 'MiSUMi MEVIY'},
+  { name: 'rail_connector', image: 'rail-connector.png', model: 'MVSHM-3N0304G-48P-EMKJ7-L', quantity: 2, unitPrice: 2969, method: 'Sheet Metal Fabrication', material: 'SUS304', manufacturer: 'MiSUMi MEVIY'},
+  { name: 'swivel_rotor', image: 'swivel-rotor.png', model: 'MVBLK-ASN-48P-BTTYZ-L', quantity: 2, unitPrice: 8194, method: 'Metal Cutting (CNC)', material: 'Al6061', manufacturer: 'MiSUMi MEVIY'},
+  { name: 'swivel_link', image: 'swivel-link.png', model: 'MVBLK-ASN-48S-EXNRH-L', quantity: 4, unitPrice: 5246, method: 'Metal Cutting (CNC)', material: 'Al6061', manufacturer: 'MiSUMi MEVIY'},
+  { name: 'rail_CNC_attachment', image: 'rail-cnc-attachment.png', model: 'MVBLK-ASN-48S-DR8RC-L', quantity: 4, unitPrice: 4600, method: 'Metal Cutting (CNC)', material: 'Al6061', manufacturer: 'MiSUMi MEVIY'},
 ];
 
 const columns: BoMTableColumn<GripperManufacturedComponent>[] = [
