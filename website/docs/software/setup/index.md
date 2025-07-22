@@ -88,14 +88,14 @@ Here are some preset scripts [here](https://github.com/enactic/openarm_can/blob/
 To modify a motor's baudrate, the following procedure must be followed:
 
 1. Configure the CAN interface to operate at the current baudrate of the motor.
-2. Issue the command to update the baudrate 
+2. Issue the command to update the baudrate
 3. write the new value to the appropriate motor register.
 
 One need to ensure that the write operation is performed at a baudrate the motor can still interpret immediately after the change.
 
 Important considerations:
 
-Under the current firmware version of motors: 
+Under the current firmware version of motors:
 - CAN 2.0 frames → CAN FD motor: Motor respond to the commands but provides no feedback
 - CAN FD frames → CAN 2.0 motor: Motor doesn't respond
 
