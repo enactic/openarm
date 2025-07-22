@@ -3,6 +3,8 @@ title: Socket CAN Communication
 sidebar_position: 2
 ---
 
+import TOCInline from '@theme/TOCInline';
+
 # OpenArm CAN Library
 
 ## Overview
@@ -12,9 +14,11 @@ The OpenArm CAN Library serves as the primary communication bridge between high-
 SocketCAN is Linux's implementation of the CAN (Controller Area Network) protocol stack, providing a socket-based interface for CAN communication. For detailed setup instructions including CAN interface configuration, library build, and verification steps, see [Setup Guide](/software/setup).
 
 ## Table of Contents
-1. [CAN/Socket Library Overview](#1-cansocket-library-overview)
-2. [Usage Examples](#2-usage-examples)
-3. [Advanced Control](#3-advanced-control)
+
+<TOCInline
+  toc={toc.filter(({ value }) => !['Overview', 'Table of Contents'].includes(value))}
+  maxHeadingLevel={2}
+/>
 
 ---
 
