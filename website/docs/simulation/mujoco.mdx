@@ -1,0 +1,50 @@
+---
+sidebar_position: 3
+---
+
+import ReactPlayer from 'react-player';
+import BlockImage from '@site/src/components/BlockImage';
+
+# MuJoCo
+
+<BlockImage src="simulation/mujoco/mjcf-bimanual.png" alt="Bimanual MJCF" width="35%" />
+
+[**Mu**lti-**Jo**int dynamics with **Co**ntact](https://mujoco.org/) is a physics engine maintained by Google Deepmind. 
+
+MJCFs (MuJoCo description Files) are XML files used to describe all the moving components of a scene, enabling the experimentation of algorithms in a reproducible environment.
+
+To get started, download the [latest MuJoCo binaries](https://github.com/google-deepmind/mujoco/releases) and open a simulate window. 
+For example, for MuJoCo 3.3.4 on x86 linux:
+```sh
+MUJOCO_VERSION="3.3.4"
+wget -q --show-progress "https://github.com/google-deepmind/mujoco/releases/download/${MUJOCO_VERSION}/mujoco-${MUJOCO_VERSION}-linux-x86_64.tar.gz"
+tar --extract --gzip --verbose --file="mujoco-${MUJOCO_VERSION}-linux-x86_64.tar.gz"
+rm "mujoco-${MUJOCO_VERSION}-linux-x86_64.tar.gz"
+cd "mujoco-${MUJOCO_VERSION}/bin"
+./simulate
+```
+
+Then, clone the [openarm_mujoco](https://github.com/enactic/openarm_mujoco) repository:
+```sh
+git clone https://github.com/enactic/openarm_mujoco.git
+```
+
+Open a file explorer and drag the `v1/openarm_bimanual.mjcf.xml` file into the simulate window. 
+
+
+## Mujoco Tutorial
+
+<ReactPlayer playing controls url="simulation/mujoco/mujoco-tutorial.mp4" width="65%"/>
+
+MuJoCo uses torque control for actuators. This enables more realistic simulation, but requires control to be handled by client code. 
+
+The MJCF is composed of a set of visual (group 2) and collision (group 3) geom groups. 
+
+The convex hull of the collision geometries is used to determine the physics of the simulation.
+
+## ROS2 Bridge via Docker and WebSockets
+
+To simulate OpenArm with realistic physics, MuJoCo can be used as a mock hardware interface. This ROS2 package will be available shortly after the v1 release.
+
+
+
