@@ -1,0 +1,86 @@
+---
+title: Installation
+sidebar_position: 1
+---
+
+import TOCInline from '@theme/TOCInline';
+
+# Installing ROS 2 
+
+This guide walks you through installing ROS 2 and setting up a ROS 2 workspace.
+
+### Prerequisites
+
+- Ubuntu ( [Install Ubuntu →](../ubuntu/index.mdx) )
+
+### Choose your ROS 2
+
+Select a [ROS 2 distribution](https://docs.ros.org/en/rolling/Releases.html) to install (Humble is reccomended).  
+
+### Install
+
+Click on your chosen ROS 2 distro name and follow the install guide on the website.  
+:::note Quick Link
+Replace ROS_DISTRO with your chosen ROS 2 distro:
+```
+https://docs.ros.org/en/ROS_DISTRO/Installation/Alternatives/Ubuntu-Development-Setup.html
+```
+:::
+
+### Or Quick Install:
+
+Open a new terminal:
+
+```bash
+# Replace these with your versions:
+UBUNTU_VERSION=22.04
+ROS_DISTRO=humble
+```
+
+Set Up Your System
+
+```bash 
+sudo apt update && sudo apt install -y curl gnupg lsb-release
+```
+
+Add the ROS 2 GPG Key and Repository
+
+```bash
+sudo curl -sSL https://raw.githubusercontent.com/ros/rosdistro/master/ros.key -o /usr/share/keyrings/ros-archive-keyring.gpg
+
+echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/ros-archive-keyring.gpg] \
+https://packages.ros.org/ros2/ubuntu $(lsb_release -cs) main" | \
+sudo tee /etc/apt/sources.list.d/ros2.list > /dev/null
+```
+
+Install ROS 2
+
+```bash
+sudo apt update
+sudo apt install -y ros-$ROS_DISTRO-desktop # or ros-$ROS_DISTRO-ros-base - Minimal setup (no GUI tools)
+```
+
+Source ROS 2 Environment
+```bash
+echo "source /opt/ros/$ROS_DISTRO/setup.bash" >> ~/.bashrc
+source ~/.bashrc
+```
+
+Install Development Tools (Optional but Recommended)
+
+```bash
+sudo apt install -y \
+  python3-colcon-common-extensions \
+  python3-pip \
+  build-essential \
+  git 
+```
+
+### Verify Installation
+
+Try running:
+
+```bash
+ros2 --version
+ros2 topic list
+```

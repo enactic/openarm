@@ -1,0 +1,124 @@
+import TOCInline from '@theme/TOCInline';
+
+# Installing Ubuntu (Quick Guide)
+
+This guide walks you through downloading and installing Ubuntu on a physical machine or virtual machine.
+
+## Table of Contents
+
+<TOCInline
+  toc={toc.filter(({ value }) => !['Table of Contents'].includes(value))}
+  maxHeadingLevel={2}
+/>
+
+---
+
+## Download Ubuntu
+
+- Visit the official Ubuntu download page:  
+  [https://ubuntu.com/download/desktop](https://ubuntu.com/download/desktop)
+- Recommended version: **Ubuntu 22.04 LTS (Jammy Jellyfish)**  
+You can find previous releases [here](https://ubuntu.com/download/alternative-downloads#past-releases-and-other-flavours)
+
+:::tip Want a Lightweight Alternative?
+If you're only doing development or testing (not using real hardware or GUI tools like RViz), consider using Docker instead of installing Ubuntu directly.  
+[See Docker Setup →](docker)
+:::
+
+---
+
+## Create a Bootable USB
+You'll need:
+- A USB drive (at least **8 GB**)
+- The downloaded Ubuntu `.iso` file
+
+Choose your OS below for USB creation instructions:
+
+### On Windows (Rufus)
+
+1. Download [Rufus](https://rufus.ie)
+2. Plug in your USB stick
+3. Select:
+   - **Device**: your USB
+   - **Boot selection**: Ubuntu `.iso` file
+   - **Partition scheme**: GPT (recommended for UEFI)
+4. Click **Start** and wait for the write to finish
+:::tip
+If you would like to keep your operating system: 
+[See Dual Boot Instructions →](#dual-booting-with-windows)
+:::
+
+### On macOS (Etcher or Terminal)
+
+**Option A: Balena Etcher (GUI)**  
+1. Download [Balena Etcher](https://www.balena.io/etcher/)
+2. Select the Ubuntu `.iso`, choose your USB, and click **Flash**
+
+**Option B: Terminal**
+
+```bash
+# Convert ISO to IMG if needed
+hdiutil convert -format UDRW -o ubuntu.img ubuntu.iso
+
+# Find your USB (e.g., /dev/disk2), then:
+diskutil unmountDisk /dev/diskX
+sudo dd if=ubuntu.img.dmg of=/dev/rdiskX bs=1m
+sync
+```
+:::warning
+Replace X with your actual USB disk number — double check!
+:::
+
+### On Linux
+```bash 
+# Replace this with the path to your downloaded ISO file (any version)
+ISO=~/Downloads/ubuntu-XX.XX-desktop-amd64.iso  # e.g. ubuntu-22.04.4-desktop-amd64.iso
+
+# Replace /dev/sdX with your USB device (e.g., /dev/sdb — double check!)
+sudo dd if=$ISO of=/dev/sdX bs=4M status=progress && sync
+```
+:::warning
+Be very careful with /dev/sdX — using the wrong drive can erase your system!
+:::
+
+---
+
+## Step 2: Boot the Ubuntu USB Installer
+
+1. Insert the USB and reboot the system
+2. Enter BIOS/UEFI (usually by pressing F2, Del, F12, or Esc during startup)
+3. Set the USB as the first boot device
+4. Save changes and reboot
+
+---
+
+## Install Ubuntu
+
+Once the installer loads:
+
+1. Select Try or Install Ubuntu
+2. Select "Erase disk and install Ubuntu" (for a clean install)  
+:::warning
+This will erase all data on the selected drive.  
+If you would like to keep your operating system: [See Dual Boot Instructions](#dual-booting-with-windows)
+:::
+3. Choose your timezone
+4. Create a username and password
+5. Click Install
+
+Wait for the installation to complete, then remove the USB and reboot when prompted.
+
+---
+
+## Post-Install Setup
+After booting into your new system:
+
+```bash
+# Update your system
+sudo apt update && sudo apt upgrade -y
+
+# Install common tools
+sudo apt install -y curl git build-essential gnome-tweaks
+```
+
+You're now ready to install ROS 2 or any development tools you need!

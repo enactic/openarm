@@ -1,0 +1,123 @@
+---
+title: Docker
+sidebar_position: 2
+---
+
+# Running Ubuntu with Docker
+
+You can run Ubuntu in a container using Docker, without installing it as a full OS.
+
+:::warning
+Docker is not ideal for hardware-heavy or GUI-dependent robotics tools.
+
+Not recommended for:
+- ROS 2 GUI tools (`RViz`, `rqt`, etc.)
+- Gazebo, MuJoCo, or Isaac Sim
+- Direct USB/serial or real-time control
+- NVIDIA GPU rendering without [NVIDIA Container Toolkit](https://docs.nvidia.com/datacenter/cloud-native/container-toolkit/install-guide.html)
+:::
+
+## Install Docker
+
+Follow the [official Docker installation guide](https://docs.docker.com/get-started/get-docker/) for your OS. Or use these quick steps:
+
+### On Ubuntu
+```bash
+sudo apt update
+sudo apt install -y docker.io
+sudo systemctl enable --now docker
+sudo usermod -aG docker $USER
+```
+:::note
+You may need to log out and back in to apply group changes.
+:::
+
+### On Windows/macOS
+
+- Download Docker Desktop: https://www.docker.com/products/docker-desktop
+- Follow the GUI install instructions
+
+## Run a Container
+
+:::tip Supported Ubuntu + ROS 2 Tags
+
+Common Docker tags for ROS 2:
+
+- `osrf/ros:humble` (Ubuntu 22.04)
+- `osrf/ros:iron` (Ubuntu 22.04)
+- `osrf/ros:jazzy` (Ubuntu 24.04)
+
+Find more at [Docker Hub](https://hub.docker.com/r/osrf/ros/tags)
+
+:::
+
+
+```bash
+# Plain Ubuntu without ROS (replace XX.XX with any version)
+docker run -it ubuntu:XX.XX
+```
+
+```bash
+# Ubuntu + ROS 2 base image (replace <ros-distro> with humble, jazzy, etc.)
+docker run -it osrf/ros:<ros-distro>
+```
+
+Inside the container, you can install packages as needed.
+
+```bash
+apt update
+apt install -y curl git sudo build-essential
+```
+
+## Persistent Containers
+
+To avoid losing changes, create a named container that persists:
+
+```bash
+# Ubuntu + ROS 2 base image (replace <ros-distro> with humble, jazzy, etc.)
+docker run -it --name my-ubuntu-dev osrf/ros:<ros-distro>
+```
+
+To stop and resume:
+```bash 
+docker stop my-ubuntu-dev
+docker start -ai my-ubuntu-dev
+```
+
+## Optional: Mount a Local Folder
+
+To access code on your host machine:
+```bash
+# Ubuntu + ROS 2 base image (replace <ros-distro> with humble, jazzy, etc.)
+docker run -it -v ~/my-code:/workspace osrf/ros:<ros-distro>
+```
+
+Inside the container:
+```bash
+cd /workspace
+```
+
+## Optional: Create a Dockerfile (for repeatable setups)
+
+Instead of manually installing packages each time:
+
+```Dockerfile
+ARG ROS_DISTRO= <ros-distro>
+#(replace <ros-distro> with humble, jazzy, etc.)
+
+FROM osrf/ros:${ROS_DISTRO}
+
+RUN apt update && apt install -y \
+    ros-${ROS_DISTRO}-desktop \
+    python3-colcon-common-extensions \
+    git curl sudo && \
+    apt clean
+
+```
+
+Then build:
+```bash
+#(replace <ros-distro> with humble, jazzy, etc.)
+docker build -t my-ubuntu-dev --build-arg ROS_DISTRO= <ros-distro> .
+docker run -it my-ubuntu-dev
+```

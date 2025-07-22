@@ -4,6 +4,7 @@ sidebar_position: 3
 ---
 
 import TOCInline from '@theme/TOCInline';
+import BlockImage from '@site/src/components/BlockImage';
 
 # OpenArm Description Package
 
@@ -18,6 +19,8 @@ supporting both single-arm and bimanual configurations.
   toc={toc.filter(({ value }) => !['Overview', 'Table of Contents'].includes(value))}
   maxHeadingLevel={2}
 />
+
+---
 
 ## Xacro Structure
 
@@ -50,21 +53,23 @@ The package follows a hierarchical xacro structure with the following organizati
 - `config/body/v10/` - v10 body parameters
 - `config/hand/openarm_hand/` - Hand configuration
 
+---
+
 ## Installation
 
-To use this package, install ROS2 and set up a workspace:
+To use this package, make sure you have: [ROS2 installed](../ros2/index)  
+Then set up the workspace:
 
 ```bash
-# Set up environment variables (customize as needed)
+# Set up environment variables if you haven't already (customize as needed)
 export ROS_DISTRO=humble  # Change to your ROS2 distro (humble, iron, jazzy, etc.)
 export ROS_WS=~/ros2_ws   # Customize workspace path
 
-# Source ROS2
-source /opt/ros/$ROS_DISTRO/setup.bash
-
-# Create workspace
-mkdir -p $ROS_WS/src
+# Head to the workspace
 cd $ROS_WS/src
+
+# Source your ros2 distro
+source /opt/ros/$ROS_DISTRO/setup.bash
 
 # Clone the package
 git clone https://github.com/enactic/openarm_description.git
@@ -77,7 +82,11 @@ colcon build
 source $ROS_WS/install/setup.bash
 ```
 
-## Usage Examples
+---
+
+## Universal Robot Description Files (URDF)
+
+The coordinate transforms of each link and joint constraints of OpenArm are defined in the URDF. ROS2 uses a XML macro language called xacro to generate these files.
 
 ### Generate URDF Files
 
@@ -107,9 +116,9 @@ xacro $ROS_WS/src/openarm_description/urdf/robot/v10.urdf.xacro arm_type:=v10 bi
 xacro $ROS_WS/src/openarm_description/urdf/robot/v10.urdf.xacro arm_type:=v10 bimanual:=true ros2_control:=true use_fake_hardware:=true > openarm_bimanual_sim.urdf
 ```
 
-### Display in RViz
-
+### Visualization
 To display the robot in RViz with a simple joint state GUI:
+
 
 #### Single Arm
 
@@ -120,6 +129,8 @@ ros2 launch openarm_description display_openarm.launch.py arm_type:=v10 bimanual
 # Display single arm without end-effector
 ros2 launch openarm_description display_openarm.launch.py arm_type:=v10 bimanual:=false ee_type:=none
 ```
+<BlockImage src="software/description/single-arm-urdf-rviz.png" alt="Single Arm URDF Rviz" width="65%" />
+
 
 #### Bimanual
 
@@ -130,6 +141,25 @@ ros2 launch openarm_description display_openarm.launch.py arm_type:=v10 bimanual
 # Display bimanual without end-effectors
 ros2 launch openarm_description display_openarm.launch.py arm_type:=v10 bimanual:=true ee_type:=none
 ```
+<BlockImage src="software/description/bimanual-urdf-rviz.png" alt="Bimanual URDF Rviz" width="65%" />
+
+### Exporting URDFs
+
+Sometimes, it may be necessary to export a URDF for use in other applications. To generate a new URDF file, run the xacro command with arguments.
+
+To generate a bimanual URDF:
+```sh
+URDF_OUT=openarm_bimanual.urdf
+xacro ~/ros2_ws/src/openarm_description/urdf/robot/v10.urdf.xacro arm_type:=v10 bimanual:=true > $URDF_OUT
+```
+
+Or a single arm URDF:
+```sh
+URDF_OUT=openarm.urdf
+xacro ~/ros2_ws/src/openarm_description/urdf/robot/v10.urdf.xacro arm_type:=v10 > $URDF_OUT
+```
+
+---
 
 ## Available Arguments
 
