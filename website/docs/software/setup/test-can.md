@@ -30,7 +30,7 @@ If soldering your own connector wires, double check CANH is connected to CANH an
 ### 1. Clone the CAN Library
 
 ```bash
-git clone https://github.com/openarm-dev/openarm_can.git
+git clone https://github.com/enactic/openarm_can.git
 cd openarm_can
 ```
 
