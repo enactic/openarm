@@ -3,7 +3,7 @@ sidebar_position: 1
 description: software-overview
 ---
 
-# Software
+# OpenArm Software Guide
 
 Welcome to the OpenArm software ecosystem! We're building a toolkit for bridging the bimanual robot (and we'd love your help making it even better).
 
