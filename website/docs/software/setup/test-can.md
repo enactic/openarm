@@ -137,4 +137,4 @@ candump can0
 
 ---
 
-Let us know on GitHub if you encounter persistent issues or need help with debugging.
+Let us know if you encounter persistent issues or need help debugging by reporting them to the [openarm_can](https://github.com/enactic/openarm_can).
