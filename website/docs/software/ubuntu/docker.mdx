@@ -32,10 +32,39 @@ sudo usermod -aG docker $USER
 You may need to log out and back in to apply group changes.
 :::
 
-### On Windows/macOS
+### On Other Linux OS (Distrobox)
+On other distributions of Linux, [distrobox](https://distrobox.it/) allows for the use of Ubuntu through Docker or Podman.
 
-- Download Docker Desktop: https://www.docker.com/products/docker-desktop
-- Follow the GUI install instructions
+After installing distrobox, run:
+
+```sh
+xhost +local:root
+```
+
+Then run the following command (you may need to [configure credentials to the Github Container Registry](https://docs.github.com/en/packages/working-with-a-github-packages-registry/working-with-the-container-registry)).
+
+```sh
+docker run --env DISPLAY=$DISPLAY \
+  --volume /tmp/.X11-unix:/tmp/.X11-unix \
+  --network=host \
+  -it ghcr.io/enactic/openarm/ros2:latest-humble \
+  /bin/bash
+``` 
+
+### On Windows
+
+Download Docker Desktop: https://www.docker.com/products/docker-desktop
+
+Follow the GUI install instructions
+
+### On macOS
+
+If you are using an Apple Silicon Mac, it may be necessary to enable Rosetta for Docker.
+
+Follow the instructions at [github.com/tiryoh/docker-ros2-desktop-vnc](https://github.com/Tiryoh/docker-ros2-desktop-vnc/tree/master).  
+:::note
+This will not be very performant, but is good enough for simple experiments.
+:::
 
 ## Run a Container
 
