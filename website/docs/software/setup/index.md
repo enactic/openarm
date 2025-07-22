@@ -44,7 +44,7 @@ sudo cmake --install build
 
 ### Motor ID Configuration
 
-Follow the [Motor Calibration Guide](motor)
+Follow the [Motor Calibration Guide](motor-calibration)
 
 :::warning
 Configure Damiao motor IDs before running any code on the arm.
