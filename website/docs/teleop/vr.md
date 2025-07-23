@@ -3,6 +3,8 @@ title: VR
 sidebar_position: 2
 ---
 
+import BlockVideo from '@site/src/components/BlockVideo';
+
 # VR
 
 ## OpenArm VR Teleoperation Overview
@@ -16,12 +18,12 @@ Coming soon!
 - **Scalable Mapping:** Can incorporate full arm motion (upper/lower arm) for more human-like movements.
 - **Real-time Operation:** Runs at ~20 FPS with TCP data streaming.
 
-## VR Teleoperation simluation
+## VR Teleoperation simulation
 
 We are currently developing a real-time VR teleoperation system for the OpenArm dual-arm robot.
 The current prototype is available for full teleoperation and control simulation at **NVIDIA Isaac Labs**, mapping **VR (Meta Quest 3)** hand and arm motions directly to the robot's end-effector for different simulated operations, such as picking and placing objects.
 
-https://github.com/user-attachments/assets/3c9c4c91-ee9b-4246-a6e9-8aeddcdd0b46
+<BlockVideo src="teleop/vr/simulation.mp4" width="65%"/>
 
 ## What’s Next?
 
