@@ -5,9 +5,7 @@ sidebar_position: 2
 
 import BlockVideo from '@site/src/components/BlockVideo';
 
-# VR
-
-## OpenArm VR Teleoperation Overview
+# OpenArm VR Teleoperation Overview
 
 This project enables real-time teleoperation of the OpenArm robot using VR human body estimation streaming data.
 
