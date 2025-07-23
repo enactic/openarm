@@ -1,9 +1,7 @@
 ---
+title: Setup Guide
 sidebar_position: 1
 ---
----
-
-
 
 # 🛠️ OpenArm Teleop - Setup Guide
 
@@ -11,8 +9,8 @@ This guide walks you through the steps to set up and build the `openarm_teleop` 
 
 Before proceeding, please ensure the following dependencies are satisfied:
 
-- ✅ `openarm_can` library (see [OpenArm CAN library](../../software/can/can.mdx))
-- ✅ `openarm_description` library (see [OpenArm Description](../../software/description.mdx)
+- ✅ `openarm_can` library (see [OpenArm CAN library](/software/can))
+- ✅ `openarm_description` library (see [OpenArm Description](/software/description))
 
 ---
 

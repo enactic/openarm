@@ -1,8 +1,8 @@
 ---
 sidebar_position: 2
 ---
-
 # Unilateral Control
+
 This section describes how to run unilateral control using the provided scripts
 
 ## 💡 Project Architecture Summary
@@ -35,15 +35,18 @@ Core control logic is encapsulated in the `Control` class, which supports both:
 | **Fv** | Viscous friction (speed-based) |
 | **Fo** | Friction offset (bias correction) |
 
-> 💡 In **unilateral control**, only the **friction parameters** (`Fc`, `k`, `Fv`, `Fo`) are used.  
-> The control gains and observer parameters are not required.
+:::tip
+In **unilateral control**, only the **friction parameters** (`Fc`, `k`, `Fv`, `Fo`) are used.
+The control gains and observer parameters are not required.
+:::
 
 ### Friction Model
 
 The following tanh-based model is used for friction compensation:
-<pre> ``` tau_f = Fc * tanh(k * dq) + Fv * dq + Fo ``` </pre>
 
-
+```text
+tau_f = Fc * tanh(k * dq) + Fv * dq + Fo
+```
 
 ## Running the Script
 
@@ -78,17 +81,10 @@ If the CAN interfaces are omitted, the script uses the following defaults:
 - Generated URDFs: `/tmp/openarm_urdf_gen/{v10_leader.urdf, v10_follower.urdf}`
 - Binary: `~/openarm_teleop/build/unilateral_control`
 
-import Admonition from '@theme/Admonition';
-
-<Admonition type="caution" title="Important Notes for Unilateral Control">
-
-- The **zero position** of the arm is defined as the posture where the arm is **lowered straight down**.  
+:::warning[Important Notes for Unilateral Control]
+- The **zero position** of the arm is defined as the posture where the arm is **lowered straight down**.
   Make sure the robot is in this position before starting control.
 
-- Unlike biilateral control, **unilateral control does not provide force feedback**.  
+- Unlike bilateral control, **unilateral control does not provide force feedback**.
   Be cautious when making contact with objects, as unexpected forces will not be reflected to the operator.
-
-</Admonition>
-
-...
-
+:::

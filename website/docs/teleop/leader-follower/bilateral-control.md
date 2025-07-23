@@ -2,12 +2,9 @@
 sidebar_position: 3
 ---
 
-
-
 # Bilateral Force Feedback Control
 
-This section describes how to run bilateral control using the provided scripts
-
+This section describes how to run bilateral control using the provided scripts.
 
 ## 💡 Project Architecture Summary
 
@@ -43,9 +40,10 @@ Core control logic is encapsulated in the `Control` class, which supports both:
 ### Friction Model
 
 The following tanh-based model is used for friction compensation:
-<pre> ``` tau_f = Fc * tanh(k * dq) + Fv * dq + Fo ``` </pre>
 
-
+```text
+tau_f = Fc * tanh(k * dq) + Fv * dq + Fo
+```
 
 ## Running the Script
 
@@ -80,18 +78,12 @@ If the CAN interfaces are omitted, the script uses the following defaults:
 - Generated URDFs: `/tmp/openarm_urdf_gen/{v10_leader.urdf, v10_follower.urdf}`
 - Binary: `~/openarm_teleop/build/bilateral_control`
 
-import Admonition from '@theme/Admonition';
-
-<Admonition type="caution" title="Important Notes for Bilateral Control">
-
-- The **zero position** of the arm is defined as the posture where the arm is **lowered straight down**.  
+:::warning[Important Notes for Bilateral Control]
+- The **zero position** of the arm is defined as the posture where the arm is **lowered straight down**.
   Make sure the robot is in this position before starting control.
-  
-- Bilateral control requires a **high control frequency (500 Hz or higher)**.  
+- Bilateral control requires a **high control frequency (500 Hz or higher)**.
   Ensure your system is capable of maintaining this rate in real time.
-
-- Improper **gain settings** may cause **oscillation or instability**.  
+- Improper **gain settings** may cause **oscillation or instability**.
   Tune the gains carefully, especially when starting with a new arm or load.
-
-</Admonition>
+:::
 
