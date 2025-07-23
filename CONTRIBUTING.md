@@ -12,7 +12,7 @@ Please share it to [GitHub Issues](https://github.com/enactic/openarm/issues/new
 
 Please open a pull request with it!
 
-For website modifications, please refer to [website/README.md](./website/README.md).
+See also [website/README.md](website/README.md) how to preview on your local and GitHub Pages.
 
 Please make sure to review [our license](LICENSE) before you open a pull request.
 
