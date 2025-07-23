@@ -1,6 +1,10 @@
 ---
-title: VR
-sidebar_position: 2
+sidebar_position: 1
 ---
-# VR Teleop
-coming soon!
+
+# Teleoperation
+
+OpenArm supports teleoperation:
+
+* [Leader-Follower teleoperation](leader-follower/)
+* [VR teleoperation](vr)

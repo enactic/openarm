@@ -1,6 +1,6 @@
 ---
-sidebar_position: 1
 ---
+
 import BlockImage from '@site/src/components/BlockImage';
 
 # Leader-Follower Teleoperation
@@ -15,7 +15,7 @@ The follower arm mimics the leader's movements using position commands. Simple o
 - **Cons:** No contact feedback; easy to over-push or misalign during delicate manipulation
 - **Best for:** Open environments with minimal obstacles, lightweight and fast movements, tasks without surface contact
 
-<BlockImage src="getting-started/safety-guidelines/leader-follower1.png" alt="Unilateral leader-follower control" width="100%" />
+<BlockImage src="teleop/leader-follower/unilateral.png" alt="Unilateral leader-follower control" width="100%" />
 
 ## Bilateral Control
 
@@ -30,4 +30,4 @@ This produces **high-quality demonstration data** (motion + force) essential for
 ### How Our Bilateral Control Works?
 OpenArm's bilateral controller uses a **disturbance observer-based acceleration control** system for sensorless force estimation. This approach delivers accurate and responsive force feedback without dedicated torque sensors, enabling high-fidelity haptic teleoperation at low hardware cost.
 
-<BlockImage src="teleop/4ch_bilateral.png" alt="Bilateral control diagram" width="40%" />
+<BlockImage src="teleop/leader-follower/4ch-bilateral.png" alt="Bilateral control diagram" width="40%" />

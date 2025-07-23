@@ -162,6 +162,10 @@ const config: Config = {
               label: 'Simulation',
               to: '/simulation/',
             },
+            {
+              label: 'Help',
+              to: '/help/',
+            },
           ],
         },
         {
