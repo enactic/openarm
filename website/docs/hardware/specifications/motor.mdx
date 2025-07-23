@@ -2,8 +2,20 @@
 title: Motor
 sidebar_position: 2
 ---
+import BlockImage from '@site/src/components/BlockImage';
 
 # Motor Specifications
+
+## Motor Location
+
+OpenArm uses the DAMIAO 43 series and DAMIAO 8009P motors.
+To efficiently achieve high payload capacity, different motors are selected for each joint from the shoulder to the end-effector.
+To ensure greater rigidity and precision, motors equipped with cross-roller bearings are used in sections supported on one side.
+Although the DAMIAO 4340 series is not a QDD motor, it was chosen to balance high payload capacity with a clean, compact appearance.
+
+<BlockImage src="hardware/specification/motor/architecture.png" alt="Architecture" width="70%" />
+
+## Detailed Specifications
 
 | Parameter | **DM-J4310-2EC V1.1** | **DM4340 series** | **DM-J8009P-2EC** |
 |---------------------------|----------------|----------------|----------------|
