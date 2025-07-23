@@ -9,25 +9,45 @@ import BlockImage from '@site/src/components/BlockImage';
 
 ## Arm wiring
 
-0. This installation guide provides instructions for setting up the leader-follower configuration of the OpenArm system. The leader and follower systems are physically identical, with the only distinction being the end-effector configuration.
+0. The elements required to wire one arm are summarized in the following image. In this chapter, each cable is referred to by the name shown in the image, and the wiring process is described by the port number from A-D assigned to each cable. Note that the cables of J1 and J2 are the same component.
 
-<BlockImage src="hardware/electronics-guide/nomal_config.png" alt="nomal_config" width="110%" />
+<BlockImage src="hardware/electronics-guide/arm_cable_list.png" alt="arm_cable_list" width="80" />
 
-### Power
+:::warning
+Applying force to the cable to pull it out or insert it may cause damage. Keep a watchful eye on the cable to ensure that the connector part of the cable is grasped and inserted/removed.
+:::
 
-1. Each of the four arms (two leaders and two followers) is powered by its own dedicated power supply.
-2. The system includes two emergency stop (E-stop) buttons — one for the leader pair and one for the follower pair.
-3. Connect the power supplies of the two follower arms to a single E-stop button. Repeat the same process for the leader arms, ensuring that each pair is connected to its designated E-stop.
-4. The two output cables from each E-stop should be connected to the corresponding hubs of the arms.
+1. Plug the A ports of the J1 and J2 connectors into the terminals of the J1 and J2 motors; turn the cable extending from the J1 motor through the underside to the back of the arm; turn the cable extending from the J2 motor so that it exits on the right side when the J2 motor is viewed from the back side.
 
-### Communication
+<BlockImage src="hardware/electronics-guide/cable1.png" alt="cable1" width="80%" />
 
-For the USB-to-CAN converters, assign the CAN IDs as follows:
-- CAN ID 0: Right Leader
-- CAN ID 1: Left Leader
-- CAN ID 2: Right Follower
-- CAN ID 3: Left Follower
+:::warning
+Carefully wire the small white connectors on the J1 and J2 cables as they may not plug in securely.
+:::
 
-Connect the <span style={{ color: 'red' }}>**red wires**</span> to <span style={{ color: 'red' }}>**CANH**</span> and the **black wires** to **CANL**. Then, plug each CAN connector into the hub of the corresponding arm.
+2. Plug the A port of the J3-J4 cable into the connector on the back side of the arm of the J3 motor. Next, insert the B port of the J3-J4 cable into the connector on the J3 side of the J4 motor.
 
-<BlockImage src="hardware/electronics-guide/nomal_config.png" alt="nomal_config" width="110%" />
+<BlockImage src="hardware/electronics-guide/cable2.png" alt="cable2" width="80%" />
+
+3. Pass each cable through the hole in the cover of J2 while keeping the cable on the C port side of the J3-J4 cable and the cable on the B port side of the J2 cable centered on the output shaft side of the J2 motor.
+
+<BlockImage src="hardware/electronics-guide/cable3.png" alt="cable3" width="80%" />
+
+4. First, insert the B port of the J4-J7 cable into the connector on the back side of the arm of the J5 motor. Next, insert the A port of the J4-J7 cable into the remaining port of the J4 motor with the arm folded down.
+
+<BlockImage src="hardware/electronics-guide/cable4.png" alt="cable4" width="80%" />
+
+5. Insert the D port of the J4-J7 cable into the port inside the arm of the J7 motor. At this time, it is easier to work by tilting the J7 motor to expose the port. Finally, insert the C port of the J4-J7 cable into the connector on the J7 motor side of the J6 motor. If it is difficult to reach, use tweezers.
+
+<BlockImage src="hardware/electronics-guide/cable5.png" alt="cable5" width="80%" />
+
+6. Plug the B port of the J1 cable, the B port of the J2 cable, and the C port of the J3-J4 cable into the hub. Next, insert the A port of the communication cable into the hub and connect the B port cable to the CAN device.
+Finally, connect the power supply to the hub to complete the wiring.
+
+<BlockImage src="hardware/electronics-guide/cable6.png" alt="cable6" width="80%" />
+
+## Casing
+
+:::info
+This chapter is in preparation. If you need information on casing assembly, please check from CAD data.
+:::
