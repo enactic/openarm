@@ -1,100 +1,39 @@
-# OpenArm: an open-source robotic arm for human manipulation data collection
-OpenArm is an open-source humanoid robot arm designed for AI and robotics research in human-centered environments. Its modular hardware and accessible software make it a flexible platform for teleoperation, imitation learning, and real-world data collection. Our goal is to advance physical intelligence by enabling robots that operate safely and effectively alongside people — in homes, service contexts, and caretaking settings. OpenArm offers high backdrivability and compliance, making it well-suited for interactive, assistive, and data-driven tasks.
+# OpenArm
 
-The project is under active development, and we’re collaborating with researchers, developers, and labs to shape the next generation of practical humanoid systems.
+**OpenArm** is an open-source 7DOF humanoid arm designed for physical AI research and deployment in contact-rich environments. With high backdrivability and compliance, it excels at safe human-robot interaction while delivering practical payload capabilities for real-world applications.
 
-![Group 177](https://github.com/user-attachments/assets/033b1c4d-2b5a-43d4-ac3c-0cde2157ff43)
+OpenArm features **human-scale** proportions, safety and compliance, and practical payloads. At $6,500 USD for a complete bimanual system, it provides a flexible platform for teleoperation, imitation learning, simulation, and real-world data collection in contact-rich tasks.
+
+*We're in continuous development and actively seeking contributors, research partners, and company collaborators to shape the next generation of practical humanoid systems. Ready to join the future of open-source robotics?*
+
+> 🚀 **Ready to build?** All hardware and software are completely open-source and ready for you to build, hack, and deploy! Start with our [Getting Started Guide](https://docs.openarm.dev/getting-started)
+
+---
+
+## 🔗 Quick Links
+
+| Platform | Description | Link |
+|----------|-------------|------|
+| 🌐 **Website** | Project homepage and media | [openarm.dev](https://openarm.dev) |
+| 📚 **Documentation** | Complete technical guides | [docs.openarm.dev](https://docs.openarm.dev) |
+| 💬 **Discord** | Community discussions | [Join Discord](https://discord.gg/FsZaZ4z3We) |
+| 📧 **Contact** | Direct communication | [openarm@enactic.ai](mailto:openarm@enactic.ai) |
+
+---
+
+## 📦 Repositories
+
+| Repository | Documentation | Description |
+|------------|---------------|-------------|
+| **[openarm](https://github.com/enactic/openarm)** | [General Docs](https://docs.openarm.dev) | Main project repository with ideas, issues, and feature requests |
+| **[openarm_hardware](https://github.com/enactic/openarm_hardware)** | [Hardware Docs](https://docs.openarm.dev/hardware) | Complete CAD data: STL files, STEP files, Fusion 360 assemblies |
+| **[openarm_description](https://github.com/enactic/openarm_description)** | [Description Docs](https://docs.openarm.dev/software/description) | Robot description files with URDF/xacro for simulation |
+| **[openarm_can](https://github.com/enactic/openarm_can)** | [CAN Docs](https://docs.openarm.dev/software/can/) | CAN control library for low-level motor communication |
+| **[openarm_ros2](https://github.com/enactic/openarm_ros2)** | [ROS2 Docs](https://docs.openarm.dev/software/ros2/install) | ROS2 integration packages and nodes |
+| **[openarm_teleop](https://github.com/enactic/openarm_teleop)** | [Teleop Docs](https://docs.openarm.dev/teleop/) | Teleoperation packages with unilateral and bilateral control |
+| **[openarm_isaac_lab](https://github.com/enactic/openarm_isaac_lab)** | [Isaac Docs](https://docs.openarm.dev/simulation/isaac-lab) | Isaac Lab simulation environment and training tasks |
 
 
-## 🚀 OpenArm v0.2 (beta) Updates:
-- **Gravity Compensation:** Smoother teleoperation with real-time compensation.
-- **Force Feedback Teleoperation:** Unilateral and **bilateral control** with force feedback for better manipulation and data collection.
-- **URDF Overhaul:** Improved default pose and model accuracy.
-
-
-Watch [OpenArm v0.2](https://www.youtube.com/watch?v=2-Au7Sc0uKw?si=RIR9v3v0valV4106 "OpenArm v0.2 beta") in Action:
-
-[<img src="https://github.com/user-attachments/assets/9d920921-383c-4d1a-980c-0412a1b59957" alt="openarm thumb 1" width="450">](https://www.youtube.com/watch?v=2-Au7Sc0uKw?si=RIR9v3v0valV4106 "OpenArm v0.2 beta")
-
-## Table of Contents:
-* [**Quick Start**](#Quick-Start)
-* [**About**](#About)
-* [**Hardware**](#Hardware)
-* [**Software**](#Software)
-  * [**Arm Control**](#Arm-Control)
-  * [**ROS2 Packages**](#ROS2-Packages)
-  * [**Simulation**](#Simulation)
-  * [**Teleoperation**](#Teleoperation)
-* [**Contact Us**](#Contact-Us)
-
-## Quick Start
-
-```sh
-git clone --recurse-submodules https://github.com/enactic/openarm.git
-```
-
-## About
-This repository includes everything needed to build, simulate, and operate OpenArm — including hardware files, software, and example setups for teleoperation and simulation.
-
-For more information and ways to get involved:
-- OpenArm:
-  - [**Website**](https://www.open-arm.org/)
-  - [**Join our Discord**](https://discord.gg/KeJcBs4zjG)
-- Reazon HI Lab:
-  - [**Website**](https://www.hilab.jp/Reazon-Human-Interaction-Lab-113446ca7f7381a987f4f091d3f62dd5)
-  - [**X (@ReazonHILab)**](https://x.com/reazonhilab)
-  - [**Contact Us**](#Contact-Us)
-
-## Hardware
-
-<div align="center">
-  <img src="https://github.com/user-attachments/assets/33b801f6-6ee4-45a7-875e-de81dafd986b" alt="OpenArm_Spec_Main_Graphic_WHITE" style="width:80%;">
-</div>
-<br>
-
-The core design files for OpenArm are available on [OnShape](https://cad.onshape.com/documents/b4c9f28b9b00f7d40a1a4250/w/fe370058f6ecce02af3b0093/e/c7e7f88d1c11b5ea0a83ba7c?renderMode=0&uiState=67b590ed2d89b65cc3bf2317), including:
-- CAD model
-- Bill of Materials (BOM)
-- Assembly Guide
-
-Machined, sheet metal, and off-the-shelf components can be purchased through [MiSUMi](https://jp.misumi-ec.com/) and its manufacturing service [Meviy](https://meviy.misumi-ec.com/worldwide/en/), but similar services worldwide can also be used to procure the necessary parts.
-
-[Risk Assessment Guideline](https://docs.google.com/spreadsheets/d/11ayqCXhusLvExf8lalkxcZMikRYgav0Hl6p7CVpsXZ8/edit?usp=sharing)
-
-## Software
-
-### Arm Control
-OpenArm’s software stack includes real-time motor control examples, enabling users to quickly set up and start moving the arm. It also provides motor calibration tools, a SocketCAN driver, and a step-by-step tutorials on setting up the CAN interface.
-- [Arm Control](https://github.com/enactic/openarm/tree/main/control)
-
-### ROS2 Packages
-Packages for camera integration, hardware bringup, and MoveIt2 can all be found under ROS2 packages. URDF descriptions for single and bimanual arm setups are also located here.
-- [ROS2 Packages](https://github.com/enactic/openarm_ros2)
-
-### Simulation
-![image](https://github.com/user-attachments/assets/38d35919-a526-4636-9b34-b4b4ad11a32e)
-To set up OpenArm in simulation environments, example documentation for MuJuCo, MoveIt2 (ROS2), and Genesis are provided.
-
-- [Arm Simulation with MuJuCo, MoveIt2, Genesis](https://github.com/enactic/openarm_simulation)
-
-### Teleoperation
-![DSCF3195](https://github.com/user-attachments/assets/6bb219fa-276f-46a6-8c31-756a8cbc19bb)
-
-To configure one set of OpenArms to act in teleoperation, the setup is provided in the Unilateral and Bilateral links.
-- COMING SOON!
-
-## Contact Us
-If you would like to get in contact with the OpenArm team with more specific questions about the project, please reach out via email and a member of the team will try to get in touch!
-- Email: [hi_public@reazon.jp](hi_public@reazon.jp)
-
-## License
-
-[Apache License Version 2.0](LICENSE).
-
-Copyright 2025 Enactic, Inc.
-
-## Code of Conduct
-
-All participation in the OpenArm project is governed by our [Code of Conduct](CODE_OF_CONDUCT.md).
-
-<a href="#top">Back to top</a>
+## 📄 License & Conduct
+**License**: [Apache License 2.0](LICENSE.txt) Copyright 2025 Enactic, Inc.  
+**Code of Conduct**: All participation is governed by our [Code of Conduct](CODE_OF_CONDUCT.md)
