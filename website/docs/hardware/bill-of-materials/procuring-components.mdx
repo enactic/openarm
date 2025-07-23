@@ -20,8 +20,8 @@ This section outlines how to source all required components for this project.
 
 We divide components into:
 
-- **Off-the-shelf Components**: Standard items with a part number.
-- **Manufactured Components**: Machined on-demand using MISUMI’s MEVIY service.
+- [**Off-the-shelf Components**](/hardware/bill-of-materials/arm-off-the-shelf): Standard items with a part number.
+- [**Manufactured Components**](/hardware/bill-of-materials/arm-manufactured.mdx): Machined on-demand using MISUMI’s MEVIY service.
 
 All required components are listed in the Bill of Materials section, with model numbers and recommended sources.
 
@@ -32,12 +32,15 @@ All required components are listed in the Bill of Materials section, with model 
 Most mechanical and fastener components are available as catalog items from **[MISUMI](https://jp.misumi-ec.com/)**.
 
 **Steps:**
+
 1. Go to **[MISUMI website](https://jp.misumi-ec.com/)**.
 2. Enter the model number (e.g., `CBE4-8`) in the search bar.
 3. Confirm dimensions/specs.
 4. Add to cart and order.
 
-> 💡 *No drawings needed for catalog parts — model numbers are sufficient.*
+:::note
+No drawings needed for catalog parts — model numbers are sufficient.
+:::
 
 ---
 
@@ -67,8 +70,9 @@ We have pre-registered model numbers for all custom components. To order directl
 
 <BlockImage src="hardware/bom/procurement/procurement-meviy.png" alt="meviy" width="70%" />
 
-
-> ✅ *This method ensures you get the exact geometry we've validated for the project.*
+:::note
+This method ensures you get the exact geometry we've validated for the project.
+:::
 
 ### 🔄 Alternatives & Local Options
 
@@ -78,10 +82,11 @@ You may also:
 - Manufacture custom parts locally using the provided STEP files.
 
 ---
+
 ## 🔌Electrical Components
 
-This project uses a mix of off-the-shelf electronic modules and custom PCBs and wiring harnesses. Below are recommendations on how to procure them.
-
+This project uses a mix of off-the-shelf electronic modules and custom PCBs and wiring harnesses.
+Below are recommendations on how to procure them.
 
 ---
 
@@ -93,7 +98,9 @@ Below are the recommended product links to be used with OpenArm 01:
 - **[USB to CANFD Converter](https://a.co/d/hIi0SI1)**
 - **[Emergency Stop](https://www.monotaro.com/p/6001/0711/)**
 
-> 🔍 Tip: Always check product ratings, reviews, and delivery estimates. Buy a few spares for time-sensitive builds.
+:::tip
+Always check product ratings, reviews, and delivery estimates. Buy a few spares for time-sensitive builds.
+:::
 
 ---
 
@@ -108,21 +115,36 @@ For custom electronics, we provide pre-designed PCB layouts and wire harness dia
 1. Download the **[Gerber](/files/Gerber_For_Hub.zip) + [BOM](/files/BOM_For_Hub.csv) + [CPL](/files/CPL_For_Hub.xlsx)** files from the project repository.
 2. Go to **[JLCPCB](https://jlcpcb.com/)**.
 3. Upload the Gerber zip file to get a quote.
+
 <BlockImage src="hardware/bom/procurement/jlcpcb-step1.png" alt="jlcpcb-1" width="70%" />
+
 4. Follow the on-screen instructions to review options. We recommend leaving default settings unless you have specific requirements. Optionally choose `Remove Mark` in the `Mark on PCB` option.
+
 <BlockImage src="hardware/bom/procurement/jlcpcb-step2.png" alt="jlcpcb-2" width="70%" />
+
 5. Scroll down to the `PCB Assembly` tab and enable the option. 
+
 <BlockImage src="hardware/bom/procurement/jlcpcb-step3.png" alt="jlcpcb-3" width="70%" />
-5. Click on `Next`.
-<BlockImage src="hardware/bom/procurement/jlcpcb-step4.png" alt="jlcpcb-4" width="30%" />
+
 6. Click on `Next`.
+
+<BlockImage src="hardware/bom/procurement/jlcpcb-step4.png" alt="jlcpcb-4" width="30%" />
+
+7. Click on `Next`.
+
 <BlockImage src="hardware/bom/procurement/jlcpcb-step5.png" alt="jlcpcb-5" width="70%" />
-7. Upload the BOM and CPL files, and click on `Process BOM & CPL`.
+
+8. Upload the BOM and CPL files, and click on `Process BOM & CPL`.
+
 <BlockImage src="hardware/bom/procurement/jlcpcb-step6.png" alt="jlcpcb-6" width="70%" />
-8. Review the parts on the next page and proceed. 
-9. Review the 2D and 3D models on the next page and click on `Next`.
+
+9. Review the parts on the next page and proceed.
+
+10. Review the 2D and 3D models on the next page and click on `Next`.
+
 <BlockImage src="hardware/bom/procurement/jlcpcb-step7.png" alt="jlcpcb-7" width="70%" />
-10. Proceed to place the order.
+
+11. Proceed to place the order.
 
 --- 
 
@@ -132,11 +154,16 @@ For custom electronics, we provide pre-designed PCB layouts and wire harness dia
 
 1. Go to the **[customs cable page](https://lcsc.com/customcables/quote)**.
 2. Scroll down to the link where you can upload drawings.
+
 <BlockImage src="hardware/bom/procurement/lcsc-step1.png" alt="lcsc-1" width="70%" />
+
 3. Upload the **[drawings provided](electrical)** and scroll down to input the desired quantity and click on `Confirm your cable plan`.
+
 <BlockImage src="hardware/bom/procurement/lcsc-step2.png" alt="lcsc-2" width="70%" />
 <BlockImage src="hardware/bom/procurement/lcsc-step3.png" alt="lcsc-3" width="70%" />
+
 4. Proceed to click on `Submit cable order`. A request for quote will be generated and LCSC will send a quote which can be used to place the order.
+
 <BlockImage src="hardware/bom/procurement/lcsc-step4.png" alt="lcsc-4" width="70%" />
 <BlockImage src="hardware/bom/procurement/lcsc-step5.png" alt="lcsc-5" width="70%" />
 
@@ -144,5 +171,5 @@ For custom electronics, we provide pre-designed PCB layouts and wire harness dia
 
 ## ⚙️ Motors
 
-If you are interested in purchasing motors, please **contact us directly via email** at **[openarm@enactic.ai](mailto:openarm@enactic.ai)**. We will assist you with pricing, availability, and shipping details.
-
+If you are interested in purchasing motors, please **contact us directly via email** at **[openarm@enactic.ai](mailto:openarm@enactic.ai)**.
+We will assist you with pricing, availability, and shipping details.
