@@ -5,22 +5,18 @@ sidebar_position: 2
 
 import BlockImage from '@site/src/components/BlockImage';
 
+## Nomal Setting
+
 This installation guide provides instructions for setting up the leader-follower configuration of the OpenArm system. The leader and follower systems are physically identical, with the only distinction being the end-effector configuration.
 
-## Power
+### Power
 
 1. Each of the four arms (two leaders and two followers) is powered by its own dedicated power supply.
 2. The system includes two emergency stop (E-stop) buttons — one for the leader pair and one for the follower pair.
 3. Connect the power supplies of the two follower arms to a single E-stop button. Repeat the same process for the leader arms, ensuring that each pair is connected to its designated E-stop.
 4. The two output cables from each E-stop should be connected to the corresponding hubs of the arms.
-<BlockImage src="hardware/electronics-guide/power.png" alt="power" width="80%" />
 
-:::tip
-For heavy payload handling, consider using two power supplies per follower arm. Connect `J1 and J2` (the highest torque joints) to one dedicated power supply, and power the remaining joints `(J3–J8)` using a second supply. This configuration ensures stable performance under high-load conditions.
-:::
----
-
-## Communication
+### Communication
 
 For the USB-to-CAN converters, assign the CAN IDs as follows:
 - CAN ID 0: Right Leader
@@ -30,4 +26,10 @@ For the USB-to-CAN converters, assign the CAN IDs as follows:
 
 Connect the <span style={{ color: 'red' }}>**red wires**</span> to <span style={{ color: 'red' }}>**CANH**</span> and the **black wires** to **CANL**. Then, plug each CAN connector into the hub of the corresponding arm.
 
-<BlockImage src="hardware/electronics-guide/communication.png" alt="communicaiton" width="80%" />
+<BlockImage src="hardware/electronics-guide/nomal_config.png" alt="nomal_config" width="110%" />
+
+## Power Setting
+
+For heavy payload handling, consider using two power supplies per follower arm. Connect `J1 and J2` (the highest torque joints) to one dedicated power supply, and power the remaining joints `(J3–J8)` using a second supply. This configuration ensures stable performance under high-load conditions.
+
+<BlockImage src="hardware/electronics-guide/power_config.png" alt="power_config" width="70%" />
