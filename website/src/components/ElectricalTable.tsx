@@ -42,7 +42,7 @@ const components: ElectricalComponent[] = [
         <a href="/files/Gerber_For_Hub.zip" target="_blank" rel="noopener noreferrer">Gerber Zip File</a>
       </div>
       <div>
-        <a href="/files/BOM_For_Hub.csv" target="_blank" rel="noopener noreferrer">BOM CSV file</a>
+        <a href="/files/bom-for-hub.csv" target="_blank" rel="noopener noreferrer">BOM CSV file</a>
       </div>
       <div>
         <a href="/files/CPL_For_Hub.xlsx" target="_blank" rel="noopener noreferrer">CPL xlsx file</a>
