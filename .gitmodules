@@ -4,6 +4,3 @@
 [submodule "ros2_packages"]
 	path = ros2_packages
 	url = https://github.com/enactic/openarm_ros2.git
-[submodule "control/canfd_control/vendor/STM32CubeH7"]
-	path = control/canfd_control/vendor/STM32CubeH7
-	url = https://github.com/STMicroelectronics/STM32CubeH7

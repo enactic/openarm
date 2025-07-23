@@ -1,3 +1,0 @@
-python-can
-click
-numpy>=2.0.1
