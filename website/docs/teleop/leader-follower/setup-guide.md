@@ -50,11 +50,3 @@ To initialize a CAN interface (e.g., `can0`) in CAN FD mode, run:
 cd openarm_can
 ./setup/configure_socketcan.sh can0 -fd
 ```
-
-
-
-
-
-
-
-

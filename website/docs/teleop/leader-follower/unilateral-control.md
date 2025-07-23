@@ -55,7 +55,6 @@ cd openarm_teleop
 ./script/launch_unilateral.sh right_arm can0 can1
 ```
 
-
 ### Arguments
 
 - `right_arm` or `left_arm`: Specifies which arm to use.

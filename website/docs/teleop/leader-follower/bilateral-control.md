@@ -21,7 +21,6 @@ Core control logic is encapsulated in the `Control` class, which supports both:
 - **Bilateral control**: For force-feedback, master-slave style interaction.
 - **Unilateral control**: For single-arm or open-loop operation without feedback.
 
-
 ## Control & Friction Parameters (per joint)
 
 | Name | Meaning |
@@ -51,7 +50,6 @@ tau_f = Fc * tanh(k * dq) + Fv * dq + Fo
 cd openarm_teleop
 ./script/launch_bilateral.sh right_arm can0 can1
 ```
-
 
 ### Arguments
 
