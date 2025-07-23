@@ -45,7 +45,7 @@ A C++ library for communicating with OpenArm motors through Linux's SocketCAN in
 
 ### ROS2 Integration
 
-**[Learn more under ROS2 →](ros2)**
+**[Learn more under ROS2 →](ros2/install)**
 
 Middleware for connecting OpenArm with the broader ROS2 ecosystem. Enables compatibility with existing robotics tools and frameworks.
 
