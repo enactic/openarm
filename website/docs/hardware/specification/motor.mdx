@@ -3,4 +3,38 @@ title: Motor
 sidebar_position: 2
 ---
 
-# Motor Specification
+# Motor Specifications
+
+| Parameter | **DM-J4310-2EC V1.1** | **DM4340 series** | **DM-J8009P-2EC** |
+|---------------------------|----------------|----------------|----------------|
+| **Datasheet** | [Datasheet of DM-J4310-2EC V1.1](/files/dm4310.pdf) | [Datasheet of DM-J4340-2EC](/files/dm4340.pdf), [Drawing of DM-J4340P-2EC](/files/dm4340p.pdf) | [Datasheet of DM-J8009-2EC](/files/dm8009.pdf) |
+| **Rated Voltage** | 24V | 24V | 24V (Supports 24–48V) |
+| **Rated Current** | 2.5A | 2.5A | 20A |
+| **Peak Current** | 7.5A | 8A | 50A |
+| **Rated Torque** | 3 Nm | 9 Nm | 20 Nm |
+| **Peak Torque** | 7 Nm | 27 Nm | 40 Nm |
+| **Rated Speed** | 120 rpm | 36 rpm | 24V: 100 rpm / 48V: 200 rpm |
+| **Max No-load Speed** | 200 rpm | 52 rpm | 24V: 160 rpm / 48V: 320 rpm |
+| **Reduction Ratio** | 10:1 | 40:1 | 9:1 |
+| **Number of Pole Pairs** | 14 | 14 | 21 |
+| **Phase Inductance** | 340 μH | 317 μH | 61 μH (at 25°C) |
+| **Phase Resistance** | 650 mΩ | 760 mΩ | 90 mΩ (at 25°C) |
+| **Outer Diameter** | 56 mm | 57 mm | 98 mm |
+| **Height** | 46 mm | 53.3 mm | 61.7 mm |
+| **Motor Weight** | 300 g | 362 g | 896 g |
+| **Encoder Bits** | 14-bit | 14-bit | 14-bit |
+| **No. of Encoders** | 2 | 2 | 2 |
+| **Encoder Type** | Magnetic encoder (single-turn) | Magnetic encoder (single-turn) | Magnetic encoder (single-turn) |
+| **Control Interface** | CAN | CAN | CAN |
+{/*| **Parameter Adjustment Interface** | UART@921600 bps | UART@921600 bps | USB-to-CAN |
+| **Control Modes** | MIT, Speed, Position | MIT, Speed, Position | MIT, Speed, Position |
+| **Protection** | Over-temp, over-voltage, over-current, under-voltage, comm loss | Same | Dual-temp protection, same features |*/}
+
+:::warning
+📌 Note: While the linked datasheet is for the DM8009 model, the actual motor used in our arms is the DM8009P. The specifications of both models are nearly identical, and for all practical purposes, the DM8009 datasheet provides an accurate reference for evaluating the motor's performance and compatibility.
+:::
+
+:::info
+📘 More Information
+For detailed specifications and resources on the motors used in this project, please visit [the official Damiao GitHub page](https://github.com/dmBots). It includes datasheets, communication protocols, and configuration tools for various models.
+:::
