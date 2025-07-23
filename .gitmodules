@@ -1,3 +1,0 @@
-[submodule "simulation"]
-	path = simulation
-	url = https://github.com/enactic/openarm_simulation.git
