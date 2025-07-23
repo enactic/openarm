@@ -2,6 +2,8 @@
 
 **OpenArm** is an open-source 7DOF humanoid arm designed for physical AI research and deployment in contact-rich environments. With high backdrivability and compliance, it excels at safe human-robot interaction while delivering practical payload capabilities for real-world applications.
 
+<img width="5216" height="2810" alt="leader-follower_move" src="https://github.com/user-attachments/assets/72699eeb-f966-44ad-bc22-656a2cd4eb65" />
+
 OpenArm features **human-scale** proportions, safety and compliance, and practical payloads. At $6,500 USD for a complete bimanual system, it provides a flexible platform for teleoperation, imitation learning, simulation, and real-world data collection in contact-rich tasks.
 
 *We're in continuous development and actively seeking contributors, research partners, and company collaborators to shape the next generation of practical humanoid systems. Ready to join the future of open-source robotics?*
