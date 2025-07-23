@@ -7,7 +7,9 @@ import BlockImage from '@site/src/components/BlockImage';
 
 # Setp 1: Setup Motor ID
 
+:::warning
 Before running any further steps, we need to first ensure that the motor sender id (CAN ID) and receiver id (MASTER ID) are configured as the table below.
+:::
 
 | Joint | Sender CAN ID | Receiver (Master) ID |
 |-------|---------------|---------------------|
@@ -20,6 +22,7 @@ Before running any further steps, we need to first ensure that the motor sender 
 | J7    | 0x07          | 0x17               |
 | J8 (Gripper) | 0x08   | 0x18               |
 
+---
 
 This guide explains how to configure (otherwise known as flashing) Damiao motors for use in the OpenArm system.
 It walks through installing the debugging tool, assigning motor IDs, and connecting power and CAN wiring.
@@ -63,6 +66,10 @@ The tool is used for:
 2. Quick calibrate to test if the motor runs
 3. Firmware version and control mode check before sending commands
 
+:::tip Hardware Setup
+You might want to connect all the hardware components first using the reference below: [Hardware Setup →](#hardware-setup)
+:::
+
 ### Open the Port
 
 If it does not detect the correct serial port, it's usually the last one in the drop-down list.
@@ -87,17 +94,45 @@ Configure Damiao motor IDs before running any code on the arm.
 
 <BlockImage src="software/setup/damiao-debugging-tools-config.png" alt="Damiao Debugging Tools config" width="95%" />
 
-### Test the Motor
+---
+
+## Testing
+
+### Simple Calibration
 
 Hit calibrate, and the motor should start moving. (No need to save calibration after.)
 
 <BlockImage src="software/setup/damiao-debugging-tools-calibrate.png" alt="Damiao Debugging Tools calibrate" width="20%" />
+
+### Advanced Testing
+
+In the Test tab:
+
+1. Under CAN ID, set CAN IDs by clicking Read with the motor connected.  
+If you have multiple motors daisy chained together, you can control all of them by setting the CAN ID to the last motor in the chain.
+2. Under Control Commands, click Enter to start the motor.  
+(Redo every time the motor reboots, the LED above the GH1.25 3-pin port should glow green)
+3. Under Control Parameter, set your values.    
+A simple test is to set the Tor (torque) to a value like 1.  
+For other controls, refer to [the official motor documentation](https://wiki.seeedstudio.com/damiao_series/)
+4. Under CAN Data, click Update to pull the values from Control Parameter.  
+(Redo whenever you input new values)
+5. Under CAN Data, click Send to send the values to the motors and have them start spinning.
+6. To stop, set the values under Control Parameter to 0 and Update.  
+Simply clicking Stop will hard stop the motors, only do in case of emergency.
+
+[//]: # (maybe add img here)
+
+### Trouble Shooting
+
+If the motor starts but fails to rotate: Check the current provided and compare if you're supplying enough with this [table below](#reccomended-currents)
 
 ---
 
 ## Hardware Setup
 
 <BlockImage src="software/setup/hardware-setup.png" alt="Hardware setup" width="95%" />
+<br/>
 
 :::note[NOTE *]
 This wire comes with only one end. You might need to solder another male connector.
@@ -106,13 +141,24 @@ This wire comes with only one end. You might need to solder another male connect
 :::
 
 :::note[NOTE **]
-One option is to use an XT30U-M or split a M/F cable and solder the ends to connect with a 24V psu.
+One option is to use an XT30U-M or split a M/F cable and solder the ends to connect with a 24V PSU.
 
 <BlockImage src="software/setup/hardware-setup-power.png" alt="Power" width="50%" />
 :::
 
 :::note[NOTE ***]
-For the J8009P motors, you can plug the wires directly in. (Calibrate might not work but writing ID should still be ok.)
+For the J8009P motors, you can plug the wires directly in without the power adapter board.
 
 <BlockImage src="software/setup/hardware-setup-motor.png" alt="Motor" width="75%" />
 :::
+
+### Reccomended Currents:
+
+Current Table For Calibrating and Testing @ 24V:
+| Motor     | Minimum Current | Reccomended Current |
+|-----------|-----------------|---------------------|
+| DM-J4310  | ~0.25 A         | ~0.3 A              |
+| DM-J4340  | ~0.25 A         | ~0.3 A              |
+| DM-J8009P | ~0.7 A          | ~0.75 A             |
+
+Current is additive so if you daisy chain motors together, you would need to provide the sum of the currents needed.
