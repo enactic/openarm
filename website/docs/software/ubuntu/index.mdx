@@ -15,13 +15,13 @@ This guide walks you through downloading and installing Ubuntu on a physical mac
 
 ## Download Ubuntu
 
-- Visit the official Ubuntu download page:  
+- Visit the official Ubuntu download page:
   [https://ubuntu.com/download/desktop](https://ubuntu.com/download/desktop)
-- Recommended version: **Ubuntu 22.04 LTS (Jammy Jellyfish)**  
+- Recommended version: **Ubuntu 22.04 LTS (Jammy Jellyfish)**
 You can find previous releases [here](https://ubuntu.com/download/alternative-downloads#past-releases-and-other-flavours)
 
 :::tip Want a Lightweight Alternative?
-If you're only doing development or testing (not using real hardware or GUI tools like RViz), consider using Docker instead of installing Ubuntu directly.  
+If you're only doing development or testing (not using real hardware or GUI tools like RViz), consider using Docker instead of installing Ubuntu directly.
 [See Docker Setup →](docker)
 :::
 
@@ -44,13 +44,13 @@ Choose your OS below for USB creation instructions:
    - **Partition scheme**: GPT (recommended for UEFI)
 4. Click **Start** and wait for the write to finish
 :::tip
-If you would like to keep your operating system: 
+If you would like to keep your operating system:
 [See Dual Boot Instructions →](#dual-booting-with-windows)
 :::
 
 ### On macOS (Etcher or Terminal)
 
-**Option A: Balena Etcher (GUI)**  
+**Option A: Balena Etcher (GUI)**
 1. Download [Balena Etcher](https://www.balena.io/etcher/)
 2. Select the Ubuntu `.iso`, choose your USB, and click **Flash**
 
@@ -70,7 +70,7 @@ Replace X with your actual USB disk number — double check!
 :::
 
 ### On Linux
-```bash 
+```bash
 # Replace this with the path to your downloaded ISO file (any version)
 ISO=~/Downloads/ubuntu-XX.XX-desktop-amd64.iso  # e.g. ubuntu-22.04.4-desktop-amd64.iso
 
@@ -97,9 +97,9 @@ Be very careful with /dev/sdX — using the wrong drive can erase your system!
 Once the installer loads:
 
 1. Select Try or Install Ubuntu
-2. Select "Erase disk and install Ubuntu" (for a clean install)  
+2. Select "Erase disk and install Ubuntu" (for a clean install)
 :::warning
-This will erase all data on the selected drive.  
+This will erase all data on the selected drive.
 If you would like to keep your operating system: [See Dual Boot Instructions](#dual-booting-with-windows)
 :::
 3. Choose your timezone

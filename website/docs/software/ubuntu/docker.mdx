@@ -49,7 +49,7 @@ docker run --env DISPLAY=$DISPLAY \
   --network=host \
   -it ghcr.io/enactic/openarm/ros2:latest-humble \
   /bin/bash
-``` 
+```
 
 ### On Windows
 
@@ -61,7 +61,7 @@ Follow the GUI install instructions
 
 If you are using an Apple Silicon Mac, it may be necessary to enable Rosetta for Docker.
 
-Follow the instructions at [github.com/tiryoh/docker-ros2-desktop-vnc](https://github.com/Tiryoh/docker-ros2-desktop-vnc/tree/master).  
+Follow the instructions at [github.com/tiryoh/docker-ros2-desktop-vnc](https://github.com/Tiryoh/docker-ros2-desktop-vnc/tree/master).
 :::note
 This will not be very performant, but is good enough for simple experiments.
 :::
@@ -108,7 +108,7 @@ docker run -it --name my-ubuntu-dev osrf/ros:<ros-distro>
 ```
 
 To stop and resume:
-```bash 
+```bash
 docker stop my-ubuntu-dev
 docker start -ai my-ubuntu-dev
 ```

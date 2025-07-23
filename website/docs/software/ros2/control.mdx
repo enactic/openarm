@@ -5,11 +5,11 @@ sidebar_position: 2
 
 import BlockImage from '@site/src/components/BlockImage';
 
-# ROS2
+# Control
 
-To get started, follow this [Robot Description](../robot_description) guide to install ROS2 first to setup and test the OpenArm description package which you will need for ROS2 control.
+To get started, follow this [Robot Description](../description) guide to install ROS2 first to setup and test the OpenArm description package which you will need for ROS2 control.
 
-## ROS2 Control
+## Setup
 
 The [openarm_ros2](https://github.com/enactic/openarm_ros2) repository contains a collection of packages for use with [ros2_control](https://control.ros.org/humble/index.html).
 
@@ -22,7 +22,7 @@ cd ~/ros2_ws && colcon build
 source ~/ros2_ws/install/setup.bash
 ```
 
-### MoveIt2
+## MoveIt2
 
 [MoveIt2](https://moveit.picknik.ai/main/index.html) is a framework for manipulators that combines inverse kinematics, perception, and control.
 
@@ -35,7 +35,7 @@ After sourcing the workspace, launch a demo:
 ros2 launch openarm_bimanual_moveit_config demo.launch.py
 ```
 
-#### Motion Planning
+### Motion Planning
 
 <BlockImage src="software/ros2/bimanual-moveit2-planning.png" alt="MoveIt2 Planning" width="65%" />
 <br/>
