@@ -10,7 +10,8 @@ import BlockVideo from '@site/src/components/BlockVideo';
 This project enables real-time teleoperation of the OpenArm robot using VR human body estimation streaming data.
 
 Coming soon!
-# Key Features
+
+## Key Features
 - **7DOF Control:** Maps both position and rotation for natural and intuitive manipulation.
 - **Gesture-based Gripper Control:** Uses VR finger distance for real-time open/close actions.
 - **Scalable Mapping:** Can incorporate full arm motion (upper/lower arm) for more human-like movements.
