@@ -25,7 +25,6 @@ Core control logic is encapsulated in the `Control` class, which supports both:
 - **Unilateral control**: For single-arm or open-loop operation without feedback.
 
 
-
 ## Control & Friction Parameters (per joint)
 
 | Name | Meaning |
