@@ -1,18 +1,33 @@
 ---
-title: Motor Calibration Guide
+title: '1. Motor ID Configuration'
 sidebar_position: 2
 ---
 
 import BlockImage from '@site/src/components/BlockImage';
 
-# Motor Calibration Guide
+# Setp 1: Setup Motor ID
+
+Before running any further steps, we need to first ensure that the motor sender id (CAN ID) and receiver id (MASTER ID) are configured as the table below.
+
+| Joint | Sender CAN ID | Receiver (Master) ID |
+|-------|---------------|---------------------|
+| J1    | 0x01          | 0x11               |
+| J2    | 0x02          | 0x12               |
+| J3    | 0x03          | 0x13               |
+| J4    | 0x04          | 0x14               |
+| J5    | 0x05          | 0x15               |
+| J6    | 0x06          | 0x16               |
+| J7    | 0x07          | 0x17               |
+| J8 (Gripper) | 0x08   | 0x18               |
+
 
 This guide explains how to configure (otherwise known as flashing) Damiao motors for use in the OpenArm system.
 It walks through installing the debugging tool, assigning motor IDs, and connecting power and CAN wiring.
-
 Excerpted from: https://wiki.seeedstudio.com/damiao_series/
 
----
+:::note
+Motor ID configuration can also be accomplished via direct CAN frame transmission if you know the existing ID (usually 0x01), however this approach is risky and not included in this tutorial.
+:::
 
 ## Install Damiao Debugging Tools
 
@@ -61,7 +76,7 @@ You can see the motor info on initial boot:
 ### Configure Motor IDs
 
 1. Click **ReadParam** to pull parameters from the motor.
-2. In the ID table below, choose the correct Sender and Master ID.
+2. In the ID table above, choose the correct Sender and Master ID.
 3. Input those values into the fields.
 4. Click **WriteParam** to save the settings to the motor.
 
@@ -69,18 +84,6 @@ You can see the motor info on initial boot:
 Configure Damiao motor IDs before running any code on the arm.
 :::
 
-<div align="center">
-| Joint | Sender CAN ID | Receiver (Master) ID |
-|-------|---------------|---------------------|
-| J1    | 0x01          | 0x11               |
-| J2    | 0x02          | 0x12               |
-| J3    | 0x03          | 0x13               |
-| J4    | 0x04          | 0x14               |
-| J5    | 0x05          | 0x15               |
-| J6    | 0x06          | 0x16               |
-| J7    | 0x07          | 0x17               |
-| J8 (Gripper) | 0x08   | 0x18               |
-</div>
 
 <BlockImage src="software/setup/damiao-debugging-tools-config.png" alt="Damiao Debugging Tools config" width="95%" />
 

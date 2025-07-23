@@ -1,5 +1,5 @@
 ---
-title: Conntrols
+title: Controls
 description: ...
 sidebar_position: 5
 ---
@@ -18,5 +18,3 @@ sidebar_position: 5
 ## Cartesian Space Control
 
 ...
-
-

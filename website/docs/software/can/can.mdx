@@ -1,6 +1,6 @@
 ---
 title: CAN Library
-sidebar_position: 4
+sidebar_position: 1
 ---
 
 import TOCInline from '@theme/TOCInline';
@@ -13,7 +13,7 @@ The [OpenArm CAN](https://github.com/enactic/openarm_can/) Library serves as the
 It abstracts CAN bus communication via utilizing Linux's SocketCAN interface, providing an API for motor control and state monitoring. The library allows extensibility for various CAN devices beyond motors.
 
 SocketCAN is Linux's implementation of the CAN (Controller Area Network) protocol stack, providing a socket-based interface for CAN communication.
-For detailed setup instructions including CAN interface configuration, library build, and verification steps, see [Setup Guide](setup).
+For detailed setup instructions including CAN interface configuration, library build, and verification steps, see [Setup Guide](/software/setup).
 
 ## Table of Contents
 
@@ -144,7 +144,6 @@ This section demonstrates the different control modes available for both arm and
 ##### 3.1 Arm Control
 
 This subsection demonstrates coordinated control of multiple arm motors using different control modes.
-[Learn more about MIT control parameters in→](/software/setup/motor-can)
 
 ```cpp
 // Set callback mode for state monitoring

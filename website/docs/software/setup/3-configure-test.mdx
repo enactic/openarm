@@ -1,0 +1,81 @@
+---
+title: '3. Motor Test'
+sidebar_position: 4
+---
+
+# Step 3: Motor Communication Test
+
+Before running the full demo, let's perform a quick sanity check to verify that your CAN interface can communicate with the motors.
+
+## Prerequisites
+
+Ensure you have completed all previous steps:
+- ✅ Motor IDs are configured (Step 1)
+- ✅ CAN interface is set up and running (Step 2)
+
+## Quick Sanity Check
+
+This test will verify basic communication with motor #1 using a simple CAN commands.
+Open two terminal windows:
+
+**Terminal 1 - Monitor CAN traffic:**
+```bash
+candump can0
+```
+Keep this running to observe all CAN messages.
+
+**Terminal 2 - Send commands:**
+In Terminal 2, send a motor enable command to motor #1:
+
+```bash
+cansend can0 001#FFFFFFFFFFFFFFFC
+```
+
+**Command breakdown:**
+- `001` = Motor #1 CAN ID (0x01)
+- `FFFFFFFFFFFFFFFC` = Motor enable command
+
+### Expected Results
+
+If everything is working correctly, Motor #1 LED should turn **green** (indicating CAN communication active)
+Congratulations!! If the motor baudrate is already set to the same mode as the interface, you will get response in terminal where:
+
+```
+can0  011   [8]  XX XX XX XX XX XX XX XX
+```
+
+** Response breakdown:**
+   - `011` = Motor #1 response ID (0x11)
+   - The data bytes contain motor status information
+
+If the response frames are not showing, don't worry we will guide you to change the motor baudrate to align with the interface.
+
+If you have multiple motors configured, test each one.
+
+### Disable Motors
+
+After testing, disable the motors:
+
+```bash
+# Disable motor #1
+cansend can0 001#FFFFFFFF
+...
+```
+
+## Troubleshooting
+
+**No LED change:**
+- Verify motor is powered (24V supply connected)
+- Check the physical connection (no loose cables, etc. This is important!)
+- Check CAN wiring (CANH/CANL connections)
+- Confirm motor ID is correctly set to 0x01
+
+**Wrong response ID:**
+- Double-check motor configuration - the receive ID should be 0x11
+- Verify no other devices are using conflicting IDs
+
+
+## What's Next
+
+If this sanity check passes, The basic CAN sending is working.
+Beyond this point, the steps are not necessary for everyone.

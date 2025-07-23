@@ -1,0 +1,104 @@
+---
+title: '5. Motor Configuration'
+sidebar_position: 5
+---
+
+# Step 5: Motor Configuration
+
+We now need to complete the motor setup process. This involves three key tasks:
+
+- Configure motor baudrate to match your CAN device for reliable communication
+- Set the zero position for all motors
+- Test motor communication to verify everything is working correctly
+
+All the necessary scripts are located in the setup folder.
+
+## Step 1: Set Motor Baudrate
+
+:::warning
+- Be sure to use the CAN interface on 2.0 during the baudrate setup regardless of your target baudrate. Configure it back to your target baudrate after this step is finished.
+- Motor parameters has a 10000 time write limits, it should not be run frequently in scripts.
+:::
+
+Set the baudrate for each motor (replace `1` with your motor CAN ID and `1000000` with desired baudrate):
+
+Set temporarily:
+```bash
+python3 change_baudrate.py --baudrate 1000000 --canid 1 --socketcan can0
+```
+
+Save permanently:
+
+```bash
+python3 change_baudrate.py --baudrate 1000000 --canid 1 --socketcan can0 --flash
+```
+**Important:** After completing the baudrate configuration, reconfigure your CAN interface to match the motor's new baudrate setting for proper communication.
+
+**Supported Baudrates:**
+
+| Option | Baudrate | Description |
+|--------|----------|-------------|
+| 0      | 125000   | 125 kbps    |
+| 1      | 200000   | 200 kbps    |
+| 2      | 250000   | 250 kbps    |
+| 3      | 500000   | 500 kbps    |
+| 4      | 1000000  | 1 mbps      |
+| 5      | 2000000  | 2 mbps      |
+| 6      | 2500000  | 2.5 mbps    |
+| 7      | 3200000  | 3.2 mbps    |
+| 8      | 4000000  | 4 mbps      |
+| 9      | 5000000  | 5 mbps      |
+
+
+## Step 2: Set Zero Position
+
+:::warning
+Be sure to move the physical arm to zero position before setting zero!
+:::
+
+Set the zero position for a specific motor:
+```bash
+./set_zero.sh can0 001
+```
+
+Or set zero position for all motors (IDs 001-008):
+```bash
+./set_zero.sh can0 -all
+```
+
+## Step 3: Verify Motor Communication
+
+
+Run the motor check executable, replace `1` and `17` with your motor's send and receive CAN IDs.
+The `motor_check` executable should be available in the build directory from the library compilation.
+If it's missing, rebuild the project. Note: CAN ID 17 is the decimal representation of 0x11
+
+For CAN 2.0
+```bash
+cd openarm_can/build
+./motor_check 1 17 can0
+```
+
+For CAN FD mode:
+```bash
+./motor_check 1 17 can0 -fd
+```
+
+The output should display the motor's receiver ID, baudrate, and current status information.
+
+**Verification steps:**
+1. **Check baudrate**: Verify the displayed baudrate matches what you configured earlier
+2. **Test permanent settings**: If you used `--flash`, power cycle the motor and run the check again to confirm the settings persisted
+3. **Troubleshoot**: If the baudrate doesn't match, switch your CAN interface to 2.0 and re-run the baudrate change script
+
+:::warning
+It is important to get the motor-check working before running the demo.
+:::
+
+## Troubleshooting
+- Check CAN interface is UP
+- Verify motor is physically connected and powered, set with the correct ID
+- Verify can connection is stable (important!)
+- Use `candump` to monitor the traffic
+- Check CAN interface baudrate matches motor's current baudrate
+- Verify send/receive CAN IDs are correct. Common pairs: 1→17, 2→18, 3→19, etc.

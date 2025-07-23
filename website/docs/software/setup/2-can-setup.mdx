@@ -1,0 +1,95 @@
+---
+title: '2. Setup CAN Interface'
+sidebar_position: 3
+---
+
+# Step 2: Setup SocketCAN Interface
+
+Configure your CAN interface to communicate with the OpenArm motors. This step sets up SocketCAN on Linux to enable CAN bus communication.
+The [electrical BOM](/hardware/bill-of-materials/electrical) contains the device we are using for experiments.
+
+## Prerequisites
+
+Before proceeding, ensure you have the required tools installed:
+
+```bash
+sudo apt install can-utils iproute2
+```
+
+## Find Your CAN Interface
+
+First, identify your CAN interface device. List network interfaces to find your CAN adapter and look for interfaces like can0, can1, slcan0, etc.
+
+```bash
+ip link show
+```
+
+## Setup the interface
+
+Replace `can0` with your actual CAN interface name and use a baudrate supported by you interfaces for the steps.
+
+### Option 1: setup manually
+
+**CAN 2.0 Mode**
+
+```bash
+sudo ip link set can0 down
+# configure CAN 2.0 with 1mbps
+sudo ip link set can0 type can bitrate 1000000
+sudo ip link set can0 up
+```
+
+**CAN FD Mode** (Recommended)
+```bash
+ip link set can0 down
+# configure CAN FD with 5mbps
+sudo ip link set can0 type can bitrate 1000000 dbitrate 5000000 fd on
+sudo ip link set can0 up
+```
+
+## Option 2: use setup scripts
+
+The OpenArm CAN library includes convenient setup scripts, example usage:
+
+```bash
+# Navigate to openarm_can directory
+git clone https://github.com/enactic/openarm_can.git
+cd openarm_can/setup
+
+# For CAN 2.0
+./configure_socketcan.sh can0
+
+# For CAN FD at 5mbps (recommended)
+./configure_socketcan.sh can0 -fd -b 1000000 -d 5000000
+```
+
+## Verify Configuration
+
+Check that your CAN interface is properly configured:
+
+```bash
+# Verify interface is up and running
+ip link show can0
+
+# Monitor CAN traffic (optional)
+candump can0
+
+# Test monitoring
+cansend can0 ...
+```
+
+## Troubleshooting
+
+If the interface configuration fails:
+
+- Verify physical connections
+- Verify driver installation for your specific CAN adapter
+- Check `dmesg` for device logs
+- Some serial based devices may need wrappers like `slcand` to be visible in `ip link show`
+- Check supported bitrate values and device compatibility
+- Load kernel modules like
+  ```
+  sudo modprobe slcan
+  sudo modprobe can
+  sudo modprobe can_raw
+  ```
