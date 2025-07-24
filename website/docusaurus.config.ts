@@ -173,10 +173,10 @@ const config: Config = {
               label: 'Discord',
               href: 'https://discord.gg/tpnKxHuJY3',
             },
-            // {
-            //   label: 'X',
-            //   href: 'https://x.com/reazonhilab',
-            // },
+            {
+              label: 'X',
+              href: 'https://x.com/enactic_ai',
+            },
           ],
         },
         {
