@@ -17,6 +17,7 @@ import React, {
 } from 'react';
 import Admonition from '@theme/Admonition';
 import BoMPhoto from './BoMPhoto';
+import Table, { type TableColumn } from './Table';
 import { formatPrice, formatTotalCost } from '../utils/priceUtils';
 
 export interface BoMRecord {
@@ -38,39 +39,6 @@ interface BoMTableProps<T> {
   columns: BoMTableColumn<T>[];
   imageBasePath: string;
 }
-
-const tableStyles = {
-  table: {
-    width: '100%',
-    borderCollapse: 'collapse' as const,
-  },
-  headerRow: {
-    height: '8em',
-    textAlign: 'center' as const,
-    borderBottom: '3px solid var(--ifm-color-primary)',
-    backgroundColor: 'var(--ifm-color-primary-lightest)',
-    color: 'var(--ifm-color-primary-darkest)',
-  },
-  headerCell: {
-    padding: '0.75rem',
-    fontWeight: 'bold' as const,
-    borderRight: '1px solid var(--ifm-color-primary)',
-  },
-  bodyRow: {
-    height: '10em',
-    textAlign: 'center' as const,
-    borderBottom: '1px solid var(--ifm-color-emphasis-300)',
-    backgroundColor: 'transparent',
-  },
-  bodyCell: {
-    padding: '0.5rem',
-    borderRight: '1px solid var(--ifm-color-emphasis-300)',
-    verticalAlign: 'middle' as const,
-    backgroundColor: 'transparent',
-  },
-};
-
-export { tableStyles };
 
 export default function BoMTable<T extends BoMRecord>({
   type,
@@ -109,36 +77,23 @@ export default function BoMTable<T extends BoMRecord>({
     }
   };
 
+  const tableColumns: TableColumn<T>[] = columns.map(col => ({
+    header: col.header,
+    key: col.key as keyof T,
+    render: (value, row) => renderCell(row, col)
+  }));
+
   return (
     <div>
       <Admonition type="info">
         <p>The estimated total cost of {type} components is {totalCost}</p>
       </Admonition>
       <p>Here is the list of the components that {listSummary()}:</p>
-      <div style={{ overflowX: 'auto' }}>
-        <table style={tableStyles.table}>
-          <thead>
-            <tr style={tableStyles.headerRow}>
-              {columns.map((column) => (
-                <th key={column.header} style={tableStyles.headerCell}>
-                  {column.header}
-                </th>
-              ))}
-            </tr>
-          </thead>
-          <tbody>
-            {components.map((component) => (
-              <tr key={component.name} style={tableStyles.bodyRow}>
-                {columns.map((column) => (
-                  <td key={column.header} style={tableStyles.bodyCell}>
-                    {renderCell(component, column)}
-                  </td>
-                ))}
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
+      <Table
+        columns={tableColumns}
+        data={components}
+        keyField="name"
+      />
     </div>
   );
 }
