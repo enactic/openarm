@@ -26,25 +26,25 @@ interface ActuatorRecord {
 const actuatorsData: ActuatorRecord[] = [
   {
     component: 'DAMIAO Actuator',
-    quantity: '4×',
+    quantity: '4',
     model: 'DM-J8009-2EC',
     cost: 205790
   },
   {
     component: 'DAMIAO Actuator',
-    quantity: '2×',
+    quantity: '2',
     model: 'DM-J4340P-2EC',
     cost: 42066
   },
   {
     component: 'DAMIAO Actuator',
-    quantity: '2×',
+    quantity: '2',
     model: 'DM-J4340-2EC',
     cost: 37387
   },
   {
     component: 'DAMIAO Actuator',
-    quantity: '8×',
+    quantity: '8',
     model: 'DM-J4310-2EC V1.1',
     cost: 112113
   }

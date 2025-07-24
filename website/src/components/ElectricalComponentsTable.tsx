@@ -47,7 +47,7 @@ const columns: TableColumn<ElectricalComponentRecord>[] = [
   {
     header: 'Cost',
     key: 'cost',
-    render: (value) => <code>{formatPrice(value)}</code>
+    render: (value) => formatPrice(value)
   }
 ];
 

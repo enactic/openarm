@@ -24,9 +24,6 @@ export default function BoMSummaryTable(): ReactNode {
 
   return (
     <>
-      <p>
-        <strong>The Total BOM Price is {formatPrice(totalBOMPrice)}</strong>
-      </p>
       <hr />
       <ActuatorsTable />
       <hr />
