@@ -14,16 +14,25 @@
 
 import React, { type ReactNode } from 'react';
 import { formatPrice } from '../utils/priceUtils';
-import { ElectricalTotalCost } from './ElectricalTable';
 import ActuatorsTable, { ActuatorTotalCost } from './ActuatorsTable';
-import MechanicalComponentsTable, { MechanicalTotalCost } from './MechanicalComponentsTable';
+import BlockImage from './BlockImage';
+import { ElectricalTotalCost } from './ElectricalTable';
 import ElectricalComponentsTable from './ElectricalComponentsTable';
+import MechanicalComponentsTable, { MechanicalTotalCost } from './MechanicalComponentsTable';
 
-export default function BoMSummaryTable(): ReactNode {
+export default function BoMSummary(): ReactNode {
   const totalBOMPrice = ActuatorTotalCost() + MechanicalTotalCost() + ElectricalTotalCost();
 
   return (
     <>
+      <div style={{ fontSize: '2rem' }}>
+        <strong>The Total BOM Price is {formatPrice(totalBOMPrice)}</strong>
+      </div>
+      <BlockImage
+        src="hardware/bom/procurement/bom-summary.png"
+        alt="bom-summary"
+        width="70%"
+      />
       <hr />
       <ActuatorsTable />
       <hr />
