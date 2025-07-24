@@ -65,12 +65,12 @@ const columns: TableColumn<MechanicalComponentRecord>[] = [
   {
     header: 'Link',
     key: 'link',
-    render: (_value, row) => <Link to={row.link}>{row.linkText}</Link>
+    render: (row, _value) => <Link to={row.link}>{row.linkText}</Link>
   },
   {
     header: 'Cost',
     key: 'cost',
-    render: (value) => formatPrice(value)
+    render: (row, value) => formatPrice(value)
   }
 ];
 

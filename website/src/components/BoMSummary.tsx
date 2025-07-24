@@ -25,12 +25,10 @@ export default function BoMSummary(): ReactNode {
 
   return (
     <>
-      <div style={{ fontSize: '2rem' }}>
-        <strong>The Total BOM Price is {formatPrice(totalBOMPrice)}</strong>
-      </div>
+      <h2>The Total BOM Price is {formatPrice(totalBOMPrice)}</h2>
       <BlockImage
         src="hardware/bom/procurement/bom-summary.png"
-        alt="bom-summary"
+        alt="BOM summary"
         width="70%"
       />
       <hr />

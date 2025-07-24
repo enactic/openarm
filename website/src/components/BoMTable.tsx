@@ -77,10 +77,10 @@ export default function BoMTable<T extends BoMRecord>({
     }
   };
 
-  const tableColumns: TableColumn<T>[] = columns.map(col => ({
-    header: col.header,
-    key: col.key as keyof T,
-    render: (value, row) => renderCell(row, col)
+  const tableColumns: TableColumn<T>[] = columns.map(column => ({
+    header: column.header,
+    key: column.key as keyof T,
+    render: (row, value) => renderCell(row, column)
   }));
 
   return (

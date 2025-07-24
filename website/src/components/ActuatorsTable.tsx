@@ -18,7 +18,7 @@ import { formatPrice } from '../utils/priceUtils';
 
 interface ActuatorRecord {
   component: string;
-  quantity: string;
+  quantity: number;
   model: string;
   cost: number;
 }
@@ -26,25 +26,25 @@ interface ActuatorRecord {
 const actuatorsData: ActuatorRecord[] = [
   {
     component: 'DAMIAO Actuator',
-    quantity: '4',
+    quantity: 4,
     model: 'DM-J8009-2EC',
     cost: 205790
   },
   {
     component: 'DAMIAO Actuator',
-    quantity: '2',
+    quantity: 2,
     model: 'DM-J4340P-2EC',
     cost: 42066
   },
   {
     component: 'DAMIAO Actuator',
-    quantity: '2',
+    quantity: 2,
     model: 'DM-J4340-2EC',
     cost: 37387
   },
   {
     component: 'DAMIAO Actuator',
-    quantity: '8',
+    quantity: 8,
     model: 'DM-J4310-2EC V1.1',
     cost: 112113
   }
@@ -62,16 +62,18 @@ const columns: TableColumn<ActuatorRecord>[] = [
   {
     header: 'Model',
     key: 'model',
-    render: (value) => <em>{value}</em>
+    render: (row, value) => <em>{value}</em>
   },
   {
     header: 'Cost',
     key: 'cost',
-    render: (value) => formatPrice(value)
+    render: (row, value) => formatPrice(value)
   }
 ];
 
 export const ActuatorTotalCost = () =>
+  // We don't need "* record.quantity" here because "record.cost" is a total
+  // cost not a unit price of the actuator.
   actuatorsData.reduce((sum, record) => sum + record.cost, 0);
 
 export default function ActuatorsTable(): ReactNode {

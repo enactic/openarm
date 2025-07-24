@@ -21,7 +21,7 @@ export interface TableRecord {
 export interface TableColumn<T> {
   header: string;
   key: keyof T;
-  render?: (value: any, row: T) => ReactNode;
+  render?: (row: T, value: any) => ReactNode;
 }
 
 interface TableProps<T> {
@@ -68,9 +68,10 @@ export default function Table<T extends TableRecord>({
 }: TableProps<T>): ReactNode {
   const getCellContent = (row: T, column: TableColumn<T>): ReactNode => {
     if (column.render) {
-      return column.render(row[column.key], row);
+      return column.render(row, row[column.key]);
+    } else {
+      return row[column.key] as ReactNode;
     }
-    return row[column.key] as ReactNode;
   };
 
   return (
