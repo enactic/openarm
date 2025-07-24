@@ -15,15 +15,10 @@
 import React, {
   type ReactNode
 } from 'react';
-import BoMTable, { type BoMTableColumn } from './BoMTable';
+import BoMTable, { type BoMRecord, type BoMTableColumn } from './BoMTable';
 import { calculateTotalCost } from '../utils/priceUtils';
 
-export interface ElectricalComponent {
-  name: string;
-  image: string;
-  model: ReactNode;
-  quantity: number;
-  unitPrice: number;
+export interface ElectricalComponent extends BoMRecord {
   supplier: string;
 }
 

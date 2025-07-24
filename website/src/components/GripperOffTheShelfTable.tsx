@@ -28,12 +28,12 @@ export interface GripperOffTheShelfComponent {
 }
 
 const components: GripperOffTheShelfComponent[] = [
-  { name: 'Miniature Linear Guide Standard Block', image: 'rse2b10-155.png', model: 'RSE2B10-155', quantity: 2, unitPrice: '14940', supplier: 'MiSUMi'},
-  { name: 'M3x5 bolt', image: 'm3-5.png', model: 'CBE3-5', quantity: 8, unitPrice: '70', supplier: 'MiSUMi'},
-  { name: 'M3x8 bolt', image: 'm3-8.png', model: 'CBE3-8', quantity: 20, unitPrice: '56', supplier: 'MiSUMi'},
-  { name: 'Small Diameter Head bolts M3x6', image: 'kbbs3-6.png', model: 'KBBS3-6', quantity: 32, unitPrice: '228', supplier: 'MiSUMi'},
-  { name: 'Step Bolt', image: 'dbsy4-5-4.png', model: 'DBSY4-5-4', quantity: 8, unitPrice: '440', supplier: 'MiSUMi'},
-  { name: 'Bearing', image: 'mr126zz.png', model: 'MR126ZZ', quantity: 8, unitPrice: '482', supplier: 'MiSUMi'},
+  { name: 'Miniature Linear Guide Standard Block', image: 'rse2b10-155.png', model: 'RSE2B10-155', quantity: 2, unitPrice: 14940, supplier: 'MiSUMi'},
+  { name: 'M3x5 bolt', image: 'm3-5.png', model: 'CBE3-5', quantity: 8, unitPrice: 70, supplier: 'MiSUMi'},
+  { name: 'M3x8 bolt', image: 'm3-8.png', model: 'CBE3-8', quantity: 20, unitPrice: 56, supplier: 'MiSUMi'},
+  { name: 'Small Diameter Head bolts M3x6', image: 'kbbs3-6.png', model: 'KBBS3-6', quantity: 32, unitPrice: 228, supplier: 'MiSUMi'},
+  { name: 'Step Bolt', image: 'dbsy4-5-4.png', model: 'DBSY4-5-4', quantity: 8, unitPrice: 440, supplier: 'MiSUMi'},
+  { name: 'Bearing', image: 'mr126zz.png', model: 'MR126ZZ', quantity: 8, unitPrice: 482, supplier: 'MiSUMi'},
 ];
 
 const columns: BoMTableColumn<GripperOffTheShelfComponent>[] = [

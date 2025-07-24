@@ -19,6 +19,14 @@ import Admonition from '@theme/Admonition';
 import BoMPhoto from './BoMPhoto';
 import { formatPrice, formatTotalCost } from '../utils/priceUtils';
 
+export interface BoMRecord {
+  name: string;
+  image: string;
+  model: string | ReactNode;
+  quantity: number;
+  unitPrice: number;
+}
+
 export interface BoMTableColumn<T> {
   header: string;
   key: keyof T | 'totalPrice';
@@ -64,7 +72,7 @@ const tableStyles = {
 
 export { tableStyles };
 
-export default function BoMTable<T extends Record<string, any>>({
+export default function BoMTable<T extends BoMRecord>({
   type,
   components,
   columns,
@@ -83,13 +91,13 @@ export default function BoMTable<T extends Record<string, any>>({
     }
   };
 
-  const renderCell = (component: T, column: BoMTableColumn<T>) => {
+  const renderCell = (component: T, column: BoMTableColumn<T>): ReactNode => {
     switch (column.key) {
       case 'image':
         return component.image ? (
           <BoMPhoto
             src={require(`@site/static/img/hardware/bom/${imageBasePath}/${component.image}`).default}
-            alt={component.name || component.model || ''}
+            alt={component.name || ''}
           />
         ) : null;
       case 'unitPrice':
@@ -97,7 +105,7 @@ export default function BoMTable<T extends Record<string, any>>({
       case 'totalPrice':
         return <strong>{formatPrice(component.unitPrice * component.quantity)}</strong>;
       default:
-        return component[column.key as keyof T];
+        return component[column.key as keyof T] as ReactNode;
     }
   };
 
