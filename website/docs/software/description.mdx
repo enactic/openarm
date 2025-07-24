@@ -124,11 +124,16 @@ To display the robot in RViz with a simple joint state GUI:
 
 ```bash
 # Display single arm with hand
-ros2 launch openarm_description display_openarm.launch.py arm_type:=v10 bimanual:=false
+ros2 launch openarm_description display_openarm.launch.py arm_type:=v10 bimanual:=false mesh_ext:=dae
 
 # Display single arm without end-effector
-ros2 launch openarm_description display_openarm.launch.py arm_type:=v10 bimanual:=false ee_type:=none
+ros2 launch openarm_description display_openarm.launch.py arm_type:=v10 bimanual:=false ee_type:=none mesh_ext:=dae
 ```
+:::tip
+If you're receiving errors regarding the `.dae` files, try switching mesh formats when launching with:  
+`mesh_ext:=obj` or `mesh_ext:=stl`
+:::
+
 <BlockImage src="software/description/single-arm-urdf-rviz.png" alt="Single Arm URDF Rviz" width="65%" />
 
 
@@ -136,11 +141,16 @@ ros2 launch openarm_description display_openarm.launch.py arm_type:=v10 bimanual
 
 ```bash
 # Display bimanual configuration
-ros2 launch openarm_description display_openarm.launch.py arm_type:=v10 bimanual:=true
+ros2 launch openarm_description display_openarm.launch.py arm_type:=v10 bimanual:=true mesh_ext:=dae
 
 # Display bimanual without end-effectors
-ros2 launch openarm_description display_openarm.launch.py arm_type:=v10 bimanual:=true ee_type:=none
+ros2 launch openarm_description display_openarm.launch.py arm_type:=v10 bimanual:=true ee_type:=none mesh_ext:=dae
 ```
+:::tip
+If you're receiving errors regarding the `.dae` files, try switching mesh formats when launching with:  
+`mesh_ext:=obj` or `mesh_ext:=stl`
+:::
+
 <BlockImage src="software/description/bimanual-urdf-rviz.png" alt="Bimanual URDF Rviz" width="65%" />
 
 ### Exporting URDFs
