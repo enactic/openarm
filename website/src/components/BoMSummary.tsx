@@ -25,11 +25,10 @@ export default function BoMSummary(): ReactNode {
 
   return (
     <>
-      <h2>The Total BOM Price is {formatPrice(totalBOMPrice)} (≈ US $6500)</h2>
       <BlockImage
         src="hardware/bom/procurement/bom-summary.png"
         alt="BOM summary"
-        width="70%"
+        width="125%"
       />
       <hr />
       <ActuatorsTable />
