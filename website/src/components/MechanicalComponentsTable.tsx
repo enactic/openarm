@@ -74,15 +74,13 @@ const columns: TableColumn<MechanicalComponentRecord>[] = [
   }
 ];
 
-export default function MechanicalComponentsTable(): ReactNode {
-  const totalCost = mechanicalComponentsData.reduce(
-    (sum, record) => sum + record.cost,
-    0
-  );
+export const MechanicalTotalCost = () =>
+  mechanicalComponentsData.reduce((sum, record) => sum + record.cost, 0);
 
+export default function MechanicalComponentsTable(): ReactNode {
   return (
     <>
-      <h3>🛠 Mechanical Components (Total Cost: {formatPrice(totalCost)})</h3>
+      <h3>🛠 Mechanical Components (Total Cost: {formatPrice(MechanicalTotalCost())})</h3>
       <Table
         columns={columns}
         data={mechanicalComponentsData}

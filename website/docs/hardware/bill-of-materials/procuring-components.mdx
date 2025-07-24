@@ -3,9 +3,7 @@ sidebar_position: 1
 ---
 
 import BlockImage from '@site/src/components/BlockImage';
-import ActuatorsTable from '@site/src/components/ActuatorsTable';
-import MechanicalComponentsTable from '@site/src/components/MechanicalComponentsTable';
-import ElectricalComponentsTable from '@site/src/components/ElectricalComponentsTable';
+import BoMSummaryTable from '@site/src/components/BoMSummaryTable';
 
 # Procuring Components
 
@@ -174,16 +172,4 @@ If you are interested in purchasing motors, please visit [our Purchase page](/ge
 
 This checklist includes *all components* required for assembling the *OpenArm bimanual setup*. 
 
-#### The Total BOM Price is {formatPrice(205790+42066+37387+112113 + ArmManufacturedTotalCost() + ArmOffTheShelfTotalCost() + PedestalManufacturedTotalCost() + PedestalOffTheShelfTotalCost() + GripperManufacturedTotalCost() + GripperOffTheShelfTotalCost() + ElectricalTotalCost())}
-
----
-
-<ActuatorsTable />
-
----
-
-<MechanicalComponentsTable />
-
----
-
-<ElectricalComponentsTable />
+<BoMSummaryTable />

@@ -71,12 +71,13 @@ const columns: TableColumn<ActuatorRecord>[] = [
   }
 ];
 
-export default function ActuatorsTable(): ReactNode {
-  const totalCost = actuatorsData.reduce((sum, record) => sum + record.cost, 0);
+export const ActuatorTotalCost = () =>
+  actuatorsData.reduce((sum, record) => sum + record.cost, 0);
 
+export default function ActuatorsTable(): ReactNode {
   return (
     <>
-      <h3>✅ Actuators (Total Cost: {formatPrice(totalCost)})</h3>
+      <h3>✅Actuators (Total Cost: {formatPrice(ActuatorTotalCost())})</h3>
       <Table
         columns={columns}
         data={actuatorsData}

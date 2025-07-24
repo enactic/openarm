@@ -54,7 +54,7 @@ const columns: TableColumn<ElectricalComponentRecord>[] = [
 export default function ElectricalComponentsTable(): ReactNode {
   return (
     <>
-      <h3>⚡ Electrical Components (Total Cost: {formatPrice(ElectricalTotalCost())})</h2>
+      <h3>⚡Electrical Components (Total Cost: {formatPrice(ElectricalTotalCost())})</h3>
       <Table
         columns={columns}
         data={electricalComponentsData}
