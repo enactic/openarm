@@ -2,15 +2,10 @@
 sidebar_position: 1
 ---
 
-import { formatPrice } from '@site/src/utils/priceUtils';
-import { ArmManufacturedTotalCost } from '@site/src/components/ArmManufacturedTable';
-import { ArmOffTheShelfTotalCost } from '@site/src/components/ArmOffTheShelfTable';
-import { PedestalManufacturedTotalCost } from '@site/src/components/PedestalManufacturedTable';
-import { PedestalOffTheShelfTotalCost } from '@site/src/components/PedestalOffTheShelfTable';
-import { GripperManufacturedTotalCost } from '@site/src/components/GripperManufacturedTable';
-import { GripperOffTheShelfTotalCost } from '@site/src/components/GripperOffTheShelfTable';
-import { ElectricalTotalCost } from '@site/src/components/ElectricalTable';
 import BlockImage from '@site/src/components/BlockImage';
+import ActuatorsTable from '@site/src/components/ActuatorsTable';
+import MechanicalComponentsTable from '@site/src/components/MechanicalComponentsTable';
+import ElectricalComponentsTable from '@site/src/components/ElectricalComponentsTable';
 
 # Procuring Components
 
@@ -183,98 +178,12 @@ This checklist includes *all components* required for assembling the *OpenArm bi
 
 ---
 
-#### ✅ Actuators (Total Cost: { formatPrice(205790+42066+37387+112113)})
-
-<table>
-  <thead>
-    <tr>
-      <th style={{ textAlign: 'center' }}>Component</th>
-      <th style={{ textAlign: 'center' }}>Quantity</th>
-      <th style={{ textAlign: 'center' }}>Model</th>
-      <th style={{ textAlign: 'center' }}>Cost</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td style={{ textAlign: 'center' }}>DAMIAO Actuator</td>
-      <td style={{ textAlign: 'center' }}>4×</td>
-      <td style={{ textAlign: 'center' }}><em>DM-J8009-2EC</em></td>
-      <td style={{ textAlign: 'center' }}>{ formatPrice(205790) }</td>
-    </tr>
-    <tr>
-      <td style={{ textAlign: 'center' }}>DAMIAO Actuator</td>
-      <td style={{ textAlign: 'center' }}>2×</td>
-      <td style={{ textAlign: 'center' }}><em>DM-J4340P-2EC</em></td>
-      <td style={{ textAlign: 'center' }}>{ formatPrice(42066) }</td>
-    </tr>
-    <tr>
-      <td style={{ textAlign: 'center' }}>DAMIAO Actuator</td>
-      <td style={{ textAlign: 'center' }}>2×</td>
-      <td style={{ textAlign: 'center' }}><em>DM-J4340-2EC</em></td>
-      <td style={{ textAlign: 'center' }}>{ formatPrice(37387) }</td>
-    </tr>
-    <tr>
-      <td style={{ textAlign: 'center' }}>DAMIAO Actuator</td>
-      <td style={{ textAlign: 'center' }}>8×</td>
-      <td style={{ textAlign: 'center' }}><em>DM-J4310-2EC V1.1</em></td>
-      <td style={{ textAlign: 'center' }}>{ formatPrice(112113)}</td>
-    </tr>
-  </tbody>
-</table>
+<ActuatorsTable />
 
 ---
 
-#### 🛠 Mechanical Components (Total Cost: { formatPrice(ArmManufacturedTotalCost() + ArmOffTheShelfTotalCost() + PedestalManufacturedTotalCost() + PedestalOffTheShelfTotalCost() + GripperManufacturedTotalCost() + GripperOffTheShelfTotalCost())})
-
-<table>
-  <thead>
-    <tr>
-      <th style={{ textAlign: 'center' }}>Component</th>
-      <th style={{ textAlign: 'center' }}>Link</th>
-      <th style={{ textAlign: 'center' }}>Cost</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td style={{ textAlign: 'center' }}>Manufactured Arm Parts</td>
-      <td style={{ textAlign: 'center' }}><a href="arm-manufactured">View Parts</a></td>
-      <td style={{ textAlign: 'center' }}>{ formatPrice(ArmManufacturedTotalCost()) }</td>
-    </tr>
-    <tr>
-      <td style={{ textAlign: 'center' }}>Off-the-shelf Arm Parts</td>
-      <td style={{ textAlign: 'center' }}><a href="arm-off-the-shelf">View Parts</a></td>
-      <td style={{ textAlign: 'center' }}>{ formatPrice(ArmOffTheShelfTotalCost()) }</td>
-    </tr>
-    <tr>
-      <td style={{ textAlign: 'center' }}>Pedestal Components</td>
-      <td style={{ textAlign: 'center' }}><a href="pedestal">View Parts</a></td>
-      <td style={{ textAlign: 'center' }}>{ formatPrice(PedestalManufacturedTotalCost() + PedestalOffTheShelfTotalCost()) }</td>
-    </tr>
-    <tr>
-      <td style={{ textAlign: 'center' }}>Gripper Components</td>
-      <td style={{ textAlign: 'center' }}><a href="gripper">View Parts</a></td>
-      <td style={{ textAlign: 'center' }}>{ formatPrice(GripperManufacturedTotalCost() + GripperOffTheShelfTotalCost()) }</td>
-    </tr>
-  </tbody>
-</table>
+<MechanicalComponentsTable />
 
 ---
 
-#### ⚡ Electrical Components (Total Cost: { formatPrice(ElectricalTotalCost()) })
-
-<table>
-  <thead>
-    <tr>
-      <th style={{ textAlign: 'center' }}>Component</th>
-      <th style={{ textAlign: 'center' }}>Link</th>
-      <th style={{ textAlign: 'center' }}>Cost</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td style={{ textAlign: 'center' }}>All Electrical Components</td>
-      <td style={{ textAlign: 'center' }}><a href="electrical">View Components</a></td>
-      <td style={{ textAlign: 'center' }}>{ formatPrice(ElectricalTotalCost()) }</td>
-    </tr>
-  </tbody>
-</table>
+<ElectricalComponentsTable />
