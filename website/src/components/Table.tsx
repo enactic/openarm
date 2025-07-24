@@ -15,8 +15,6 @@
 import React, { type ReactNode } from 'react';
 
 export interface TableRecord {
-  name?: string;
-  id?: string;
   [key: string]: any;
 }
 
