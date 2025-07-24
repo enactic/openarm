@@ -134,7 +134,7 @@ For custom electronics, we provide pre-designed PCB layouts and wire harness dia
 
 <BlockImage src="hardware/bom/procurement/jlcpcb-step5.png" alt="jlcpcb-5" width="70%" />
 
-8. Upload the BOM and CPL files, and click on `Process BOM & CPL`.
+8. Upload the **[BOM](/file/hardware/bill-of-materials/electrical/bom-for-hub.csv)** and **[CPL](/file/hardware/bill-of-materials/electrical/cpl-for-hub.xlsx)** files, and click on `Process BOM & CPL`.
 
 <BlockImage src="hardware/bom/procurement/jlcpcb-step6.png" alt="jlcpcb-6" width="70%" />
 
@@ -177,11 +177,13 @@ If you are interested in purchasing motors, please visit [our Purchase page](/ge
 
 ## Checklist
 
-This checklist includes *all components* required for assembling the *OpenArm bimanual setup*.
+This checklist includes *all components* required for assembling the *OpenArm bimanual setup*. 
+
+#### The Total BOM Price is {formatPrice(205790+42066+37387+112113 + ArmManufacturedTotalCost() + ArmOffTheShelfTotalCost() + PedestalManufacturedTotalCost() + PedestalOffTheShelfTotalCost() + GripperManufacturedTotalCost() + GripperOffTheShelfTotalCost() + ElectricalTotalCost())}
 
 ---
 
-### ✅ Actuators
+### ✅ Actuators (Total Cost: { formatPrice(205790+42066+37387+112113)})
 
 <table>
   <thead>
@@ -197,32 +199,32 @@ This checklist includes *all components* required for assembling the *OpenArm bi
       <td style={{ textAlign: 'center' }}>DAMIAO Actuator</td>
       <td style={{ textAlign: 'center' }}>4×</td>
       <td style={{ textAlign: 'center' }}><em>DM-J8009-2EC</em></td>
-      <td style={{ textAlign: 'center' }}>¥205,790</td>
+      <td style={{ textAlign: 'center' }}>{ formatPrice(205790) }</td>
     </tr>
     <tr>
       <td style={{ textAlign: 'center' }}>DAMIAO Actuator</td>
       <td style={{ textAlign: 'center' }}>2×</td>
       <td style={{ textAlign: 'center' }}><em>DM-J4340P-2EC</em></td>
-      <td style={{ textAlign: 'center' }}>¥42,066</td>
+      <td style={{ textAlign: 'center' }}>{ formatPrice(42066) }</td>
     </tr>
     <tr>
       <td style={{ textAlign: 'center' }}>DAMIAO Actuator</td>
       <td style={{ textAlign: 'center' }}>2×</td>
       <td style={{ textAlign: 'center' }}><em>DM-J4340-2EC</em></td>
-      <td style={{ textAlign: 'center' }}>¥37,387</td>
+      <td style={{ textAlign: 'center' }}>{ formatPrice(37387) }</td>
     </tr>
     <tr>
       <td style={{ textAlign: 'center' }}>DAMIAO Actuator</td>
       <td style={{ textAlign: 'center' }}>8×</td>
       <td style={{ textAlign: 'center' }}><em>DM-J4310-2EC V1.1</em></td>
-      <td style={{ textAlign: 'center' }}>¥112,113</td>
+      <td style={{ textAlign: 'center' }}>{ formatPrice(112113)}</td>
     </tr>
   </tbody>
 </table>
 
 ---
 
-### 🛠 Mechanical Components
+### 🛠 Mechanical Components (Total Cost: { formatPrice(ArmManufacturedTotalCost() + ArmOffTheShelfTotalCost() + PedestalManufacturedTotalCost() + PedestalOffTheShelfTotalCost() + GripperManufacturedTotalCost() + GripperOffTheShelfTotalCost())})
 
 <table>
   <thead>
@@ -236,31 +238,29 @@ This checklist includes *all components* required for assembling the *OpenArm bi
     <tr>
       <td style={{ textAlign: 'center' }}>Manufactured Arm Parts</td>
       <td style={{ textAlign: 'center' }}><a href="arm-manufactured">View Parts</a></td>
-      <td style={{ textAlign: 'center' }}><code>{ formatPrice(ArmManufacturedTotalCost()) }</code></td>
+      <td style={{ textAlign: 'center' }}>{ formatPrice(ArmManufacturedTotalCost()) }</td>
     </tr>
     <tr>
       <td style={{ textAlign: 'center' }}>Off-the-shelf Arm Parts</td>
       <td style={{ textAlign: 'center' }}><a href="arm-off-the-shelf">View Parts</a></td>
-      <td style={{ textAlign: 'center' }}><code>{ formatPrice(ArmOffTheShelfTotalCost()) }</code></td>
+      <td style={{ textAlign: 'center' }}>{ formatPrice(ArmOffTheShelfTotalCost()) }</td>
     </tr>
     <tr>
       <td style={{ textAlign: 'center' }}>Pedestal Components</td>
       <td style={{ textAlign: 'center' }}><a href="pedestal">View Parts</a></td>
-      <td style={{ textAlign: 'center' }}><code>{ formatPrice(PedestalManufacturedTotalCost() + PedestalOffTheShelfTotalCost()) }</code></td>
+      <td style={{ textAlign: 'center' }}>{ formatPrice(PedestalManufacturedTotalCost() + PedestalOffTheShelfTotalCost()) }</td>
     </tr>
     <tr>
       <td style={{ textAlign: 'center' }}>Gripper Components</td>
       <td style={{ textAlign: 'center' }}><a href="gripper">View Parts</a></td>
-      <td style={{ textAlign: 'center' }}><code>{ formatPrice(GripperManufacturedTotalCost() + GripperOffTheShelfTotalCost()) }</code></td>
+      <td style={{ textAlign: 'center' }}>{ formatPrice(GripperManufacturedTotalCost() + GripperOffTheShelfTotalCost()) }</td>
     </tr>
   </tbody>
 </table>
 
 ---
 
-### ⚡ Electrical Components
-
-<h2>⚡ Electrical Components</h2>
+### ⚡ Electrical Components (Total Cost: { formatPrice(ElectricalTotalCost()) })
 
 <table>
   <thead>
@@ -274,7 +274,7 @@ This checklist includes *all components* required for assembling the *OpenArm bi
     <tr>
       <td style={{ textAlign: 'center' }}>All Electrical Components</td>
       <td style={{ textAlign: 'center' }}><a href="electrical">View Components</a></td>
-      <td style={{ textAlign: 'center' }}><code>{ formatPrice(ElectricalTotalCost()) }</code></td>
+      <td style={{ textAlign: 'center' }}>{ formatPrice(ElectricalTotalCost()) }</td>
     </tr>
   </tbody>
 </table>
