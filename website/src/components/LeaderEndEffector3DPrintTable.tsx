@@ -18,7 +18,7 @@ import React, {
 import BoMTable, { type BoMTableColumn } from './BoMTable';
 import { calculateTotalCost } from '../utils/priceUtils';
 
-export interface LeaderEE3DPrintComponent {
+export interface LeaderEndEffector3DPrintComponent {
   name: string;
   image: string;
   model: string;
@@ -26,7 +26,7 @@ export interface LeaderEE3DPrintComponent {
   unitPrice: number;
 }
 
-const components: LeaderEE3DPrintComponent[] = [
+const components: LeaderEndEffector3DPrintComponent[] = [
   { name: 'Rail Connector (Leader)', image: 'rail-connector-leader.png', model: 'rail-connector-leader', quantity: 2, unitPrice: 500},
   { name: 'Swivel Rotor (Leader)', image: 'swivel-rotor-leader.png', model: 'swivel-rotor-leader', quantity: 2, unitPrice: 62},
   { name: 'Swivel Link (Leader)', image: 'swivel-link-leader.png', model: 'swivel-link-leader', quantity: 4, unitPrice: 10},
@@ -34,7 +34,7 @@ const components: LeaderEE3DPrintComponent[] = [
   { name: 'Left Pincer', image: 'left-pincer.png', model: 'left-pincer', quantity: 2, unitPrice: 100},
 ];
 
-const columns: BoMTableColumn<LeaderEE3DPrintComponent>[] = [
+const columns: BoMTableColumn<LeaderEndEffector3DPrintComponent>[] = [
   { header: 'Name', key: 'name' },
   { header: 'Photo', key: 'image' },
   { header: 'Model Number', key: 'model' },
@@ -43,17 +43,17 @@ const columns: BoMTableColumn<LeaderEE3DPrintComponent>[] = [
   { header: 'Total Price (JPY)', key: 'totalPrice' },
 ];
 
-export function LeaderEE3DPrintTotalCost(): number {
+export function LeaderEndEffector3DPrintTotalCost(): number {
   return calculateTotalCost(components);
 }
 
-export default function LeaderEE3DPrintTable(): ReactNode {
+export default function LeaderEndEffector3DPrintTable(): ReactNode {
   return (
     <BoMTable
       type="off-the-shelf"
       components={components}
       columns={columns}
-      imageBasePath="leader-ee-3d-print"
+      imageBasePath="leader-end-effector-3d-print"
     />
   );
 }

@@ -18,7 +18,7 @@ import React, {
 import BoMTable, { type BoMTableColumn } from './BoMTable';
 import { calculateTotalCost } from '../utils/priceUtils';
 
-export interface LeaderEEOffTheShelfComponent {
+export interface LeaderEndEffectorOffTheShelfComponent {
   name: string;
   image: string;
   model: string;
@@ -27,7 +27,7 @@ export interface LeaderEEOffTheShelfComponent {
   supplier: string;
 }
 
-const components: LeaderEEOffTheShelfComponent[] = [
+const components: LeaderEndEffectorOffTheShelfComponent[] = [
   { name: 'Miniature Linear Guide Short Block', image: 'sse2bsz-mx10-135.png', model: 'SSE2BSZ-MX10-135', quantity: 2, unitPrice: 6500, supplier: 'MiSUMi'},
   { name: 'M3x6 bolt', image: 'm3-6.png', model: 'CBE3-6', quantity: 16, unitPrice: 70, supplier: 'MiSUMi'},
   { name: 'M3x8 bolt', image: 'm3-8.png', model: 'CBE3-8', quantity: 8, unitPrice: 56, supplier: 'MiSUMi'},
@@ -39,7 +39,7 @@ const components: LeaderEEOffTheShelfComponent[] = [
   { name: 'M3x6 Heat Set Insert', image: 'm3-6-heat-set-insert.png', model: 'M3x6x5', quantity: 8, unitPrice: 6, supplier: 'uxcell'},
 ];
 
-const columns: BoMTableColumn<LeaderEEOffTheShelfComponent>[] = [
+const columns: BoMTableColumn<LeaderEndEffectorOffTheShelfComponent>[] = [
   { header: 'Name', key: 'name' },
   { header: 'Photo', key: 'image' },
   { header: 'Model Number', key: 'model' },
@@ -49,17 +49,17 @@ const columns: BoMTableColumn<LeaderEEOffTheShelfComponent>[] = [
   { header: 'Supplier', key: 'supplier' },
 ];
 
-export function LeaderEEOffTheShelfTotalCost(): number {
+export function LeaderEndEffectorOffTheShelfTotalCost(): number {
   return calculateTotalCost(components);
 }
 
-export default function LeaderEEOffTheShelfTable(): ReactNode {
+export default function LeaderEndEffectorOffTheShelfTable(): ReactNode {
   return (
     <BoMTable
       type="off-the-shelf"
       components={components}
       columns={columns}
-      imageBasePath="leader-ee-off-the-shelf"
+      imageBasePath="leader-end-effector-off-the-shelf"
     />
   );
 }
