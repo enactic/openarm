@@ -3,6 +3,8 @@ title: Contribution Guide
 sidebar_position: 4
 ---
 
+import GitHubIssues from '@site/src/components/GitHubIssues';
+
 # Contribution Guide
 
 We welcome contributions from researchers, developers, makers, and enthusiasts at all levels! Whether you're sharing ideas, picking up tasks, or collaborating on projects, there's a place for you in the OpenArm community.
@@ -10,6 +12,8 @@ We welcome contributions from researchers, developers, makers, and enthusiasts a
 ## 💡 GitHub Issues - Our Idea Pool
 
 Use our [**OpenArm GitHub Repository**](https://github.com/enactic/openarm) as a central hub for new project ideas, feature requests, and bugs:
+
+<GitHubIssues />
 
 <div style={{padding: '20px', backgroundColor: '#e8f5e8', borderRadius: '10px', border: '1px solid #c3e6c3', margin: '20px 0'}}>
   <h3>🎯 How It Works</h3>

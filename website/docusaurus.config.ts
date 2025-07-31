@@ -79,6 +79,10 @@ const config: Config = {
     ],
   ],
 
+  plugins: [
+    require.resolve('./plugins/docusaurus-plugin-github-issues'),
+  ],
+
   themeConfig: {
     // Replace with your project's social card
     image: 'img/social-card.svg',

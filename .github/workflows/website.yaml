@@ -51,6 +51,8 @@ jobs:
             -e "s,baseUrl: '/',baseUrl: '/${GITHUB_REPOSITORY_NAME}/'," \
             docusaurus.config.ts
       - name: Build
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           npm run build
       - name: Upload

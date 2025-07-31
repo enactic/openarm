@@ -1,0 +1,185 @@
+// Copyright 2025 Enactic, Inc.
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//     http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
+import React from 'react';
+import { usePluginData } from '@docusaurus/useGlobalData';
+import type { GitHubIssuePluginData } from '../../plugins/docusaurus-plugin-github-issues';
+import GitHubIssuesEmpty from './GitHubIssuesEmpty';
+
+const styles = {
+  container: {
+    border: '1px solid var(--ifm-color-emphasis-300)',
+    borderRadius: '8px',
+    overflow: 'hidden',
+    textAlign: 'center',
+  } as React.CSSProperties,
+  header: {
+    display: 'flex',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    padding: '1rem',
+    background: 'var(--ifm-color-emphasis-100)',
+    borderBottom: '1px solid var(--ifm-color-emphasis-300)',
+  } as React.CSSProperties,
+  headerTitle: {
+    color: 'var(--ifm-color-primary)',
+  } as React.CSSProperties,
+  lastUpdated: {
+    fontSize: '0.8rem',
+    color: 'var(--ifm-color-emphasis-600)',
+  } as React.CSSProperties,
+  issueItem: {
+    padding: '1rem',
+    borderBottom: '1px solid var(--ifm-color-emphasis-200)',
+    transition: 'background-color 0.2s ease',
+    textAlign: 'left',
+  } as React.CSSProperties,
+  issueItemHover: {
+    background: 'var(--ifm-color-emphasis-100)',
+  } as React.CSSProperties,
+  issueHeader: {
+    display: 'flex',
+    justifyContent: 'space-between',
+    alignItems: 'flex-start',
+    marginBottom: '0.5rem',
+    gap: '1rem',
+  } as React.CSSProperties,
+  issueTitle: {
+    fontWeight: 600,
+    color: 'var(--ifm-color-primary)',
+    textDecoration: 'none',
+    flex: 1,
+  } as React.CSSProperties,
+  thumbsUp: {
+    gap: '0.25rem',
+    background: 'var(--ifm-color-emphasis-200)',
+    padding: '0.25rem 0.5rem',
+    borderRadius: '16px',
+    fontSize: '0.85rem',
+    fontWeight: 500,
+    color: 'var(--ifm-color-emphasis-800)',
+  } as React.CSSProperties,
+  issueMeta: {
+    display: 'flex',
+    gap: '1rem',
+    fontSize: '0.85rem',
+    color: 'var(--ifm-color-emphasis-600)',
+  } as React.CSSProperties,
+  issueNumber: {
+    fontWeight: 500,
+    color: 'var(--ifm-color-emphasis-700)',
+  } as React.CSSProperties,
+  authorLink: {
+    color: 'var(--ifm-color-primary)',
+    textDecoration: 'none',
+  } as React.CSSProperties,
+  footer: {
+    padding: '0.75rem 1rem',
+    background: 'var(--ifm-color-emphasis-100)',
+    borderTop: '1px solid var(--ifm-color-emphasis-200)',
+  } as React.CSSProperties,
+  viewAllLink: {
+    color: 'var(--ifm-color-primary)',
+    textDecoration: 'none',
+    fontWeight: 500,
+  } as React.CSSProperties,
+};
+
+function formatDate(dateString: string): string {
+  const date = new Date(dateString);
+  return date.toLocaleDateString('en-US', {
+    year: 'numeric',
+    month: 'short',
+    day: 'numeric'
+  });
+}
+
+export default function GitHubIssues() {
+  const [hoveredIssue, setHoveredIssue] = React.useState<number | null>(null);
+  const pluginData = usePluginData('docusaurus-plugin-github-issues') as GitHubIssuePluginData;
+
+  if (!pluginData || !pluginData.issues || pluginData.issues.length === 0) {
+    return <GitHubIssuesEmpty />;
+  }
+  const issues = pluginData.issues;
+
+  return (
+    <div style={styles.container}>
+      <div style={styles.header}>
+        <div style={styles.headerTitle}>🔥 Popular Feature Requests</div>
+        <span style={styles.lastUpdated}>
+          Last updated: {formatDate(pluginData.lastUpdated)}
+        </span>
+      </div>
+      <div>
+        {issues.map((issue) => (
+          <div
+            key={issue.id}
+            style={{
+              ...styles.issueItem,
+              ...(hoveredIssue === issue.id ? styles.issueItemHover : {})
+            }}
+            onMouseEnter={() => setHoveredIssue(issue.id)}
+            onMouseLeave={() => setHoveredIssue(null)}
+          >
+            <div style={styles.issueHeader}>
+              <a
+                href={issue.html_url}
+                target="_blank"
+                rel="noopener noreferrer"
+                style={styles.issueTitle}
+              >
+                {issue.title}
+              </a>
+              <div>
+                <span style={styles.thumbsUp}>
+                  👍 {issue.reactions['+1']}
+                </span>
+              </div>
+            </div>
+            <div style={styles.issueMeta}>
+              <span style={styles.issueNumber}>
+                #{issue.number}
+              </span>
+              <span>
+                Created {formatDate(issue.created_at)}
+              </span>
+              <span>
+                by{' '}
+                <a
+                  href={issue.user.html_url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  style={styles.authorLink}
+                >
+                  {issue.user.login}
+                </a>
+              </span>
+            </div>
+          </div>
+        ))}
+      </div>
+      <div style={styles.footer}>
+        <a
+          href="https://github.com/enactic/openarm/issues?q=is%3Aissue%20state%3Aopen%20sort%3Areactions-%2B1-desc%20type%3AFeature"
+          target="_blank"
+          rel="noopener noreferrer"
+          style={styles.viewAllLink}
+        >
+          View all feature requests →
+        </a>
+      </div>
+    </div>
+  );
+}
