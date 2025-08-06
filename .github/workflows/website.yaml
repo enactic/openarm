@@ -27,6 +27,9 @@ jobs:
     name: Build
     runs-on: ubuntu-latest
     timeout-minutes: 5
+    defaults:
+      run:
+        working-directory: website
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
@@ -35,12 +38,10 @@ jobs:
           cache: npm
           cache-dependency-path: website/package-lock.json
       - name: Install
-        working-directory: website
         run: |
           npm ci
       - name: Prepare
         if: github.repository != 'enactic/openarm'
-        working-directory: website
         run: |
           # enactic/openarm -> openarm
           GITHUB_REPOSITORY_NAME=${GITHUB_REPOSITORY#*/}
@@ -50,7 +51,6 @@ jobs:
             -e "s,baseUrl: '/',baseUrl: '/${GITHUB_REPOSITORY_NAME}/'," \
             docusaurus.config.ts
       - name: Build
-        working-directory: website
         run: |
           npm run build
       - name: Upload
