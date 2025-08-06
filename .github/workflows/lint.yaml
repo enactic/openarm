@@ -29,8 +29,8 @@ jobs:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with:
-          node-version: 'latest'
-          cache: 'npm'
+          node-version-file: 'website/package.json'
+          cache: npm
           cache-dependency-path: 'website/package-lock.json'
       - name: Install dependencies
         run: npm ci
