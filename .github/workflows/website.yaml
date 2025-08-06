@@ -37,7 +37,7 @@ jobs:
       - name: Install
         working-directory: website
         run: |
-          npm install
+          npm ci
       - name: Prepare
         if: github.repository != 'enactic/openarm'
         working-directory: website
