@@ -202,9 +202,9 @@ ros2 launch openarm.bimanual.launch.py arm_prefix:=leader right_can_interface:=c
 ```
 
 and
+
 ```sh
 ros2 launch openarm.bimanual.launch.py arm_prefix:=follower right_can_interface:=can2 left_can_interface:=can3
 ```
 
 If network isolation is required (e.g. multiple sets of OpenArm teleoperation), the [ROS_DOMAIN_ID](https://docs.ros.org/en/humble/Concepts/Intermediate/About-Domain-ID.html) environment variable can be set.
-https://docs.ros.org/en/humble/Concepts/Intermediate/About-Domain-ID.html
