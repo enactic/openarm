@@ -50,7 +50,7 @@ const createFallbackData = (): GitHubIssuePluginData => ({
 });
 
 const createOctokit = (): Octokit | null => {
-  const token = process.env.GITHUB_TOKEN;
+  const token = process.env.GH_TOKEN;
   if (!token) {
     console.warn('[GitHub Issues Plugin] GITHUB_TOKEN not found, using fallback data');
     return null;
