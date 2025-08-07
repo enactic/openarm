@@ -15,7 +15,6 @@
 import React from 'react';
 import { usePluginData } from '@docusaurus/useGlobalData';
 import type { GitHubIssuePluginData } from '../../plugins/docusaurus-plugin-github-issues';
-import GitHubIssuesEmpty from './GitHubIssuesEmpty';
 
 const styles = {
   container: {
@@ -94,6 +93,17 @@ const styles = {
     textDecoration: 'none',
     fontWeight: 500,
   } as React.CSSProperties,
+  emptyState: {
+    padding: '2rem',
+    color: 'var(--ifm-color-emphasis-600)',
+  } as React.CSSProperties,
+  emptyStateP: {
+    padding: '0.5rem 0',
+  } as React.CSSProperties,
+  emptyStateLink: {
+    color: 'var(--ifm-color-primary)',
+    textDecoration: 'none',
+  } as React.CSSProperties,
 };
 
 function formatDate(dateString: string): string {
@@ -103,6 +113,36 @@ function formatDate(dateString: string): string {
     month: 'short',
     day: 'numeric'
   });
+}
+
+function GitHubIssuesEmpty() {
+  return (
+    <div style={styles.container}>
+      <div style={styles.emptyState}>
+        <p style={styles.emptyStateP}>🔍 No popular issues found at the moment.</p>
+        <p style={styles.emptyStateP}>
+          Be the first to{' '}
+          <a
+            href="https://github.com/enactic/openarm/issues/new/choose"
+            target="_blank"
+            rel="noopener noreferrer"
+            style={styles.emptyStateLink}
+          >
+            create a feature request
+          </a>{' '}
+          or{' '}
+          <a
+            href="https://github.com/enactic/openarm/issues"
+            target="_blank"
+            rel="noopener noreferrer"
+            style={styles.emptyStateLink}
+          >
+            upvote existing ones
+          </a>!
+        </p>
+      </div>
+    </div>
+  );
 }
 
 export default function GitHubIssues() {
