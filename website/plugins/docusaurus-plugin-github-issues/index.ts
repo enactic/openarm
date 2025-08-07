@@ -17,7 +17,7 @@ import type { LoadContext, Plugin } from '@docusaurus/types';
 
 export type GitHubIssue = Awaited<ReturnType<Octokit['rest']['issues']['listForRepo']>>['data'][0];
 
-interface GitHubIssuePluginOptions {
+interface GitHubIssuesPluginOptions{
   owner: string;
   repo: string;
   state: 'closed' | 'open' | 'all';
@@ -33,7 +33,7 @@ export interface GitHubIssuePluginData {
   lastUpdated: string;
 }
 
-const DEFAULT_OPTIONS: Required<GitHubIssuePluginOptions> = {
+const DEFAULT_OPTIONS: Required<GitHubIssuesPluginOptions> = {
   owner: 'enactic',
   repo: 'openarm',
   types: [],
@@ -59,7 +59,7 @@ const createOctokit = (): Octokit | null => {
 };
 
 const buildRequestParams = (
-  config: Required<GitHubIssuePluginOptions>
+  config: Required<GitHubIssuesPluginOptions>
 ): RestEndpointMethodTypes["issues"]["listForRepo"]["parameters"] => (
   {
     owner: config.owner,
@@ -82,7 +82,7 @@ const sortByReactions = (issues: GitHubIssue[]): GitHubIssue[] =>
 
 const processIssues = (
   issues: GitHubIssue[],
-  config: Required<GitHubIssuePluginOptions>
+  config: Required<GitHubIssuesPluginOptions>
 ): GitHubIssue[] => {
   const filteredIssues = filterByReactions(issues, config.minReactions);
   return sortByReactions(filteredIssues).slice(0, config.limit);
@@ -93,7 +93,7 @@ const createPluginData = (issues: GitHubIssue[]): GitHubIssuePluginData => ({
   lastUpdated: new Date().toISOString(),
 });
 
-const fetchGitHubIssues = async (options: GitHubIssuePluginOptions): Promise<GitHubIssuePluginData> => {
+const fetchGitHubIssues = async (options: GitHubIssuesPluginOptions): Promise<GitHubIssuePluginData> => {
   const octokit = createOctokit();
   if (!octokit) {
     return createFallbackData();
@@ -114,7 +114,7 @@ const fetchGitHubIssues = async (options: GitHubIssuePluginOptions): Promise<Git
 
 export default function gitHubIssuesPlugin(
   _context: LoadContext,
-  options: GitHubIssuePluginOptions
+  options: GitHubIssuesPluginOptions
 ): Plugin<GitHubIssuePluginData> {
   return {
     name: 'docusaurus-plugin-github-issues',
