@@ -19,6 +19,8 @@ on:
       - '**'
       - '!dependabot/**'
   pull_request:
+  schedule:
+    - cron: '0 0 * * *'
 concurrency:
   group: ${{ github.head_ref || github.sha }}-${{ github.workflow }}
   cancel-in-progress: true
