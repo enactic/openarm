@@ -78,7 +78,7 @@ const filterByReactions = (issues: GitHubIssue[], minReactions: number): GitHubI
 };
 
 const sortByReactions = (issues: GitHubIssue[]): GitHubIssue[] =>
-  [...issues].sort((a, b) => b.reactions['+1'] - a.reactions['+1']);
+  issues.toSorted((a, b) => b.reactions['+1'] - a.reactions['+1']);
 
 const processIssues = (
   issues: GitHubIssue[],
