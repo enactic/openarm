@@ -26,7 +26,7 @@ interface GitHubIssue {
   number: number;
   title: string;
   url: string;
-  createdAt: string;
+  updatedAt: string;
   author: {
     login: string;
     name: string;
@@ -221,7 +221,7 @@ export default function GitHubIssues() {
                   #{issue.number}
                 </span>
                 <span>
-                  Created {formatDate(issue.createdAt)}
+                  Updated {formatDate(issue.updatedAt)}
                 </span>
                 <span>
                   by{' '}
