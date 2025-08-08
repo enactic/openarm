@@ -19,5 +19,6 @@
     "baseUrl": ".",
     "lib": ["ESNext"]
   },
-  "exclude": [".docusaurus", "build"]
+  "exclude": [".docusaurus", "build"],
+  "resolveJsonModule": true,
 }
