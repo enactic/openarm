@@ -4,7 +4,6 @@
   "private": true,
   "scripts": {
     "docusaurus": "docusaurus",
-    "prepare-popular-issues": "./scripts/prepare-popular-issues.sh",
     "prestart": "npm run prepare-popular-issues",
     "start": "docusaurus start",
     "prebuild": "npm run prepare-popular-issues",
@@ -15,7 +14,8 @@
     "serve": "docusaurus serve",
     "write-translations": "docusaurus write-translations",
     "write-heading-ids": "docusaurus write-heading-ids",
-    "typecheck": "tsc"
+    "prepare-popular-issues": "./scripts/prepare-popular-issues.sh",
+    "typecheck": "npm run prepare-popular-issues && tsc"
   },
   "dependencies": {
     "@docusaurus/core": "3.8.1",
