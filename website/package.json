@@ -21,7 +21,6 @@
     "@docusaurus/core": "3.8.1",
     "@docusaurus/preset-classic": "3.8.1",
     "@mdx-js/react": "^3.0.0",
-    "@octokit/rest": "^22.0.0",
     "clsx": "^2.0.0",
     "katex": "^0.16.22",
     "prism-react-renderer": "^2.3.0",
