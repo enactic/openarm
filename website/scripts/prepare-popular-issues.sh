@@ -1,5 +1,8 @@
 #!/bin/bash
 
+if [ -z "$GH_TOKEN" ]; then
+  echo "Warning: GH_TOKEN environment variable is not set"
+fi
 mkdir -p static/data
 gh issue list \
   --repo enactic/openarm \
