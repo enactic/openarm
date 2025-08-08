@@ -1,0 +1,12 @@
+#!/bin/bash
+
+if [ -z "$GH_TOKEN" ]; then
+  echo "Warning: GH_TOKEN environment variable is not set"
+fi
+mkdir -p static/data
+gh issue list \
+  --repo enactic/openarm \
+  --search "is:issue state:open sort:reactions-+1-desc type:Feature reactions:>=1" \
+  --json number,title,url,reactionGroups,updatedAt,author --limit 20 | \
+jq '[.[] | select(.reactionGroups[]? | select(.content == "THUMBS_UP" and .users.totalCount > 0))] | .[0:5]' \
+  > static/data/popular-issues.json
