@@ -13,8 +13,26 @@
 // limitations under the License.
 
 import React from 'react';
-import { usePluginData } from '@docusaurus/useGlobalData';
-import type { GitHubIssuePluginData } from '../../plugins/docusaurus-plugin-github-issues';
+import popularIssues from '@site/static/data/popular-issues.json';
+
+interface ReactionGroup {
+  content: string;
+  users: {
+    totalCount: number;
+  };
+}
+
+interface GitHubIssue {
+  number: number;
+  title: string;
+  url: string;
+  createdAt: string;
+  author: {
+    login: string;
+    name: string;
+  };
+  reactionGroups: ReactionGroup[];
+}
 
 const styles = {
   container: {
@@ -115,6 +133,11 @@ function formatDate(dateString: string): string {
   });
 }
 
+function getReactionCount(reactionGroups: ReactionGroup[], reactionType: string): number {
+  const reaction = reactionGroups.find(group => group.content === reactionType);
+  return reaction?.users.totalCount || 0;
+}
+
 function GitHubIssuesEmpty() {
   return (
     <div style={styles.container}>
@@ -146,69 +169,75 @@ function GitHubIssuesEmpty() {
 }
 
 export default function GitHubIssues() {
-  const [hoveredIssue, setHoveredIssue] = React.useState<number | null>(null);
-  const pluginData = usePluginData('docusaurus-plugin-github-issues') as GitHubIssuePluginData;
+  const noExistedIssueNumber = 0;
+  const [hoveredIssue, setHoveredIssue] = React.useState<number>(noExistedIssueNumber);
+  const issues = popularIssues as GitHubIssue[];
 
-  if (!pluginData || !pluginData.issues || pluginData.issues.length === 0) {
+  if (issues?.length === 0) {
     return <GitHubIssuesEmpty />;
   }
-  const issues = pluginData.issues;
 
   return (
     <div style={styles.container}>
       <div style={styles.header}>
         <div style={styles.headerTitle}>🔥 Popular Feature Requests</div>
         <span style={styles.lastUpdated}>
-          Last updated: {formatDate(pluginData.lastUpdated)}
+          Last updated: {formatDate(new Date().toISOString())}
         </span>
       </div>
       <div>
-        {issues.map((issue) => (
-          <div
-            key={issue.id}
-            style={{
-              ...styles.issueItem,
-              ...(hoveredIssue === issue.id ? styles.issueItemHover : {})
-            }}
-            onMouseEnter={() => setHoveredIssue(issue.id)}
-            onMouseLeave={() => setHoveredIssue(null)}
-          >
-            <div style={styles.issueHeader}>
-              <a
-                href={issue.html_url}
-                target="_blank"
-                rel="noopener noreferrer"
-                style={styles.issueTitle}
-              >
-                {issue.title}
-              </a>
-              <div>
-                <span style={styles.thumbsUp}>
-                  👍 {issue.reactions['+1']}
+        {issues.map((issue) => {
+          const thumbsUpCount = getReactionCount(issue.reactionGroups, 'THUMBS_UP');
+
+          return (
+            <div
+              key={issue.number}
+              style={{
+                ...styles.issueItem,
+                ...(hoveredIssue === issue.number ? styles.issueItemHover : {})
+              }}
+              onMouseEnter={() => setHoveredIssue(issue.number)}
+              onMouseLeave={() => setHoveredIssue(noExistedIssueNumber)}
+            >
+              <div style={styles.issueHeader}>
+                <a
+                  href={issue.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  style={styles.issueTitle}
+                >
+                  {issue.title}
+                </a>
+                <div>
+                  {thumbsUpCount > 0 && (
+                    <span style={styles.thumbsUp}>
+                      👍 {thumbsUpCount}
+                    </span>
+                  )}
+                </div>
+              </div>
+              <div style={styles.issueMeta}>
+                <span style={styles.issueNumber}>
+                  #{issue.number}
+                </span>
+                <span>
+                  Created {formatDate(issue.createdAt)}
+                </span>
+                <span>
+                  by{' '}
+                  <a
+                    href={`https://github.com/${issue.author.login}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    style={styles.authorLink}
+                  >
+                    {issue.author.login}
+                  </a>
                 </span>
               </div>
             </div>
-            <div style={styles.issueMeta}>
-              <span style={styles.issueNumber}>
-                #{issue.number}
-              </span>
-              <span>
-                Created {formatDate(issue.created_at)}
-              </span>
-              <span>
-                by{' '}
-                <a
-                  href={issue.user.html_url}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  style={styles.authorLink}
-                >
-                  {issue.user.login}
-                </a>
-              </span>
-            </div>
-          </div>
-        ))}
+          );
+        })}
       </div>
       <div style={styles.footer}>
         <a

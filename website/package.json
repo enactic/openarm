@@ -4,7 +4,10 @@
   "private": true,
   "scripts": {
     "docusaurus": "docusaurus",
+    "prepare-popular-issues": "./scripts/prepare-popular-issues.sh",
+    "prestart": "npm run prepare-popular-issues",
     "start": "docusaurus start",
+    "prebuild": "npm run prepare-popular-issues",
     "build": "docusaurus build",
     "swizzle": "docusaurus swizzle",
     "deploy": "docusaurus deploy",
