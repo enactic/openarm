@@ -62,9 +62,6 @@ const styles = {
     transition: 'background-color 0.2s ease',
     textAlign: 'left',
   } as React.CSSProperties,
-  issueItemHover: {
-    background: 'var(--ifm-color-emphasis-100)',
-  } as React.CSSProperties,
   issueHeader: {
     display: 'flex',
     justifyContent: 'space-between',
@@ -169,8 +166,6 @@ function GitHubIssuesEmpty(): ReactNode {
 }
 
 export default function GitHubIssues(): ReactNode {
-  const noExistedIssueNumber = 0;
-  const [hoveredIssue, setHoveredIssue] = React.useState<number>(noExistedIssueNumber);
   const issues = popularIssues as GitHubIssue[];
 
   if (issues?.length === 0) {
@@ -192,12 +187,7 @@ export default function GitHubIssues(): ReactNode {
           return (
             <div
               key={issue.number}
-              style={{
-                ...styles.issueItem,
-                ...(hoveredIssue === issue.number ? styles.issueItemHover : {})
-              }}
-              onMouseEnter={() => setHoveredIssue(issue.number)}
-              onMouseLeave={() => setHoveredIssue(noExistedIssueNumber)}
+              style={styles.issueItem}
             >
               <div style={styles.issueHeader}>
                 <a
