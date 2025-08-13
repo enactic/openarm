@@ -56,6 +56,7 @@ jobs:
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
+          npm run fetch-popular-issues
           npm run build
       - name: Upload
         id: deployment
