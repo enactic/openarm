@@ -49,9 +49,6 @@ const styles = {
     background: 'var(--ifm-color-emphasis-100)',
     borderBottom: '1px solid var(--ifm-color-emphasis-300)',
   } as React.CSSProperties,
-  headerTitle: {
-    color: 'var(--ifm-color-primary)',
-  } as React.CSSProperties,
   lastUpdated: {
     fontSize: '0.8rem',
     color: 'var(--ifm-color-emphasis-600)',
