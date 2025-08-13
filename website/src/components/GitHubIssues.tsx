@@ -68,8 +68,6 @@ const styles = {
   } as React.CSSProperties,
   issueTitle: {
     fontWeight: 600,
-    color: 'var(--ifm-color-primary)',
-    flex: 1,
   } as React.CSSProperties,
   thumbsUp: {
     gap: '0.25rem',
@@ -90,16 +88,12 @@ const styles = {
     fontWeight: 500,
     color: 'var(--ifm-color-emphasis-700)',
   } as React.CSSProperties,
-  authorLink: {
-    color: 'var(--ifm-color-primary)',
-  } as React.CSSProperties,
   footer: {
     padding: '0.75rem 1rem',
     background: 'var(--ifm-color-emphasis-100)',
     borderTop: '1px solid var(--ifm-color-emphasis-200)',
   } as React.CSSProperties,
   viewAllLink: {
-    color: 'var(--ifm-color-primary)',
     fontWeight: 500,
   } as React.CSSProperties,
   emptyState: {
@@ -108,9 +102,6 @@ const styles = {
   } as React.CSSProperties,
   emptyStateP: {
     padding: '0.5rem 0',
-  } as React.CSSProperties,
-  emptyStateLink: {
-    color: 'var(--ifm-color-primary)',
   } as React.CSSProperties,
 };
 
@@ -139,7 +130,6 @@ function GitHubIssuesEmpty(): ReactNode {
             href="https://github.com/enactic/openarm/issues/new/choose"
             target="_blank"
             rel="noopener noreferrer"
-            style={styles.emptyStateLink}
           >
             create a feature request
           </a>{' '}
@@ -148,7 +138,6 @@ function GitHubIssuesEmpty(): ReactNode {
             href="https://github.com/enactic/openarm/issues"
             target="_blank"
             rel="noopener noreferrer"
-            style={styles.emptyStateLink}
           >
             upvote existing ones
           </a>!
@@ -168,7 +157,7 @@ export default function GitHubIssues(): ReactNode {
   return (
     <div style={styles.container}>
       <div style={styles.header}>
-        <div style={styles.headerTitle}>🔥 Popular Feature Requests</div>
+        <div>🔥 Popular Feature Requests</div>
         <span style={styles.lastUpdated}>
           Last updated: {formatDate(new Date().toISOString())}
         </span>
@@ -212,7 +201,6 @@ export default function GitHubIssues(): ReactNode {
                     href={`https://github.com/${issue.author.login}`}
                     target="_blank"
                     rel="noopener noreferrer"
-                    style={styles.authorLink}
                   >
                     {issue.author.login}
                   </a>
