@@ -13,7 +13,6 @@
 // limitations under the License.
 
 import React, { ReactNode } from 'react';
-import popularIssues from '@site/static/data/popular-issues.json';
 
 interface ReactionGroup {
   content: string;
@@ -105,6 +104,15 @@ const styles = {
   } as React.CSSProperties,
 };
 
+function loadPopularIssues(): GitHubIssue[] {
+  try {
+    return require('@site/static/data/popular-issues.json');
+  } catch (e) {
+    // If you need popular issues, please run: npm run fetch-popular-issues
+    return [];
+  }
+}
+
 function formatDate(dateString: string): string {
   const date = new Date(dateString);
   return date.toLocaleDateString('en-US', {
@@ -148,7 +156,7 @@ function GitHubIssuesEmpty(): ReactNode {
 }
 
 export default function GitHubIssues(): ReactNode {
-  const issues = popularIssues as GitHubIssue[];
+  const issues = loadPopularIssues();
 
   if (issues?.length === 0) {
     return <GitHubIssuesEmpty />;
