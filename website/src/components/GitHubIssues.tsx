@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import React from 'react';
+import React, { ReactNode } from 'react';
 import popularIssues from '@site/static/data/popular-issues.json';
 
 interface ReactionGroup {
@@ -138,7 +138,7 @@ function getReactionCount(reactionGroups: ReactionGroup[], reactionType: string)
   return reaction?.users.totalCount || 0;
 }
 
-function GitHubIssuesEmpty() {
+function GitHubIssuesEmpty(): ReactNode {
   return (
     <div style={styles.container}>
       <div style={styles.emptyState}>
@@ -168,7 +168,7 @@ function GitHubIssuesEmpty() {
   );
 }
 
-export default function GitHubIssues() {
+export default function GitHubIssues(): ReactNode {
   const noExistedIssueNumber = 0;
   const [hoveredIssue, setHoveredIssue] = React.useState<number>(noExistedIssueNumber);
   const issues = popularIssues as GitHubIssue[];
