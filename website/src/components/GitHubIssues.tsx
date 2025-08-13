@@ -69,7 +69,6 @@ const styles = {
   issueTitle: {
     fontWeight: 600,
     color: 'var(--ifm-color-primary)',
-    textDecoration: 'none',
     flex: 1,
   } as React.CSSProperties,
   thumbsUp: {
@@ -93,7 +92,6 @@ const styles = {
   } as React.CSSProperties,
   authorLink: {
     color: 'var(--ifm-color-primary)',
-    textDecoration: 'none',
   } as React.CSSProperties,
   footer: {
     padding: '0.75rem 1rem',
@@ -102,7 +100,6 @@ const styles = {
   } as React.CSSProperties,
   viewAllLink: {
     color: 'var(--ifm-color-primary)',
-    textDecoration: 'none',
     fontWeight: 500,
   } as React.CSSProperties,
   emptyState: {
@@ -114,7 +111,6 @@ const styles = {
   } as React.CSSProperties,
   emptyStateLink: {
     color: 'var(--ifm-color-primary)',
-    textDecoration: 'none',
   } as React.CSSProperties,
 };
 
