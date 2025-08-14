@@ -19,5 +19,4 @@
     "baseUrl": ".",
   },
   "exclude": [".docusaurus", "build"],
-  "resolveJsonModule": true,
 }
