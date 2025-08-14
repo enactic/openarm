@@ -14,9 +14,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-if [ -z "$GH_TOKEN" ]; then
-  echo "Warning: GH_TOKEN environment variable is not set"
-fi
 mkdir -p static/data
 gh issue list \
   --repo enactic/openarm \
