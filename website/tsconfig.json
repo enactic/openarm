@@ -17,7 +17,6 @@
   "extends": "@docusaurus/tsconfig",
   "compilerOptions": {
     "baseUrl": ".",
-    "lib": ["ESNext"]
   },
   "exclude": [".docusaurus", "build"],
   "resolveJsonModule": true,
