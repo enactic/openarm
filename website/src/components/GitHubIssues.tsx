@@ -158,7 +158,7 @@ function GitHubIssuesEmpty(): ReactNode {
 export default function GitHubIssues(): ReactNode {
   const issues = loadPopularIssues();
 
-  if (issues?.length === 0) {
+  if (issues.length === 0) {
     return <GitHubIssuesEmpty />;
   }
 
