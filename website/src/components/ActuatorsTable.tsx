@@ -27,7 +27,7 @@ const actuatorsData: ActuatorRecord[] = [
   {
     component: 'J1, J2 motors',
     quantity: 4,
-    model: 'DM-J8009-2EC',
+    model: 'DM-J8009P-2EC',
     cost: 205790
   },
   {
