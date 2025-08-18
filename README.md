@@ -8,7 +8,7 @@ OpenArm features **human-scale** proportions, safety and compliance, and practic
 
 *We're in continuous development and actively seeking contributors, research partners, and company collaborators to shape the next generation of practical humanoid systems. Ready to join the future of open-source robotics?*
 
-> 🚀 **Ready to build?** All hardware and software are completely open-source and ready for you to build, hack, and deploy! Start with our [Getting Started Guide](https://docs.openarm.dev/getting-started)
+> 🚀 **Ready to build?** All hardware and software are completely open-source and ready for you to build, hack, and deploy! Start with our [Getting Started Guide](https://docs.openarm.dev)
 
 ---
 
