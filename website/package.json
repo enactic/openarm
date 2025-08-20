@@ -2,6 +2,7 @@
   "name": "openarm-site",
   "version": "0.0.0",
   "private": true,
+  "type": "module",
   "scripts": {
     "docusaurus": "docusaurus",
     "start": "docusaurus start",
@@ -13,7 +14,9 @@
     "write-translations": "docusaurus write-translations",
     "write-heading-ids": "docusaurus write-heading-ids",
     "fetch-popular-issues": "./scripts/fetch-popular-issues.sh",
-    "typecheck": "tsc"
+    "typecheck": "tsc",
+    "lint": "eslint . --ext .ts,.tsx",
+    "lint:fix": "eslint . --ext .ts,.tsx --fix"
   },
   "dependencies": {
     "@docusaurus/core": "3.8.1",
@@ -32,7 +35,12 @@
     "@docusaurus/module-type-aliases": "3.8.1",
     "@docusaurus/tsconfig": "3.8.1",
     "@docusaurus/types": "3.8.1",
-    "typescript": "~5.9.2"
+    "@eslint/js": "^9.33.0",
+    "eslint": "^9.33.0",
+    "eslint-plugin-react": "^7.37.5",
+    "eslint-plugin-react-hooks": "^5.2.0",
+    "typescript": "~5.9.2",
+    "typescript-eslint": "^8.40.0"
   },
   "browserslist": {
     "production": [
