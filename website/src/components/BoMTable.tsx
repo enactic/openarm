@@ -80,7 +80,7 @@ export default function BoMTable<T extends BoMRecord>({
   const tableColumns: TableColumn<T>[] = columns.map(column => ({
     header: column.header,
     key: column.key as keyof T,
-    render: (row, value) => renderCell(row, column)
+    render: (row, _value) => renderCell(row, column)
   }));
 
   return (

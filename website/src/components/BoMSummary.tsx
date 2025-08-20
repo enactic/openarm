@@ -13,16 +13,12 @@
 // limitations under the License.
 
 import React, { type ReactNode } from 'react';
-import { formatPrice } from '../utils/priceUtils';
-import ActuatorsTable, { ActuatorTotalCost } from './ActuatorsTable';
+import ActuatorsTable from './ActuatorsTable';
 import BlockImage from './BlockImage';
-import { ElectricalTotalCost } from './ElectricalTable';
 import ElectricalComponentsTable from './ElectricalComponentsTable';
-import MechanicalComponentsTable, { MechanicalTotalCost } from './MechanicalComponentsTable';
+import MechanicalComponentsTable from './MechanicalComponentsTable';
 
 export default function BoMSummary(): ReactNode {
-  const totalBOMPrice = ActuatorTotalCost() + MechanicalTotalCost() + ElectricalTotalCost();
-
   return (
     <>
       <BlockImage

@@ -62,12 +62,12 @@ const columns: TableColumn<ActuatorRecord>[] = [
   {
     header: 'Model',
     key: 'model',
-    render: (row, value) => <em>{value}</em>
+    render: (row, value: string) => <em>{value}</em>
   },
   {
     header: 'Cost',
     key: 'cost',
-    render: (row, value) => formatPrice(value)
+    render: (row, value: number) => formatPrice(value)
   }
 ];
 

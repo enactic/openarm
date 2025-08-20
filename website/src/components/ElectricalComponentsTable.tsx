@@ -42,12 +42,12 @@ const columns: TableColumn<ElectricalComponentRecord>[] = [
   {
     header: 'Link',
     key: 'link',
-    render: (row, value) => <Link to={row.link}>{row.linkText}</Link>
+    render: (row, _value) => <Link to={row.link}>{row.linkText}</Link>
   },
   {
     header: 'Cost',
     key: 'cost',
-    render: (row, value) => formatPrice(value)
+    render: (_row, value: number) => formatPrice(value)
   }
 ];
 

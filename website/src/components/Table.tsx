@@ -14,20 +14,16 @@
 
 import React, { type ReactNode } from 'react';
 
-export interface TableRecord {
-  [key: string]: any;
-}
-
 export interface TableColumn<T> {
   header: string;
   key: keyof T;
-  render?: (row: T, value: any) => ReactNode;
+  render?: (row: T, value: T[keyof T]) => ReactNode;
 }
 
 interface TableProps<T> {
   columns: TableColumn<T>[];
   data: T[];
-  keyField?: keyof T;
+  keyField: keyof T;
 }
 
 const tableStyles = {
@@ -61,10 +57,10 @@ const tableStyles = {
   },
 };
 
-export default function Table<T extends TableRecord>({
+export default function Table<T>({
   columns,
   data,
-  keyField = 'name'
+  keyField
 }: TableProps<T>): ReactNode {
   const getCellContent = (row: T, column: TableColumn<T>): ReactNode => {
     if (column.render) {

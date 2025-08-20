@@ -70,7 +70,7 @@ const columns: TableColumn<MechanicalComponentRecord>[] = [
   {
     header: 'Cost',
     key: 'cost',
-    render: (row, value) => formatPrice(value)
+    render: (_row, value: number) => formatPrice(value)
   }
 ];
 

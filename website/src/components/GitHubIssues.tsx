@@ -107,7 +107,7 @@ const styles = {
 function loadPopularIssues(): GitHubIssue[] {
   try {
     return require('@site/static/data/popular-issues.json');
-  } catch (e) {
+  } catch (_e) {
     // If you need popular issues, please run: npm run fetch-popular-issues
     return [];
   }
