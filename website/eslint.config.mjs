@@ -27,7 +27,6 @@ export default tseslint.config(
       'node_modules/**',
       'scripts/**',
       'static/**',
-      'docusaurus.config.ts',
     ],
   },
   {
