@@ -20,7 +20,7 @@ on:
       - '!dependabot/**'
   pull_request:
 jobs:
-  typecheck:
+  lint:
     runs-on: ubuntu-latest
     defaults:
       run:
@@ -36,19 +36,5 @@ jobs:
         run: npm ci
       - name: Check type
         run: npm run typecheck
-  eslint:
-    runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: website
-    steps:
-      - uses: actions/checkout@v5
-      - uses: actions/setup-node@v4
-        with:
-          node-version-file: 'website/package.json'
-          cache: npm
-          cache-dependency-path: 'website/package-lock.json'
-      - name: Install dependencies
-        run: npm ci
       - name: Run ESLint
         run: npm run lint
