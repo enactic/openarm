@@ -29,10 +29,7 @@ interface ModelProps {
 
 function Model({ href, label }: ModelProps) : ReactNode {
   if (!href.startsWith('http')) {
-    // TODO: This doesn't work for .csv but we want to use require() to detect
-    // broken links.
-    // href = require(`/file/hardware/bill-of-materials/electrical/${href}`).default;
-    href = `/file/hardware/bill-of-materials/electrical/${href}`;
+    href = require(`@site/static/file/hardware/bill-of-materials/electrical/${href}`).default;
   }
   return (
     <a
