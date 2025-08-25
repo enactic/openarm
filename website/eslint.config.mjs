@@ -25,7 +25,6 @@ export default tseslint.config(
       '.docusaurus/**',
       'build/**',
       'node_modules/**',
-      'scripts/**',
       'static/**',
     ],
   },
