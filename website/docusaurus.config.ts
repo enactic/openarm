@@ -79,6 +79,10 @@ const config: Config = {
     ],
   ],
 
+  plugins: [
+    './src/plugins/csv-loader/index.ts',
+  ],
+
   themeConfig: {
     // Replace with your project's social card
     image: 'img/social-card.svg',
