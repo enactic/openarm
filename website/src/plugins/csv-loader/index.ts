@@ -14,7 +14,7 @@
 
 import type { Plugin } from '@docusaurus/types';
 
-const csvLoader = (): Plugin => {
+export default function csvLoader(): Plugin {
   return {
     name: 'csv-loader-plugin',
     configureWebpack() {
@@ -31,5 +31,3 @@ const csvLoader = (): Plugin => {
     },
   };
 };
-
-export default csvLoader;
