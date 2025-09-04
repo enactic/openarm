@@ -125,7 +125,8 @@ Simply clicking Stop will hard stop the motors, only do in case of emergency.
 
 ### Trouble Shooting
 
-If the motor starts but fails to rotate: Check the current provided and compare if you're supplying enough with this [table below](#reccomended-currents)
+* If the motor starts but fails to rotate: Check the current provided and compare if you're supplying enough with this [table below](#reccomended-currents)
+* For CANable devices, check whether the 120Ω termination is enabled.
 
 ---
 
@@ -150,6 +151,12 @@ One option is to use an XT30U-M or split a M/F cable and solder the ends to conn
 For the J8009P motors, you can plug the wires directly in without the power adapter board.
 
 <BlockImage src="software/setup/hardware-setup-motor.png" alt="Motor" width="75%" />
+:::
+
+:::note[NOTE ****]
+For CANable devices, enable the 120R termination.
+
+<BlockImage src="software/setup/hardware-setup-120r-termination.jpg" alt="120R termination" width="75%" />
 :::
 
 ### Reccomended Currents:
