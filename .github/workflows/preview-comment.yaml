@@ -23,6 +23,8 @@ permissions:
 jobs:
   post:
     name: Post
+    if:
+      github.event.pull_request.base.repo.full_name != 'enactic/openarm'
     runs-on: ubuntu-latest
     timeout-minutes: 5
     steps:
