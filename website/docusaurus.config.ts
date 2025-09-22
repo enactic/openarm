@@ -86,9 +86,6 @@ const config: Config = {
   themeConfig: {
     // Replace with your project's social card
     image: 'img/social-card.svg',
-    metadata: [
-      {name: 'algolia-site-verification', content: 'F06502A35B61FF7C'},
-    ],
     navbar: {
       title: 'OpenArm',
       logo: {
