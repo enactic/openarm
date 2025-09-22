@@ -203,6 +203,11 @@ const config: Config = {
       theme: prismThemes.github,
       darkTheme: prismThemes.dracula,
     },
+    algolia: {
+      appId: 'WFE3AFZ6YT',
+      apiKey: '5e6864985fbbe054d69963cf00aff9e1',
+      indexName: 'OpenArm documents',
+    },
   } satisfies Preset.ThemeConfig,
 };
 
