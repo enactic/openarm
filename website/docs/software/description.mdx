@@ -198,18 +198,18 @@ Below are some configurable variables for the OpenArm robot description that all
 
 ### Running Multiple Robots with ROS Namespaces and ROS_DOMAIN_ID
 
-When running multiple instances of OpenArm, one option is to namespace arms to control multiple sets of arms with one device. 
+When running multiple instances of OpenArm, one option is to namespace arms to control multiple sets of arms with one device.
 
 For example, when running multiple instances of bimanual, it is possible to namespace packages with:
 
 ```sh
-ros2 launch openarm.bimanual.launch.py arm_prefix:=leader right_can_interface:=can0 left_can_interface:=can1
+ros2 launch openarm_description openarm.bimanual.launch.py arm_prefix:=leader right_can_interface:=can0 left_can_interface:=can1
 ```
 
 and
 
 ```sh
-ros2 launch openarm.bimanual.launch.py arm_prefix:=follower right_can_interface:=can2 left_can_interface:=can3
+ros2 launch openarm_description openarm.bimanual.launch.py arm_prefix:=follower right_can_interface:=can2 left_can_interface:=can3
 ```
 
 If network isolation is required (e.g. multiple sets of OpenArm teleoperation), the [ROS_DOMAIN_ID](https://docs.ros.org/en/humble/Concepts/Intermediate/About-Domain-ID.html) environment variable can be set.
