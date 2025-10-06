@@ -25,12 +25,8 @@ Core control logic is encapsulated in the `Control` class, which supports both:
 
 | Name | Meaning |
 |------|---------|
-| **Dn** | Damping in the controller (velocity-based) |
-| **Jn** | Nominal inertia (used in observers) |
-| **gn** | Cut-off frequency for observers |
 | **Kp** | Position control gain |
 | **Kd** | Velocity control gain |
-| **Kf** | Force control gain |
 | **Fc** | Static friction (Coulomb) level |
 | **k**  | Sharpness of friction transition |
 | **Fv** | Viscous friction (speed-based) |
@@ -46,16 +42,23 @@ tau_f = Fc * tanh(k * dq) + Fv * dq + Fo
 
 ## Running the Script
 
+right_arm
 ```bash
 cd openarm_teleop
-./script/launch_bilateral.sh right_arm can0 can1
+./script/launch_bilateral.sh right_arm can0 can2
+```
+
+left_arm
+```bash
+cd openarm_teleop
+./script/launch_bilateral.sh left_arm can1 can3
 ```
 
 ### Arguments
 
 - `right_arm` or `left_arm`: Specifies which arm to use.
-- `can0`: CAN interface for the leader arm.
-- `can1`: CAN interface for the follower arm.
+- `can0. can1`: CAN interface for the leader arm.
+- `can2, can3`: CAN interface for the follower arm.
 
 If the CAN interfaces are omitted, the script uses the following defaults:
 
@@ -84,4 +87,3 @@ If the CAN interfaces are omitted, the script uses the following defaults:
 - Improper **gain settings** may cause **oscillation or instability**.
   Tune the gains carefully, especially when starting with a new arm or load.
 :::
-
