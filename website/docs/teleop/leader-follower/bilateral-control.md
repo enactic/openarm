@@ -57,7 +57,7 @@ cd openarm_teleop
 ### Arguments
 
 - `right_arm` or `left_arm`: Specifies which arm to use.
-- `can0. can1`: CAN interface for the leader arm.
+- `can0, can1`: CAN interface for the leader arm.
 - `can2, can3`: CAN interface for the follower arm.
 
 If the CAN interfaces are omitted, the script uses the following defaults:
