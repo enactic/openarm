@@ -10,11 +10,12 @@ OpenArm supports 1:1 teleoperation from a **leader** arm to a **follower** arm i
 
 ## Unilateral Control
 
-The follower arm mimics the leader's movements using position commands. Simple one-way control with gravity compensation.
+This is the **basic teleoperation setup**, where the follower arm directly mimics the leader’s movements through position commands.
+It’s a **one-way control** scheme — the leader sends motion commands, but no force feedback is returned.
 
-- **Pros:** Simple setup, excellent for free-space tasks
-- **Cons:** No contact feedback; easy to over-push or misalign during delicate manipulation
-- **Best for:** Open environments with minimal obstacles, lightweight and fast movements, tasks without surface contact
+- **Pros:** Simple and robust; ideal for initial tests and free-space motion
+- **Cons:** No tactile feedback, making it easy to apply excessive force or lose alignment during contact tasks
+- **Best for:** Basic teleoperation, open-space manipulation, fast and lightweight operations without contact forces
 
 <BlockImage src="teleop/leader-follower/unilateral.png" alt="Unilateral leader-follower control" width="100%" />
 
@@ -29,6 +30,12 @@ This produces **high-quality demonstration data** (motion + force) essential for
 - **Best for:** Contact-rich tasks, force-sensitive manipulation, working with deformables, precision insertions, collaborative tasks near humans
 
 ### How Our Bilateral Control Works?
-OpenArm's bilateral controller uses a **disturbance observer-based acceleration control** system for sensorless force estimation. This approach delivers accurate and responsive force feedback without dedicated torque sensors, enabling high-fidelity haptic teleoperation at low hardware cost.
+OpenArm’s bilateral controller uses a disturbance-observer-based acceleration control system for sensorless force estimation.
+This approach provides accurate and responsive force feedback without dedicated torque sensors, enabling high-fidelity haptic teleoperation at a low hardware cost.
 
-<BlockImage src="teleop/leader-follower/4ch-bilateral.png" alt="Bilateral control diagram" width="40%" />
+
+:::caution Note
+The above describes the concept of our four-channel bilateral control architecture, which is currently under development and shared only with our research partners.
+We are actively working on a more robust and stable implementation for future public release.
+The open-source version currently offers a classical position–force bilateral control scheme, suitable for basic teleoperation and research purposes.
+:::
