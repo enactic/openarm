@@ -26,14 +26,16 @@ cd openarm_teleop
 
 ```bash
 sudo apt install -y software-properties-common
-sudo add-apt-repository ppa:openarm/main
-sudo apt update && sudo apt install -y \
-  openarm-can-utils \
-  liborocos-kdl-dev \
+sudo add-apt-repository -y ppa:openarm/main
+sudo apt update
+sudo apt install -y \
   libeigen3-dev \
+  libopenarm-can-dev \
+  liborocos-kdl-dev \
   liburdfdom-dev \
   liburdfdom-headers-dev \
-  libyaml-cpp-dev
+  libyaml-cpp-dev \
+  openarm-can-utils
 ```
 
 ### 3. Build the teleop library
