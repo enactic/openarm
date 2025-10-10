@@ -9,7 +9,6 @@ This guide walks you through the steps to set up and build the `openarm_teleop` 
 
 Before proceeding, please ensure the following dependencies are satisfied:
 
-- ✅ `openarm_can` library (see [OpenArm CAN library](/software/can))
 - ✅ `openarm_description` library (see [OpenArm Description](/software/description))
 
 ---
@@ -26,7 +25,10 @@ cd openarm_teleop
 ### 2. Install Dependancy
 
 ```bash
+sudo apt install -y software-properties-common
+sudo add-apt-repository ppa:openarm/main
 sudo apt update && sudo apt install -y \
+  openarm-can-utils \
   liborocos-kdl-dev \
   libeigen3-dev \
   liburdfdom-dev \
@@ -47,12 +49,11 @@ Each arm requires a dedicated CAN interface (1 arm = 1 CAN port).
 To initialize a CAN interface (e.g., `can0`) in CAN FD mode, run:
 
 ```bash
-cd openarm_can
-./setup/configure_socketcan.sh can0 -fd
+/usr/libexec/openarm-can/configure_socketcan.sh can0 -fd
 ```
 
-If you have all CAN interfaces (can0 to can3) connected, you can use the following command
+If you have all CAN interfaces (can0 to can3) connected, you can use the following command:
+
 ```bash
-cd openarm_can
-./setup/configure_socketcan_4_arms.sh -fd
+/usr/libexec/openarm-can/configure_socketcan_4_arms.sh -fd
 ```
