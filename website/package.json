@@ -19,13 +19,15 @@
   },
   "dependencies": {
     "@docusaurus/core": "3.9.1",
+    "@docusaurus/plugin-content-docs": "^3.9.1",
     "@docusaurus/preset-classic": "3.9.1",
+    "@docusaurus/theme-mermaid": "^3.9.1",
     "@mdx-js/react": "^3.1.1",
     "clsx": "^2.0.0",
-    "katex": "^0.16.25",
+    "katex": "^0.16.22",
     "prism-react-renderer": "^2.3.0",
     "react": "^19.1.1",
-    "react-dom": "^19.2.0",
+    "react-dom": "^19.1.1",
     "react-player": "^3.3.3",
     "rehype-katex": "^7.0.1",
     "remark-math": "^6.0.0"
@@ -35,11 +37,11 @@
     "@docusaurus/tsconfig": "3.9.1",
     "@docusaurus/types": "3.9.1",
     "@eslint/js": "^9.36.0",
-    "eslint": "^9.37.0",
+    "eslint": "^9.36.0",
     "eslint-plugin-react": "^7.37.5",
-    "eslint-plugin-react-hooks": "^7.0.0",
-    "typescript": "~5.9.3",
-    "typescript-eslint": "^8.46.0"
+    "eslint-plugin-react-hooks": "^5.2.0",
+    "typescript": "~5.9.2",
+    "typescript-eslint": "^8.44.1"
   },
   "browserslist": {
     "production": [

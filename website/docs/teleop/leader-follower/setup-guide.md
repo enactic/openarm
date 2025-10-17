@@ -27,13 +27,13 @@ cd openarm_teleop
 
 ```bash
 sudo apt update && sudo apt install -y \
+  libopenarmcan-dev \
   liborocos-kdl-dev \
   libeigen3-dev \
   liburdfdom-dev \
   liburdfdom-headers-dev \
   libyaml-cpp-dev
 ```
-
 ### 3. Build the teleop library
 ```bash
 cmake -S . -B build -DCMAKE_BUILD_TYPE=Release
@@ -49,10 +49,4 @@ To initialize a CAN interface (e.g., `can0`) in CAN FD mode, run:
 ```bash
 cd openarm_can
 ./setup/configure_socketcan.sh can0 -fd
-```
-
-If you have all CAN interfaces (can0 to can3) connected, you can use the following command
-```bash
-cd openarm_can
-./setup/configure_socketcan_4_arms.sh -fd
 ```
