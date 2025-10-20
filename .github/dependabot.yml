@@ -28,3 +28,8 @@ updates:
     commit-message:
       prefix: "website: "
     open-pull-requests-limit: 10
+    groups:
+      # All official @docusaurus/* packages should have the exact same version
+      docusaurus:
+        patterns:
+          - "@docusaurus/*"
