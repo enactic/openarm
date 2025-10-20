@@ -18,8 +18,8 @@
     "lint:fix": "eslint . --ext .ts,.tsx --fix"
   },
   "dependencies": {
-    "@docusaurus/core": "3.9.1",
-    "@docusaurus/preset-classic": "3.9.1",
+    "@docusaurus/core": "3.9.2",
+    "@docusaurus/preset-classic": "3.9.2",
     "@mdx-js/react": "^3.1.1",
     "clsx": "^2.0.0",
     "katex": "^0.16.25",
