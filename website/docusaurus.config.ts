@@ -58,6 +58,7 @@ const config: Config = {
           sidebarPath: './sidebars.ts',
           remarkPlugins: [require('remark-math')],
           rehypePlugins: [require('rehype-katex')],
+          showLastUpdateTime: true,
         },
         blog: {
           showReadingTime: true,
