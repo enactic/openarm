@@ -125,9 +125,9 @@ const config: Config = {
         },
         {
           type: 'docSidebar',
-          sidebarId: 'helpSidebar',
+          sidebarId: 'purchaseSidebar',
           position: 'left',
-          label: 'Help',
+          label: 'Purchase',
         },
         // {to: '/blog', label: 'Blog', position: 'left'},
         {
@@ -164,8 +164,8 @@ const config: Config = {
               to: '/simulation/',
             },
             {
-              label: 'Help',
-              to: '/help/',
+              label: 'Purchase',
+              to: '/purchase/',
             },
           ],
         },

@@ -20,12 +20,68 @@ We're in continuous development and actively seeking contributors, research part
       top: 0,
       left: 0,
       width: "100%",
-      height: "100%", 
+      height: "100%",
       border: 0
     }}
     allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
     allowFullScreen
   />
+</div>
+
+<div style={{
+  display: 'flex',
+  flexDirection: 'column',
+  alignItems: 'center',
+  marginTop: '3rem',
+  marginBottom: '3rem'
+}}>
+  <div style={{
+    border: '2px solid #ebebeb',
+    borderRadius: '1rem',
+    padding: '2.5rem 2rem',
+    background: '#fff',
+    boxShadow: '0 4px 10px rgba(0,0,0,0.08)',
+    maxWidth: '100%',
+    width: '100%',
+    textAlign: 'center'
+  }}>
+    <h3 style={{
+      margin: 0,
+      fontSize: '1.75rem',
+      color: '#111827',
+      fontWeight: '700'
+    }}>
+      📦 Purchase Your OpenArm!
+    </h3>
+    <p style={{
+      marginTop: '1rem',
+      marginBottom: '1.5rem',
+      fontSize: '1rem',
+      color: '#374151',
+      lineHeight: '1.6'
+    }}>
+      Get your OpenArm, assembled or DIY, and join the global community!<br/>
+      Browse verified and certified manufacturers worldwide.
+    </p>
+    <a href="../purchase" style={{
+      display: 'inline-block',
+      padding: '10px 20px',
+      backgroundColor: '#5FBBC7',
+      color: 'white',
+      textDecoration: 'none',
+      borderRadius: '5px',
+      fontWeight: '600'
+    }}
+    onMouseOver={(e) => {
+      e.currentTarget.style.background = '#3b8089';
+      e.currentTarget.style.transform = 'translateY(-2px)';
+    }}
+    onMouseOut={(e) => {
+      e.currentTarget.style.background = '#5Fbbc7';
+      e.currentTarget.style.transform = 'none';
+    }}
+    >Buy Now →</a>
+  </div>
 </div>
 
 ## What's Unique?
@@ -47,7 +103,6 @@ We're in continuous development and actively seeking contributors, research part
 
 
 <BlockImage src="getting-started/index/unique.png" alt="leader-follower" width="100%" />
-
 
 
 
