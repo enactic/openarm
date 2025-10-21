@@ -1,0 +1,68 @@
+---
+title: 1. Arm Wiring
+sidebar_position: 2
+---
+
+import BlockImage from '@site/src/components/BlockImage';
+
+# 1. Arm Wiring
+
+## Wiring Steps
+1. [J3-J4 wiring](#1-j3-j4-wiring)
+2. [J4-J7 wiring](#2-j4-j7-wiring)
+3. [J7-J8 wiring](#3-j7-j8-wiring)
+4. [J1-J2 wiring](#4-j1-j2-wiring)
+
+:::warning
+The connectors are delicate, and applying excessive force when inserting or removing the cable may cause damage. 
+Always hold the connector itself when plugging in or unplugging the cable, and avoid pulling on the wires.
+:::
+
+## Before you start
+The J3–J4 and J4–J7 wirings can be a bit tricky. Please refer to the wiring topology shown below. Before starting, make sure to verify the pin assignments of all connectors.
+
+<BlockImage src="hardware/electronics-guide/j3j4-j4j7-wiring.png" alt="J3-J4 J4-J7 wiring" />
+
+| J3-J4 Cable | J4-J7 Cable | 
+|-------------|-------------|
+|<BlockImage src="hardware/electronics-guide/j3-j4-cable-assign.png" alt="J3-J4 cable" />|<BlockImage src="hardware/electronics-guide/j4-j7-cable-assign.png" alt="J4-J7 cable" />|
+
+## 1. J3-J4 Wiring
+Connect the J3 connector to the J3 motor (upper arm) and the J4 connector to the J4 motor (elbow). Route all cables along the back side of the upper arm.
+Since the J4 connector is located close to the sheet metal, be careful not to damage the cable.
+<BlockImage src="hardware/electronics-guide/j3j4-connection.png" alt="J3-J4 connetion"/>
+
+## 2. J4-J7 Wiring
+Connect the J5 connector to the J5 motor from the back side of the arm. Then, bend the elbow to its stopping point and connect the J4 connector to the J4 motor.
+Make sure all cables are routed along the back side of the arm.
+<BlockImage src="hardware/electronics-guide/j4j7-connection1.png" alt="J4-J7 connection 1" width="80%" /> 
+
+Connect the J6 and J7 connectors to the J6 and J7 motors, respectively. The J6 motor can be slightly difficult to access—try adjusting the arm position to find the best angle for plugging it in
+<BlockImage src="hardware/electronics-guide/j4j7-connection2.png" alt="J4-J7 connection 2" width="80%" />
+
+## 3. J7-J8 Wiring
+Connect the end-effector motor to the system. First, connect the J7–J8 cable to the underside connector of the J7 motor.
+<BlockImage src="hardware/electronics-guide/j7-j8-process1.png" alt="J7-J8 connection" width="80%" />
+
+Then, connect the other end to the J8 motor.
+<BlockImage src="hardware/electronics-guide/j7-j8-process2.png" alt="J7-J8 connection" width="80%" />
+
+## 4. J1-J2 Wiring
+Plug the J1 and J2 connectors into the J1 and J2 motors.
+Route the J1 cable through the robot’s armpit toward the back.
+Connect the J2 cable to the J2 motor, then bend the cable downward to ensure it’s properly routed.
+
+:::warning
+Carefully connect the small white plugs on the J1 and J2 cables, as they may not fit securely if not aligned properly.
+:::
+
+<BlockImage src="hardware/electronics-guide/j1j2-connection.png" alt="J1-J2 connection" width="80%" />
+
+:::info
+## Wiring Checkpoint
+Once all wiring is complete, the cables should be arranged as shown below.
+<div style={{ display: 'flex', justifyContent: 'center', gap: '1rem', flexWrap: 'wrap' }}>
+  <BlockImage src="hardware/electronics-guide/perspective-cable-front.png" alt="Front view" width="49%" />
+  <BlockImage src="hardware/electronics-guide/perspective-cable-back.png" alt="Back view" width="49%" />
+</div>
+:::

@@ -1,0 +1,63 @@
+---
+title: 3. Chest Wiring & Casing
+sidebar_position: 4
+---
+
+import BlockImage from '@site/src/components/BlockImage';
+
+# 3. Chest Wiring & Casing
+This section covers installing the hub boards, connecting all cables, and closing the chest cover.
+
+## Steps
+1. [Hub Board Installation](#1-hub-board-installation)
+2. [Hub Board Connection](#2-hub-board-connection)
+3. [Chest Cover Installation](#3-chest-cover-installation)
+
+## 1. Hub Board Installation
+For a list of components with photos, see section [0. Components](./0-components.mdx).  
+
+1. Insert the HNTP6-6 T-slot nuts into the slots at the back of each shoulder.
+2. Attach the hub board back cover and hub board PCB using cap screws. Position the CAN connectors facing inward (toward the center of the body).
+3. Tighten all cap screws securely.
+
+<BlockImage src="hardware/electronics-guide/hubboard-attaching.png" alt="Hub board installation" />
+
+:::note
+The left and right arms are separate systems. Each hub board operates independently.
+:::
+
+## 2. Hub Board Connection
+
+Connect the J1, J2, and J3-J4 motor cables to the hub board as shown.
+
+<BlockImage src="hardware/electronics-guide/hubboard-motor-connection.png" alt="Motor cable connection" />
+
+Connect the communication cables to the hub board as shown.
+
+<BlockImage src="hardware/electronics-guide/hubboard-commu-connection.png" alt="Communication cable connection" />
+
+Connect the extension cables to the hub board as shown.
+
+<BlockImage src="hardware/electronics-guide/hubboard-extension-connection.png" alt="Extension cable connection" />
+
+Verify that your wiring matches this reference image. Once all connections are confirmed, organize the cables neatly before closing the chest cover.
+
+<BlockImage src="hardware/electronics-guide/hubboard-wiring.png" alt="Complete hub board wiring" />
+
+## 3. Chest Cover Installation
+
+Attach Chest-cover_A from the front of the body.
+
+<BlockImage src="hardware/electronics-guide/chest-cover-closing-front.png" alt="Installing front chest cover" />
+
+Attach Chest-cover_B from the back. Route the J2 and J3-J4 cables through the U-shaped slots in Chest-cover_B.
+
+<BlockImage src="hardware/electronics-guide/chest-cover-closing-back.png" alt="Installing back chest cover" />
+
+:::warning
+Be careful not to pinch any communication or extension cables between the body and the chest cover.
+:::
+
+Use six screws to secure the chest cover.
+
+<BlockImage src="hardware/electronics-guide/chest-cover-screw.png" alt="Chest cover screw locations" />
