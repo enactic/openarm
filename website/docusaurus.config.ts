@@ -126,7 +126,7 @@ const config: Config = {
         },
         {
           type: 'docSidebar',
-          sidebarId: 'helpSidebar',
+          sidebarId: 'purchaseSidebar',
           position: 'left',
           label: 'Purchase',
         },
