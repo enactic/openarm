@@ -1,0 +1,287 @@
+---
+sidebar_position: 2
+---
+
+# Buying OpenArm
+We’re making it easier, more reliable, and more transparent to purchase OpenArm hardware.
+
+This page lists all known OpenArm manufacturers worldwide. Manufacturers labeled **official** or **certified** have been evaluated for their manufacturing quality and compatibility with the official OpenArm project.
+
+---
+
+## Official Manufacturing Partners
+Official Manufacturing Partners and Certified Manufacturers work closely with the OpenArm team to refine and improve the manufacturing process, ensuring each unit meets our high hardware quality standards. The OpenArm team maintains direct communication with these partners to uphold consistency, reliability, and ongoing development.
+<div style={{
+  display: 'flex',
+  flexDirection: 'column',
+  marginTop: '2rem',
+  marginBottom: '2rem'
+}}>
+  <div style={{
+    border: '2px solid #ebebeb',
+    borderRadius: '1rem',
+    padding: '2rem',
+    background: '#fff',
+    boxShadow: '0 4px 10px rgba(0,0,0,0.1)'
+  }}>
+    <div style={{
+      display: 'flex',
+      alignItems: 'center',
+      gap: '1.5rem',
+      flexWrap: 'wrap'
+    }}>
+      <a
+        href="https://en.rt-net.jp/"
+        target="_blank"
+        rel="noopener noreferrer"
+        style={{ textDecoration: 'none' }}
+      >
+        <div style={{
+          width: '120px',
+          height: '120px',
+          borderRadius: '1rem',
+          overflow: 'hidden',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          background: '#262626'
+        }}>
+          <img
+            src="/img/purchase/rt.png"
+            alt="RT"
+            style={{ width: '100%', height: '100%', objectFit: 'contain' }}
+          />
+        </div>
+      </a>
+      <div style={{ flex: 1, minWidth: '200px' }}>
+        <h3 style={{ margin: 0, fontSize: '1.5rem', color: '#111827' }}>
+          <a
+            href="https://en.rt-net.jp/"
+            target="_blank"
+            rel="noopener noreferrer"
+            style={{
+              color: '#111827',
+              textDecoration: 'none',
+              transition: 'color 0.2s ease'
+            }}
+            onMouseOver={(e) => e.currentTarget.style.color = '#5FBBC7'}
+            onMouseOut={(e) => e.currentTarget.style.color = '#111827'}
+          >RT Corporation</a>
+        </h3>
+        <div style={{
+          display: 'flex',
+          alignItems: 'center',
+          gap: '0.5rem',
+          marginTop: '1rem'
+        }}>
+          <span style={{ color: '#6b7280', fontSize: '0.9rem' }}> **Not yet accepting orders.**  
+          Primarily serving customers in Japan.</span> 
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+### Certified Manufacturers
+<div style={{
+  display: 'flex',
+  flexDirection: 'column',
+  marginTop: '1rem',
+  marginBottom: '3rem'
+}}>
+  <div style={{
+    border: '2px solid #ebebeb',
+    borderRadius: '1rem',
+    padding: '2rem',
+    background: '#fff',
+    boxShadow: '0 4px 10px rgba(0,0,0,0.1)'
+  }}>
+    <div style={{
+      display: 'flex',
+      alignItems: 'center',
+      gap: '1.5rem',
+      flexWrap: 'wrap'
+    }}>
+      <a
+        href="https://shop.wowrobo.com/products/openarm-open-source-humanoid-robot-arm-by-enactic"
+        target="_blank"
+        rel="noopener noreferrer"
+        style={{ textDecoration: 'none' }}
+      >
+        <div style={{
+          width: '120px',
+          height: '120px',
+          borderRadius: '1rem',
+          overflow: 'hidden',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          background: '#262626'
+        }}>
+          <img
+            src="/img/purchase/wowrobo.png"
+            alt="WowRobo"
+            style={{ width: '100%', height: '100%', objectFit: 'contain' }}
+          />
+        </div>
+      </a>
+      <div style={{flex: 1, minWidth: '200px', position: 'relative', top: '8px'}}>
+        <h3 style={{ margin: 0, fontSize: '1.5rem', color: '#111827' }}>
+          <a
+            href="https://shop.wowrobo.com/products/openarm-open-source-humanoid-robot-arm-by-enactic"
+            target="_blank"
+            rel="noopener noreferrer"
+            style={{
+              color: '#111827',
+              textDecoration: 'none',
+              transition: 'color 0.2s ease'
+            }}
+            onMouseOver={(e) => e.currentTarget.style.color = '#5FBBC7'}
+            onMouseOut={(e) => e.currentTarget.style.color = '#111827'}
+          >WowRobo</a>
+        </h3>
+        <div style={{
+          display: 'flex',
+          alignItems: 'center',
+          gap: '0.5rem',
+          marginTop: '1rem'
+        }}>
+          <span style={{ color: 'orange', fontSize: '1.2rem' }}>★★★★★</span>  
+          <span style={{ color: '#6b7280', fontSize: '0.9rem' }}>Shenzhen, China</span>
+        </div>
+      </div>
+    </div>
+    <div style={{ marginTop: '1.75rem', marginBottom: '1rem' }}>
+      <img 
+        src="/img/purchase/wowrobo_openarm.png"
+        alt="OpenArm by WowRobo"
+        style={{
+          width: '100%',
+          borderRadius: '0.75rem',
+          boxShadow: '0 2px 8px rgba(0,0,0,0.1)',
+          objectFit: 'cover'
+        }}
+      />
+    </div>
+    <div style={{
+      background: '#f9fafb',
+      borderRadius: '0.75rem',
+      padding: '1.25rem',
+      marginTop: '1.5rem'
+    }}>
+      <div style={{
+        display: 'grid',
+        gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))',
+        gap: '1rem',
+        fontSize: '0.9rem'
+      }}>
+        <div>
+          <div style={{ color: '#6b7280' }}>📦 Starting Price</div>
+          <div style={{ fontWeight: '600' }}>$5,000 USD</div>
+        </div>
+        <div>
+          <div style={{ color: '#6b7280' }}>⏱️ Lead Time (Order→Ship)</div>
+          <div style={{ fontWeight: '600' }}>20-40 days</div>
+        </div>
+        <div>
+          <div style={{ color: '#6b7280' }}>💳 Payment Methods</div>
+          <div style={{ fontWeight: '600' }}>Bank Transfer, Shopify, PayPal</div>
+        </div>
+        <div>
+          <div style={{ color: '#6b7280' }}>🌏 Shipping Regions</div>
+          <div style={{ fontWeight: '600' }}>Worldwide via DHL/UPS/FedEx</div>
+        </div>
+      </div>
+    </div>
+    <div style={{
+      marginTop: '1.5rem',
+      fontSize: '0.95rem',
+      lineHeight: '1.6',
+      color: '#374151'
+    }}>
+      <strong>From the Manufacturer:</strong>
+      <p style={{ marginTop: '0.5rem' }}>
+        At WowRobo, we bring commercial-grade reliability and manufacturing standards to open-source robotics. With extensive experience in commercial robot production, we handle the assembly and testing of OpenArm with the same rigor applied to industrial robots.
+      </p>
+      <p style={{ marginTop: '0.5rem' }}>
+        As the official manufacturer of the SO-ARM101, we're proud to have refined our processes even further for OpenArm, achieving an even higher level of precision, reliability, and overall build quality. Our philosophy is simple: deliver the finest craftsmanship with minimal profit, and grow together with the OpenArm project and its global community.
+      </p>
+    </div>
+    <a
+      href="https://shop.wowrobo.com/products/openarm-open-source-humanoid-robot-arm-by-enactic"
+      target="_blank"
+      rel="noopener noreferrer"
+      style={{
+        display: 'block',
+        width: '50%',
+        margin: '1.5rem auto 0',
+        padding: '0.85rem',
+        background: '#5FBBC7',
+        color: 'white',
+        border: 'none',
+        borderRadius: '0.6rem',
+        fontWeight: '600',
+        fontSize: '1rem',
+        textAlign: 'center',
+        textDecoration: 'none',
+        transition: 'background 0.2s ease'
+      }}
+      onMouseOver={(e) => e.currentTarget.style.background = '#3b8089ff'}
+      onMouseOut={(e) => e.currentTarget.style.background = '#5FBBC7'}
+    >Buy Now →</a>
+  </div>
+</div>
+
+:::info
+## Community Reviews
+Community feedback is essential for maintaining consistency and fairness in our evaluations.  
+
+- **Purchased an OpenArm before?**  
+Share your experience in our [**Discord**](https://discord.gg/GmYa262ETH) channel: **`#📦｜purchase`**  
+- **Missing Vendors?**  
+Notify us if any vendors are missing. Your input helps improve and expand the vendor list so everyone can buy OpenArm with confidence.  
+
+**Contact:** openarm@enactic.ai or DM us on Discord.
+:::
+
+---
+
+## Other Manufacturers
+The list below includes vendors who produce OpenArm hardware but have **not yet completed** or **did not pass** our evaluation process. Their quality and compatibility may vary, and they are **not guaranteed** to work with official OpenArm software.  
+
+:::warning
+Before purchasing, please consider:  
+- **Compatibility**: Verify that it meets OpenArm hardware and software standards.  
+- **Quality**: Ensure proper quality control.
+- **Shipping**: Check for delivery costs and timelines, especially for international orders.  
+- **Returns & Warranty**: Verify the return, replacement, and warranty policies.
+- **Reviews**: Read community feedback in the Discord **`#📦｜purchase`**   channel.
+:::
+:::warning
+**Notice any false or misleading claims?** Let us know at openarm@enactic.ai or via Discord.
+:::
+<div style={{overflowX: 'auto', marginTop: '3rem'}}>
+  | Company                       | Lead Time           | Shipping Region     | Price* (USD)        |  Quality ▼     | Notes    |
+  |-------------------------------|---------------------|---------------------|--------------------|-----------------|---------------|
+  | **WowRobo** (ShenZhen)        | 20-40 days          | Worldwide           | $5,000             | Certified <span style={{color: 'orange'}}>★★★★★</span> | [**Accepting orders** (website)](https://shop.wowrobo.com/products/openarm-open-source-humanoid-robot-arm-by-enactic)<div>Discord: `@Leo Xiao @WowRobo`</div><div>Wechat: `xiaonian52`</div><div>Email: `leo.xiao@wowrobo.com`</div>|
+  | **RT Corporation** (Tokyo)    | -                   | Japan               | -                  | Evaluating...   | Not yet accepting orders. |
+  | VLAI Robotics (ShenZhen)      | 35 days             | Worldwide           | $5,400             | Evaluating...   | [**Accepting bulk orders** (email)](mailto:contact@vlai.cn)<div>Discord: `@VLAIZhang`</div><div>WeChat: `VLAIBOT`</div>|
+  | Cereboto (Dongguan)           | 20 days             | Worldwide.          | $5,599             | Evaluating...   | [**Accepting orders** (email)](mailto:chuck.yu@cereboto.com)<div>Discord: `@chuck.yu`</div> |
+  | Soma Robotics (Shanghai)      | 14 days             | Mainland China      | $6,430 (CNY 45,800)| Not evaluated   | [**Accepting orders** (email)](mailto:sales@somarobotics.ai)<div>WeChat: `CTYNSDB`</div>|
+  | Anvil Robotics (Taipei)       | 28 days             | Worldwide           | $5,800             | Not evaluated   | [**Accepting orders** (website)](https://shop.anvil.bot/collections/all)<div>Discord: `@mike[at]anvil.bot`</div>|
+  | Chengdu Changshu Robotics Co., Ltd.| 7 - 28 days    | Mainland China      | $6,992 (CNY 49,800)| Not evaluated   | [**Accepting orders** (website)](https://www.openarmx.com)<div>Discord: `@PowerZ`</div><div>⚠️ “OpenArmX” is **NOT** affiliated with or compatible with the official OpenArm project.</div>|
+</div>
+*=standard price of 1 unit with follower end effectors
+
+:::info
+**Manufacturers:** To be listed or apply for certification, please reach out to openarm@enactic.ai
+:::
+
+<div style={{padding: '1.5rem', background: '#f9fafb', borderRadius: '0.5rem', marginTop: '2rem', textAlign: 'center'}}>
+
+**This page updates regularly as we certify vendors.**
+
+Last edited: Oct 20, 2025
+
+</div>
+
