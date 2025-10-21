@@ -24,23 +24,15 @@ Core control logic is encapsulated in the `Control` class, which supports both:
 
 | Name | Meaning |
 |------|---------|
-| **Dn** | Damping in the controller (velocity-based) |
-| **Jn** | Nominal inertia (used in observers) |
-| **gn** | Cut-off frequency for observers |
 | **Kp** | Position control gain |
 | **Kd** | Velocity control gain |
-| **Kf** | Force control gain |
 | **Fc** | Static friction (Coulomb) level |
 | **k**  | Sharpness of friction transition |
 | **Fv** | Viscous friction (speed-based) |
 | **Fo** | Friction offset (bias correction) |
 
-:::tip
-In **unilateral control**, only the **friction parameters** (`Fc`, `k`, `Fv`, `Fo`) are used.
-The control gains and observer parameters are not required.
-:::
 
-### Friction Model
+### Friction compasation Model
 
 The following tanh-based model is used for friction compensation:
 
@@ -50,21 +42,28 @@ tau_f = Fc * tanh(k * dq) + Fv * dq + Fo
 
 ## Running the Script
 
+right_arm (default can bus is can0 can2)
 ```bash
 cd openarm_teleop
-./script/launch_unilateral.sh right_arm can0 can1
+./script/launch_unilateral.sh right_arm can0 can2
+```
+
+left_arm (default can bus is can1 can3)
+```bash
+cd openarm_teleop
+./script/launch_bilateral.sh left_arm can1 can3
 ```
 
 ### Arguments
 
 - `right_arm` or `left_arm`: Specifies which arm to use.
-- `can0`: CAN interface for the leader arm.
-- `can1`: CAN interface for the follower arm.
+- `can0, can1`: CAN interface for the leader arm.
+- `can2, can3`: CAN interface for the follower arm.
 
 If the CAN interfaces are omitted, the script uses the following defaults:
 
-- For `right_arm`: leader = `can0`, follower = `can1`
-- For `left_arm`: leader = `can2`, follower = `can3`
+- For `right_arm`: leader = `can0`, follower = `can2`
+- For `left_arm`: leader = `can1`, follower = `can3`
 
 ### What the Script Does
 
