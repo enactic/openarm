@@ -62,7 +62,7 @@ ros2 launch openarm_bringup openarm.launch.py arm_type:=v10 use_fake_hardware:=t
 - `arm_type` - Arm type (default: v10)
 - `use_fake_hardware` - Use fake hardware instead of real hardware (default: false)
 - `can_interface` - CAN interface to use (default: can0)
-- `robot_controller` - Controller type: joint_trajectory_controller or forward_position_controller
+- `robot_controller` - Controller type: joint_trajectory_controller or forward_command_controller
 
 When you run the bringup launch files, robot state publisher, controller manager, etc. will be launched.
 
