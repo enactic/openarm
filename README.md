@@ -8,7 +8,12 @@ OpenArm features **human-scale** proportions, safety and compliance, and practic
 
 *We're in continuous development and actively seeking contributors, research partners, and company collaborators to shape the next generation of practical humanoid systems. Ready to join the future of open-source robotics?*
 
-🚀 **Ready to build?** Start with our [Getting Started Guide](https://docs.openarm.dev)
+> ### 📦 Purchase Your OpenArm!
+> Get your **OpenArm**, assembled or DIY, and join the global community!  
+> Browse verified and certified manufacturers worldwide. 
+> 
+> [**Buy Now →**](https://docs.openarm.dev/purchase)
+
 
 ## 🔗 Quick Links
 
@@ -18,12 +23,6 @@ OpenArm features **human-scale** proportions, safety and compliance, and practic
 | **Documentation** | Complete technical guides | [docs.openarm.dev](https://docs.openarm.dev) |
 | **Discord** | Community discussions | [Join Discord](https://discord.gg/FsZaZ4z3We) |
 | **Contact** | Direct communication | [openarm@enactic.ai](mailto:openarm@enactic.ai) |
-
-> ### 📦 Purchase Your OpenArm!
-> Get your **OpenArm**, assembled or DIY, and join the global community!  
-> Browse verified and certified manufacturers worldwide. 
-> 
-> [**Buy Now →**](https://docs.openarm.dev/purchase)
 
 ## 📁 Repositories
 
