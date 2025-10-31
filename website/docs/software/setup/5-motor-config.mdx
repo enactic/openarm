@@ -75,20 +75,20 @@ Safety First! The robot will move automatically when calibration starts. Wear sa
 The zero position calibration runs **one arm at a time**.  
 Run the zero position calibration (this defaults to can 0, right arm):
 ```bash
-python3 python/zero_position_calibration.py
+python3 setup/zero_position_calibration.py
 ```
 For specific arms, run:
 ```bash
 # Leader-side Left
-python3 python/zero_position_calibration.py --canport can1 --arm_side left_arm
+python3 setup/zero_position_calibration.py --canport can1 --arm_side left_arm
 ```
 ```bash
 # Follower-side Right
-python3 python/zero_position_calibration.py --canport can2 --arm_side right_arm
+python3 setup/zero_position_calibration.py --canport can2 --arm_side right_arm
 ```
 ```bash
 # Follower-side Left
-python3 python/zero_position_calibration.py --canport can3 --arm_side left_arm
+python3 setup/zero_position_calibration.py --canport can3 --arm_side left_arm
 ```
 <div style={{display: 'flex', justifyContent: 'center'}}>
   <iframe 
