@@ -1,27 +1,25 @@
 ---
 title: '5. Motor Configuration'
-sidebar_position: 5
+sidebar_position: 6
 ---
+import BlockImage from '@site/src/components/BlockImage';
 
 # Step 5: Motor Configuration
 
-## Prerequisites
-
-Before proceeding, ensure you have:
+:::info
+**Prerequisites:** Before proceeding, ensure you have:
 - ✅ Motor IDs configured (Step 1)
 - ✅ CAN interface configured (Step 2)
 - ✅ Basic communication tested (Step 3)
 - ✅ OpenArm CAN library built (Step 4)
+:::
 
 ## Overview
 
-We now need to complete the motor setup process. This involves three key tasks:
-
-- Configure motor baudrate to match your CAN device for reliable communication
-- Set the zero position for all motors
-- Test motor communication to verify everything is working correctly
-
-All the necessary scripts are located in the setup folder.
+We now need to complete the motor setup sprocess. This involves three key tasks:
+1. [Set Motor Baudrate](#step-1-set-motor-baudrate)
+2. [Set Zero Position](#step-2-zero-position-calibration)
+3. [Verify Motor Communication](#step-3-verify-motor-communication)
 
 
 ## Step 1: Set Motor Baudrate
@@ -62,25 +60,49 @@ python3 change_baudrate.py --baudrate 5000000 --canid 1 --socketcan can0 --flash
 | 9      | 5000000  | 5 mbps      |
 
 
-## Step 2: Set Zero Position
-
+## Step 2: Zero Position Calibration
+:::info
+Physically position the arms to roughly match the zero position shown below before running calibration.  
+For grippers, the closed position is used as zero by default.
+<BlockImage src="software/setup/zeropos.jpg" alt="zeropos" width="40%" />
+:::
 :::warning
-Physically position the motors to your desired zero position before setting it, especially if you have already assembled the arm! For grippers, the closed position is used as zero by default.
+Safety First! The robot will move automatically when calibration starts. Wear safety gear, clear the workspace, and be ready to emergency stop.
 :::
 
-Set the zero position for a specific motor:
-```bash
-./set_zero.sh can0 001
-```
+**Prerequisites:** Ensure you have completed the [Python binding](https://github.com/enactic/openarm_can#4-python--experimental---temporary-) installation before proceeding with calibration.
 
-Or set zero position for all motors (IDs 001-008):
+The zero position calibration runs **one arm at a time**.  
+Run the zero position calibration (this defaults to can 0, right arm):
 ```bash
-./set_zero.sh can0 --all
+python3 python/zero_position_calibration.py
 ```
+For specific arms, run:
+```bash
+# Leader-side Left
+python3 python/zero_position_calibration.py --canport can1 --arm_side left_arm
+```
+```bash
+# Follower-side Right
+python3 python/zero_position_calibration.py --canport can2 --arm_side right_arm
+```
+```bash
+# Follower-side Left
+python3 python/zero_position_calibration.py --canport can3 --arm_side left_arm
+```
+<div style={{display: 'flex', justifyContent: 'center'}}>
+  <iframe 
+    width="315"
+    height="560"
+    src="https://www.youtube.com/embed/Dr-Eeoaq8pU" 
+    title="YouTube video player" 
+    frameBorder="0" 
+    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+    allowFullScreen
+  />
+</div>
 
-:::tip
-For more accurate zero position setup, use the mechanical limits as reference starting point.
-:::
+
 
 
 ## Step 3: Verify Motor Communication
