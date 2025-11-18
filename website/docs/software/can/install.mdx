@@ -1,0 +1,129 @@
+---
+title: Installation
+sidebar_position: 1
+---
+
+import TOCInline from '@theme/TOCInline';
+
+# Installing OpenArm CAN Library
+
+For detailed setup instructions including CAN interface configuration, library build, and verification steps, see [Setup Guide](/software/setup).
+
+## Table of Contents
+
+<TOCInline
+  toc={toc.filter(({ value }) => !['Overview', 'Table of Contents'].includes(value))}
+  maxHeadingLevel={2}
+/>
+
+---
+
+## Ubuntu
+
+Supported:
+
+* 22.04 Jammy Jellyfish
+* 24.04 Noble Numbat
+
+How to install:
+
+```bash
+sudo apt install -y software-properties-common
+sudo add-apt-repository -y ppa:openarm/main
+sudo apt update
+sudo apt install -y \
+  libopenarm-can-dev \
+  openarm-can-utils
+```
+
+## AlmaLinux, Rocky Linux
+
+Supported:
+
+* AlmaLinux 8, 9, 10
+* Rocky Linux 9, 10
+
+How to install:
+
+1. Enable [EPEL](https://docs.fedoraproject.org/en-US/epel/).
+   * AlmaLinux 8 / Rocky Linux 8
+     ```bash
+     sudo dnf install -y epel-release
+     sudo dnf config-manager --set-enabled powertools
+     ```
+   * AlmaLinux 9 & 10 / Rocky Linux 9 & 10
+     ```bash
+     sudo dnf install -y epel-release
+     sudo crb enable
+     ```
+2. Install the package.
+   ```bash
+   sudo dnf update
+   sudo dnf install -y \
+     openarm_can-devel \
+     openarm_can-utils
+   ```
+
+## Red Hat Enterprise Linux
+
+Supported:
+
+* Red Hat Enterprise Linux 8
+* Red Hat Enterprise Linux 9
+* Red Hat Enterprise Linux 10
+
+How to install:
+
+1. Enable [EPEL](https://docs.fedoraproject.org/en-US/epel/).
+   ```bash
+   releasever="$(. /etc/os-release && echo $VERSION_ID | grep -oE '^[0-9]+')"
+   sudo subscription-manager repos --enable codeready-builder-for-rhel-$releasever-$(arch)-rpms
+   sudo dnf install -y https://dl.fedoraproject.org/pub/epel/epel-release-latest-$releasever.noarch.rpm
+   ```
+2. Install the package.
+   ```bash
+   sudo dnf update
+   sudo dnf install -y \
+     openarm_can-devel \
+     openarm_can-utils
+   ```
+
+## CentOS Stream
+
+Supported:
+
+* CentOS Stream 9
+* CentOS Stream 10
+
+How to install:
+
+1. Enable [EPEL](https://docs.fedoraproject.org/en-US/epel/).
+   * CentOS Stream 9
+     ```bash
+     sudo dnf config-manager --set-enabled crb
+     sudo dnf install -y https://dl.fedoraproject.org/pub/epel/epel{,-next}-release-latest-9.noarch.rpm
+     ```
+   * CentOS Stream 10
+     ```bash
+     sudo dnf config-manager --set-enabled crb
+     sudo dnf install -y https://dl.fedoraproject.org/pub/epel/epel-release-latest-10.noarch.rpm
+     ```
+2. Install the package.
+   ```bash
+   sudo dnf update
+   sudo dnf install -y \
+     openarm_can-devel \
+     openarm_can-utils
+   ```
+
+## Fedora
+
+How to install:
+
+1. Install the package.
+   ```bash
+   sudo dnf update
+   sudo dnf install -y \
+     openarm_can-devel \
+     openarm_can-utils
+   ```
