@@ -2,7 +2,7 @@
 sidebar_position: 1
 ---
 
-# FAQs
+# Questions
 
 ## Is there a mobile base?
 
@@ -21,7 +21,7 @@ We're preparing the documentation.
 
 We're preparing the documentation.
 
-## Get Help Now
+## Where can I get support?
 
 You can also reach out to our community for tips and help.
 
@@ -30,9 +30,9 @@ You can also reach out to our community for tips and help.
     [Join Now](https://discord.gg/GmYa262ETH)
 
 - **GitHub Issues**
-    Report bugs or request features directly in our repository (If you're unsure which repository to use, feel free to post here):
+    Report bugs or request features directly in our repository:
     [Open an Issue](https://github.com/enactic/openarm/issues)
 
 - **GitHub Discussions**
-    Ask technical questions directly in our repository (If you're unsure which repository to use, feel free to post here):
+    Ask technical questions directly in our repository:
     [Start a Discussion](https://github.com/enactic/openarm/discussions)
