@@ -130,6 +130,12 @@ const config: Config = {
           position: 'left',
           label: 'Purchase',
         },
+        {
+          type: 'docSidebar',
+          sidebarId: 'faqSidebar',
+          position: 'left',
+          label: 'FAQ',
+        },
         // {to: '/blog', label: 'Blog', position: 'left'},
         {
           href: 'https://github.com/enactic/openarm',
@@ -167,6 +173,10 @@ const config: Config = {
             {
               label: 'Purchase',
               to: '/purchase/',
+            },
+            {
+              label: 'FAQ',
+              to: '/faq/',
             },
           ],
         },
