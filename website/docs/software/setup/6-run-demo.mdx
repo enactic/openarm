@@ -34,7 +34,7 @@ Connect the motors in a daisy-chain using XT30 2+2 cables. [See detailed wiring 
 The default demo uses motors 0x01, 0x02, 0x07 (DM4310) on CAN0 with CANFD. If your setup matches, run directly:
 
 ```bash
-./build/openarm-demo
+openarm-can-demo
 ```
 
 ## Configure the Demo
@@ -105,14 +105,14 @@ Modify the configuration as needed for your setup.
 After modifying the configuration, rebuild the demo:
 
 ```bash
-cmake --build build --target openarm-demo
+cmake --build build --target openarm-can-demo
+sudo cmake --install build
 ```
 
 ## Run the Demo
 
 ```bash
-cd build
-./openarm-demo
+openarm-can-demo
 ```
 
 ## Expected Output

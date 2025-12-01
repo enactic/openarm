@@ -33,13 +33,13 @@ Set the baudrate for each motor (replace `1` with your motor CAN ID and `5000000
 
 Set temporarily:
 ```bash
-python3 change_baudrate.py --baudrate 5000000 --canid 1 --socketcan can0
+openarm-can-change-baudrate --baudrate 5000000 --canid 1 --socketcan can0
 ```
 
 Save permanently:
 
 ```bash
-python3 change_baudrate.py --baudrate 5000000 --canid 1 --socketcan can0 --flash
+openarm-can-change-baudrate --baudrate 5000000 --canid 1 --socketcan can0 --flash
 ```
 
 **Important:** After completing the baudrate configuration, reconfigure your CAN interface to match the motor's new baudrate setting for proper communication if necessary.
@@ -75,20 +75,20 @@ Safety First! The robot will move automatically when calibration starts. Wear sa
 The zero position calibration runs **one arm at a time**.  
 Run the zero position calibration (this defaults to can 0, right arm):
 ```bash
-python3 setup/zero_position_calibration.py
+openarm-can-zero-position-calibration
 ```
 For specific arms, run:
 ```bash
 # Leader-side Left
-python3 setup/zero_position_calibration.py --canport can1 --arm_side left_arm
+openarm-can-zero-position-calibration --canport can1 --arm_side left_arm
 ```
 ```bash
 # Follower-side Right
-python3 setup/zero_position_calibration.py --canport can2 --arm_side right_arm
+openarm-can-zero-position-calibration --canport can2 --arm_side right_arm
 ```
 ```bash
 # Follower-side Left
-python3 setup/zero_position_calibration.py --canport can3 --arm_side left_arm
+openarm-can-zero-position-calibration --canport can3 --arm_side left_arm
 ```
 <div style={{display: 'flex', justifyContent: 'center'}}>
   <iframe 
@@ -113,13 +113,12 @@ If it's missing, rebuild the project. Note: CAN ID 17 is the decimal representat
 
 For CAN 2.0
 ```bash
-cd openarm_can/build
-./motor-check 1 17 can0
+openarm-can-motor-check 1 17 can0
 ```
 
 For CAN FD mode:
 ```bash
-./motor-check 1 17 can0 -fd
+openarm-can-motor-check 1 17 can0 -fd
 ```
 
 The output should display the motor's receiver ID, baudrate, and status information.

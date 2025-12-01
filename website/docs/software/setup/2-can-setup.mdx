@@ -57,10 +57,10 @@ git clone https://github.com/enactic/openarm_can.git
 cd openarm_can/setup
 
 # For CAN 2.0
-./configure_socketcan.sh can0
+./openarm-can-configure-socketcan can0
 
 # For CAN FD at 5mbps (recommended)
-./configure_socketcan.sh can0 -fd -b 1000000 -d 5000000
+./openarm-can-configure-socketcan can0 -fd -b 1000000 -d 5000000
 ```
 
 ## Verify Configuration

@@ -47,12 +47,10 @@ Each arm requires a dedicated CAN interface (1 arm = 1 CAN port).
 To initialize a CAN interface (e.g., `can0`) in CAN FD mode, run:
 
 ```bash
-cd openarm_can
-./setup/configure_socketcan.sh can0 -fd
+openarm-can-configure-socketcan can0 -fd
 ```
 
 If you have all CAN interfaces (can0 to can3) connected, you can use the following command
 ```bash
-cd openarm_can
-./setup/configure_socketcan_4_arms.sh -fd
+openarm-can-configure-socketcan-4-arms -fd
 ```
