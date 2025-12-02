@@ -14,10 +14,12 @@ Before proceeding, ensure you have the required system:
 - CMake 3.22+
 - C++17 compiler
 
-## Clone the CAN Library
+## Download the CAN Library
 
 ```bash
-git clone https://github.com/enactic/openarm_can.git
+wget https://github.com/enactic/openarm_can/releases/download/{{OPENARM_CAN_VERSION}}/openarm-can-{{OPENARM_CAN_VERSION}}.tar.gz
+tar xf openarm-can-{{OPENARM_CAN_VERSION}}.tar.gz
+cd openarm-can-{{OPENARM_CAN_VERSION}}
 ```
 
 ## Build the Library
@@ -25,7 +27,6 @@ git clone https://github.com/enactic/openarm_can.git
 Build:
 
 ```bash
-cd openarm_can
 cmake -S . -B build -DCMAKE_BUILD_TYPE=Release
 cmake --build build
 ```
