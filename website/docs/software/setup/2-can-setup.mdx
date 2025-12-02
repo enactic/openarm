@@ -53,8 +53,10 @@ The OpenArm CAN library includes convenient setup scripts, example usage:
 
 ```bash
 # Navigate to openarm_can directory
-git clone https://github.com/enactic/openarm_can.git
-cd openarm_can/setup
+VERSION=1.1.0
+wget https://github.com/enactic/openarm_can/releases/download/$VERSION/openarm-can-$VERSION.tar.gz
+tar xf openarm-can-$VERSION.tar.gz
+cd openarm-can-$VERSION/setup
 
 # For CAN 2.0
 ./configure_socketcan.sh can0
