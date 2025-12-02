@@ -79,6 +79,12 @@ const config: Config = {
     ],
   ],
 
+  markdown: {
+    preprocessor: ({filePath, fileContent}) => {
+      return fileContent.replaceAll('{{OPENARM_CAN_VERSION}}', '1.1.0');
+    },
+  },
+
   plugins: [
     './src/plugins/csv-loader/index.ts',
   ],

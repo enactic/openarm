@@ -17,9 +17,9 @@ Before proceeding, ensure you have the required system:
 ## Download the CAN Library
 
 ```bash
-VERSION=1.1.0
-wget https://github.com/enactic/openarm_can/releases/download/$VERSION/openarm-can-$VERSION.tar.gz
-tar xf openarm-can-$VERSION.tar.gz
+wget https://github.com/enactic/openarm_can/releases/download/{{OPENARM_CAN_VERSION}}/openarm-can-{{OPENARM_CAN_VERSION}}.tar.gz
+tar xf openarm-can-{{OPENARM_CAN_VERSION}}.tar.gz
+cd openarm-can-{{OPENARM_CAN_VERSION}}
 ```
 
 ## Build the Library
@@ -27,7 +27,6 @@ tar xf openarm-can-$VERSION.tar.gz
 Build:
 
 ```bash
-cd openarm-can-$VERSION
 cmake -S . -B build -DCMAKE_BUILD_TYPE=Release
 cmake --build build
 ```
