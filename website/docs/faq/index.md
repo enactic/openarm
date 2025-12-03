@@ -13,6 +13,11 @@ Please consider integrating it with another project, for more information, refer
 
 See the [troubleshooting section](/software/setup/motor-id#trouble-shooting).
 
+## Do you have any recommended CAN devices?
+
+Please use the devices listed in the [Bill of Materials > Electronics](/hardware/bill-of-materials/electrical).
+Using other CAN devices may result in unexpected behavior.
+
 ## How accurate and repeatable is it?
 
 We're preparing the documentation.
