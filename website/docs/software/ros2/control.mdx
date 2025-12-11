@@ -20,6 +20,7 @@ It abstracts away the hardware control to expose the arm as a interface that rec
 To get started, clone the openarm_ros2 repository, build the packages, and source the workspace.
 ```sh
 git clone https://github.com/enactic/openarm_ros2 ~/ros2_ws/src/openarm_ros2
+cd ~/ros2_ws/src && vcs import < ./openarm_ros2/openarm.repos # can skip this step if openarm_can is installed system-wide
 cd ~/ros2_ws && colcon build
 source ~/ros2_ws/install/setup.bash
 ```
