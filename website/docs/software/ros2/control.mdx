@@ -18,10 +18,18 @@ The [openarm_ros2](https://github.com/enactic/openarm_ros2) repository contains 
 It abstracts away the hardware control to expose the arm as a interface that receives position, velocity, and torque commands and outputs joint states.
 
 To get started, clone the openarm_ros2 repository, build the packages, and source the workspace.
+
 ```sh
 git clone https://github.com/enactic/openarm_ros2 ~/ros2_ws/src/openarm_ros2
-(cd ~/ros2_ws/src && vcs import < ./openarm_ros2/openarm.repos) # can skip this step if openarm_can is installed system-wide
+
+# You can skip this step if openarm_can is installed system-wide
+# You can also skip it when testing with mock hardware only.
+(cd ~/ros2_ws/src && vcs import < ./openarm_ros2/openarm.repos)
+
+# If you only want to use mock hardware,
+# build with the `--packages-ignore openarm_hardware` option.
 cd ~/ros2_ws && colcon build
+
 source ~/ros2_ws/install/setup.bash
 ```
 
