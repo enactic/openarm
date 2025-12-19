@@ -23,46 +23,30 @@ Select a [ROS 2 distribution](https://docs.ros.org/en/humble/Releases.html) to i
 
 Click on your chosen ROS 2 distro name and follow the install guide on the website.
 :::note Quick Link
-Replace `humble` with your chosen ROS 2 distro: https://docs.ros.org/en/humble/Installation/Alternatives/Ubuntu-Development-Setup.html
+Replace `humble` with your chosen ROS 2 distro: https://docs.ros.org/en/humble/Installation/Ubuntu-Install-Debs.html
 :::
 
-### Or Quick Install:
-
-Open a new terminal:
+The packages you need to install vary based on the tools you use, but OpenArm recommends installing `ros-humble-desktop`.
 
 ```bash
-# Replace these with your versions:
-UBUNTU_VERSION=22.04
-ROS_DISTRO=humble
+sudo apt install -y ros-humble-desktop # or ros-humble-ros-base - Minimal setup (no GUI tools)
 ```
 
-Set Up Your System:
+To use the [openarm_ros2](https://github.com/enactic/openarm_ros2) repository, you'll also need the following packages, so install them.
 
 ```bash
-sudo apt update && sudo apt install -y curl gnupg lsb-release
-```
-
-Add the ROS 2 GPG Key and Repository:
-
-```bash
-sudo curl -sSL https://raw.githubusercontent.com/ros/rosdistro/master/ros.key -o /usr/share/keyrings/ros-archive-keyring.gpg
-
-echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/ros-archive-keyring.gpg] \
-https://packages.ros.org/ros2/ubuntu $(lsb_release -cs) main" | \
-sudo tee /etc/apt/sources.list.d/ros2.list > /dev/null
-```
-
-Install ROS 2:
-
-```bash
-sudo apt update
-sudo apt install -y ros-$ROS_DISTRO-desktop # or ros-$ROS_DISTRO-ros-base - Minimal setup (no GUI tools)
+sudo apt install -y \
+  ros-humble-controller-manager \
+  ros-humble-gripper-controllers \
+  ros-humble-hardware-interface \
+  ros-humble-joint-state-broadcaster \
+  ros-humble-joint-trajectory-controller
 ```
 
 Source ROS 2 Environment:
 
 ```bash
-echo "source /opt/ros/$ROS_DISTRO/setup.bash" >> ~/.bashrc
+echo "source /opt/ros/humble/setup.bash" >> ~/.bashrc
 source ~/.bashrc
 ```
 
