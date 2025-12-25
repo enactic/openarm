@@ -94,21 +94,13 @@ This command moves all arm joints to a 0.15 radian position over 3 seconds.
 
 [MoveIt2](https://moveit.picknik.ai/main/index.html) is a powerful framework for robotic manipulators that combines inverse kinematics, perception, path planning, and control capabilities.
 
-**The OpenArm MoveIt2 integration is currently under active development.** For the latest MoveIt2 integration, including motion planning and bimanual coordination features, please use the [`moveit2` branch](https://github.com/enactic/openarm_ros2/tree/moveit2) of the openarm_ros2 repository.
+**The OpenArm MoveIt2 integration is currently under active development.**
 
 ### Getting Started with MoveIt2
 
 To use the MoveIt2 integration:
 
-1. **Switch to the moveit2 branch:**
-```sh
-cd ~/ros2_ws/src/openarm_ros2
-git checkout moveit2
-cd ~/ros2_ws && colcon build
-source ~/ros2_ws/install/setup.bash
-```
-
-2. **Launch the MoveIt2 demo:**
+**Launch the MoveIt2 demo:**
 ```sh
 ros2 launch openarm_bimanual_moveit_config demo.launch.py
 ```
@@ -126,5 +118,5 @@ Target positions can be set in the `Joints` tab in the MotionPlanning panel on t
 The `Planning` tab provides a GUI to generate trajectories to reach a goal position. Clicking on `Plan` to preview the path is recommended.
 
 :::info
-The MoveIt2 integration is actively being developed. Check the [moveit2 branch](https://github.com/enactic/openarm_ros2/tree/moveit2) for the latest updates and features.
+The MoveIt2 integration is actively being developed. Check the [openarm_ros2 repository](https://github.com/enactic/openarm_ros2) for the latest updates and features.
 :::

@@ -14,6 +14,15 @@ OpenArm features **human-scale** proportions, safety and compliance, and practic
 > 
 > [**Buy Now →**](https://docs.openarm.dev/purchase)
 
+## ⭐ Star History
+
+<a href="https://www.star-history.com/#enactic/openarm&type=date&legend=top-left">
+ <picture>
+   <source media="(prefers-color-scheme: dark)" srcset="https://api.star-history.com/svg?repos=enactic/openarm&type=date&theme=dark&legend=top-left" />
+   <source media="(prefers-color-scheme: light)" srcset="https://api.star-history.com/svg?repos=enactic/openarm&type=date&legend=top-left" />
+   <img alt="Star History Chart" src="https://api.star-history.com/svg?repos=enactic/openarm&type=date&legend=top-left" />
+ </picture>
+</a>
 
 ## 🔗 Quick Links
 
