@@ -1,17 +1,16 @@
 ---
-title: '5. Motor Configuration'
-sidebar_position: 6
+title: '4. Motor Configuration'
+sidebar_position: 5
 ---
 import BlockImage from '@site/src/components/BlockImage';
 
-# Step 5: Motor Configuration
+# Step 4: Motor Configuration
 
 :::info
 **Prerequisites:** Before proceeding, ensure you have:
 - ✅ Motor IDs configured (Step 1)
 - ✅ CAN interface configured (Step 2)
 - ✅ Basic communication tested (Step 3)
-- ✅ OpenArm CAN library built (Step 4)
 :::
 
 ## Overview
@@ -33,13 +32,13 @@ Set the baudrate for each motor (replace `1` with your motor CAN ID and `5000000
 
 Set temporarily:
 ```bash
-python3 change_baudrate.py --baudrate 5000000 --canid 1 --socketcan can0
+openarm-can-change-baudrate --baudrate 5000000 --canid 1 --socketcan can0
 ```
 
 Save permanently:
 
 ```bash
-python3 change_baudrate.py --baudrate 5000000 --canid 1 --socketcan can0 --flash
+openarm-can-change-baudrate --baudrate 5000000 --canid 1 --socketcan can0 --flash
 ```
 
 **Important:** After completing the baudrate configuration, reconfigure your CAN interface to match the motor's new baudrate setting for proper communication if necessary.
@@ -70,25 +69,23 @@ For grippers, the closed position is used as zero by default.
 Safety First! The robot will move automatically when calibration starts. Wear safety gear, clear the workspace, and be ready to emergency stop.
 :::
 
-**Prerequisites:** Ensure you have completed the [Python binding](https://github.com/enactic/openarm_can#4-python--experimental---temporary-) installation before proceeding with calibration.
-
 The zero position calibration runs **one arm at a time**.  
 Run the zero position calibration (this defaults to can 0, right arm):
 ```bash
-python3 setup/zero_position_calibration.py
+openarm-can-zero-position-calibration
 ```
 For specific arms, run:
 ```bash
 # Leader-side Left
-python3 setup/zero_position_calibration.py --canport can1 --arm_side left_arm
+openarm-can-zero-position-calibration --canport can1 --arm_side left_arm
 ```
 ```bash
 # Follower-side Right
-python3 setup/zero_position_calibration.py --canport can2 --arm_side right_arm
+openarm-can-zero-position-calibration --canport can2 --arm_side right_arm
 ```
 ```bash
 # Follower-side Left
-python3 setup/zero_position_calibration.py --canport can3 --arm_side left_arm
+openarm-can-zero-position-calibration --canport can3 --arm_side left_arm
 ```
 <div style={{display: 'flex', justifyContent: 'center'}}>
   <iframe 
@@ -108,18 +105,16 @@ python3 setup/zero_position_calibration.py --canport can3 --arm_side left_arm
 ## Step 3: Verify Motor Communication
 
 Run the motor check executable, replace `1` and `17` with your motor's send and receive CAN IDs.
-The `motor-check` executable should be available in the build directory from the library compilation.
-If it's missing, rebuild the project. Note: CAN ID 17 is the decimal representation of 0x11
+Note: CAN ID 17 is the decimal representation of 0x11
 
 For CAN 2.0
 ```bash
-cd openarm_can/build
-./motor-check 1 17 can0
+openarm-can-motor-check 1 17 can0
 ```
 
 For CAN FD mode:
 ```bash
-./motor-check 1 17 can0 -fd
+openarm-can-motor-check 1 17 can0 -fd
 ```
 
 The output should display the motor's receiver ID, baudrate, and status information.
@@ -130,7 +125,7 @@ The output should display the motor's receiver ID, baudrate, and status informat
 3. **Troubleshoot**: If the baudrate doesn't match, switch your CAN interface to 2.0 and re-run the baudrate change script
 
 :::warning
-It is important to get the motor-check working before running the demo.
+It is important to get the openarm-can-motor-check working before running the demo.
 :::
 
 ## Troubleshooting

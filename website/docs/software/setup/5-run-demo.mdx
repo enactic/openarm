@@ -1,16 +1,15 @@
 ---
-title: '6. Hands-On: Demo Run'
-sidebar_position: 7
+title: '5. Hands-On: Demo Run'
+sidebar_position: 6
 ---
 
-# Step 6: Hands-On: Demo Run
+# Step 5: Hands-On: Demo Run
 
 :::info
 **Prerequisites:** Before running the demo, verify these prerequisites are complete:
 - ✅ Motor IDs configured and tested (Steps 1, 3)
 - ✅ CAN interface configured (Step 2)
-- ✅ OpenArm CAN library built (Step 4)
-- ✅ Motor zero position set to safe values, baudrate matches CAN interface configuration (Step 5)
+- ✅ Motor zero position set to safe values, baudrate matches CAN interface configuration (Step 4)
 :::
 
 Now that your basic communication is working, let's run the full OpenArm demo program to test complete system functionality.
@@ -34,12 +33,71 @@ Connect the motors in a daisy-chain using XT30 2+2 cables. [See detailed wiring 
 The default demo uses motors 0x01, 0x02, 0x07 (DM4310) on CAN0 with CANFD. If your setup matches, run directly:
 
 ```bash
-./build/openarm-demo
+openarm-can-demo
+```
+
+## What the Demo Does
+
+The demo program performs these operations:
+
+1. **Initialization**: Sets up CAN interface and motor communication
+2. **Motor Query**: Reads and displays motor IDs to verify configuration
+3. **Motor Control**:
+   - Enables all motors
+   - Performs position control tests
+   - Performs torque control tests
+4. **Gripper Control**: Opens and closes the gripper (if configured)
+5. **Status Monitoring**: Displays motor positions for 10 cycles
+6. **Cleanup**: Safely disables all motors
+
+Modify the configuration as needed for your setup.
+
+## Expected Output
+
+You should see output similar to:
+
+```
+=== OpenArm CAN Example ===
+This example demonstrates the OpenArm API functionality
+Initializing OpenArm CAN...
+Initializing gripper...
+
+=== Enabling Motors ===
+
+=== Querying Motor Recv IDs ===
+Arm Motor: 1 ID: 17
+Arm Motor: 2 ID: 18
+Gripper Motor: 8 ID: 24
+
+=== Controlling Motors ===
+Closing gripper...
+Arm Motor: 1 position: 0.123
+Arm Motor: 2 position: 0.456
+Gripper Motor: 8 position: 0.789
+...
 ```
 
 ## Configure the Demo
 
-Configured with your specific motor setup by editing `openarm_can/examples` and rebuild if needed.
+### Prerequisites
+
+Before proceeding, ensure you have the required system:
+
+- Linux with SocketCAN support ([Install Ubuntu →](../ubuntu/))
+- CMake 3.22+
+- C++17 compiler
+
+### Download the CAN Library
+
+```bash
+wget https://github.com/enactic/openarm_can/releases/download/{{OPENARM_CAN_VERSION}}/openarm-can-{{OPENARM_CAN_VERSION}}.tar.gz
+tar xf openarm-can-{{OPENARM_CAN_VERSION}}.tar.gz
+cd openarm-can-{{OPENARM_CAN_VERSION}}
+```
+
+### Configure the Demo
+
+Configured with your specific motor setup by editing `examples/demo.cpp` and build if needed.
 Find and update these sections to match your motor setup:
 
 ```cpp
@@ -83,61 +141,19 @@ If you have a gripper, update the gripper configuration. Otherwise, remove all c
 openarm.init_gripper_motor(openarm::damiao_motor::MotorType::DM4310, 0x08, 0x18);
 ```
 
+### Build the Demo
 
-## What the Demo Does
-
-The demo program performs these operations:
-
-1. **Initialization**: Sets up CAN interface and motor communication
-2. **Motor Query**: Reads and displays motor IDs to verify configuration
-3. **Motor Control**:
-   - Enables all motors
-   - Performs position control tests
-   - Performs torque control tests
-4. **Gripper Control**: Opens and closes the gripper (if configured)
-5. **Status Monitoring**: Displays motor positions for 10 cycles
-6. **Cleanup**: Safely disables all motors
-
-Modify the configuration as needed for your setup.
-
-## Rebuild the Demo
-
-After modifying the configuration, rebuild the demo:
+After modifying the configuration, build the demo:
 
 ```bash
-cmake --build build --target openarm-demo
+cmake -S . -B build -DCMAKE_BUILD_TYPE=Release
+cmake --build build --target openarm-can-demo
 ```
 
-## Run the Demo
+### Run the Demo
 
 ```bash
-cd build
-./openarm-demo
-```
-
-## Expected Output
-
-You should see output similar to:
-
-```
-=== OpenArm CAN Example ===
-This example demonstrates the OpenArm API functionality
-Initializing OpenArm CAN...
-Initializing gripper...
-
-=== Enabling Motors ===
-
-=== Querying Motor Recv IDs ===
-Arm Motor: 1 ID: 17
-Arm Motor: 2 ID: 18
-Gripper Motor: 8 ID: 24
-
-=== Controlling Motors ===
-Closing gripper...
-Arm Motor: 1 position: 0.123
-Arm Motor: 2 position: 0.456
-Gripper Motor: 8 position: 0.789
-...
+build/openarm-can-demo
 ```
 
 ## Troubleshooting

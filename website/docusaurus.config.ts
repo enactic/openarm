@@ -81,7 +81,7 @@ const config: Config = {
 
   markdown: {
     preprocessor: ({filePath: _filePath, fileContent}) => {
-      return fileContent.replaceAll('{{OPENARM_CAN_VERSION}}', '1.1.0');
+      return fileContent.replaceAll('{{OPENARM_CAN_VERSION}}', '1.2.2');
     },
   },
 
