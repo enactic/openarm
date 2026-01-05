@@ -13,7 +13,14 @@ The [electrical BOM](/hardware/bill-of-materials/electrical) contains the device
 Before proceeding, ensure you have the required tools installed:
 
 ```bash
-sudo apt install can-utils iproute2
+sudo apt install -y software-properties-common
+sudo add-apt-repository -y ppa:openarm/main
+sudo apt update
+sudo apt install -y \
+  can-utils \
+  iproute2 \
+  libopenarm-can-dev \
+  openarm-can-utils
 ```
 
 ## Find Your CAN Interface
@@ -28,7 +35,19 @@ ip link show
 
 Replace `can0` with your actual CAN interface name and use a baudrate supported by you interfaces for the steps.
 
-### Option 1: setup manually
+### Option 1: use OpenArm CAN library
+
+The OpenArm CAN library includes convenient setup commands, example usage:
+
+```bash
+# For CAN 2.0
+openarm-can-configure-socketcan can0
+
+# For CAN FD at 5mbps (recommended)
+openarm-can-configure-socketcan can0 -fd -b 1000000 -d 5000000
+```
+
+### Option 2: setup manually
 
 **CAN 2.0 Mode**
 
@@ -45,23 +64,6 @@ ip link set can0 down
 # configure CAN FD with 5mbps
 sudo ip link set can0 type can bitrate 1000000 dbitrate 5000000 fd on
 sudo ip link set can0 up
-```
-
-### Option 2: use setup scripts
-
-The OpenArm CAN library includes convenient setup scripts, example usage:
-
-```bash
-# Navigate to openarm_can directory
-wget https://github.com/enactic/openarm_can/releases/download/{{OPENARM_CAN_VERSION}}/openarm-can-{{OPENARM_CAN_VERSION}}.tar.gz
-tar xf openarm-can-{{OPENARM_CAN_VERSION}}.tar.gz
-cd openarm-can-{{OPENARM_CAN_VERSION}}/setup
-
-# For CAN 2.0
-./configure_socketcan.sh can0
-
-# For CAN FD at 5mbps (recommended)
-./configure_socketcan.sh can0 -fd -b 1000000 -d 5000000
 ```
 
 ## Verify Configuration
