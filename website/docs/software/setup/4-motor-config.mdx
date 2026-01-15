@@ -60,11 +60,17 @@ openarm-can-change-baudrate --baudrate 5000000 --canid 1 --socketcan can0 --flas
 
 
 ## Step 2: Zero Position Calibration
+
 :::info
 Physically position the arms to roughly match the zero position shown below before running calibration.  
 For grippers, the closed position is used as zero by default.
 <BlockImage src="software/setup/zeropos.jpg" alt="zeropos" width="40%" />
 :::
+
+:::info
+When setting up in a Leader-Follower configuration, please run the zero position calibration for the Leader and the Follower separately, while they are in their independent states.
+:::
+
 :::warning
 Safety First! The robot will move automatically when calibration starts. Wear safety gear, clear the workspace, and be ready to emergency stop.
 :::
