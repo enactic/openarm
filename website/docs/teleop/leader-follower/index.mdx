@@ -21,21 +21,6 @@ It’s a **one-way control** scheme — the leader sends motion commands, but no
 
 ## Bilateral Control
 
-Bilateral teleoperation enables **haptic feedback**. You feel what the robot feels. It exchanges both **position** and **force** data bidirectionally, allowing operators to sense the forces the follower arm experiences.
+Bilateral control enables **two-way force feedback** between the leader and follower arms, allowing the operator to feel what the follower arm touches.
 
-This produces **high-quality demonstration data** (motion + force) essential for imitation learning and contact-rich policy training.
-
-- **Pros:** Precise contact manipulation, reduced operator fatigue, rich demonstration data (motion + force)
-- **Cons:** Requires additional setup and tuning, needs stable communication
-- **Best for:** Contact-rich tasks, force-sensitive manipulation, working with deformables, precision insertions, collaborative tasks near humans
-
-### How Our Bilateral Control Works?
-OpenArm’s bilateral controller uses a disturbance-observer-based acceleration control system for sensorless force estimation.
-This approach provides accurate and responsive force feedback without dedicated torque sensors, enabling high-fidelity haptic teleoperation at a low hardware cost.
-
-
-:::caution Note
-The above describes the concept of our four-channel bilateral control architecture, which is currently under development and shared only with our research partners.
-We are actively working on a more robust and stable implementation for future public release.
-The open-source version currently offers a classical position–force bilateral control scheme, suitable for basic teleoperation and research purposes.
-:::
+For detailed setup and configuration, see the [Bilateral Control guide](/teleop/leader-follower/bilateral-control/).
