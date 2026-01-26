@@ -120,3 +120,14 @@ The `Planning` tab provides a GUI to generate trajectories to reach a goal posit
 :::info
 The MoveIt2 integration is actively being developed. Check the [openarm_ros2 repository](https://github.com/enactic/openarm_ros2) for the latest updates and features.
 :::
+
+## Control gain
+
+The default gain is set to a relatively low value for safety. As a result, the arm may not be able to reach high angles in some cases. The gain can be adjusted by editing the following configuration file and rebuilding.
+
+* Edit [~/ros2_ws/src/openarm_description/config/arm/v10/control_gains.yaml](https://github.com/enactic/openarm_description/blob/main/config/arm/v10/control_gains.yaml).
+* Rebuild by `colcon build`.
+
+:::danger ⚠️ GAIN TUNING SAFETY
+Please adjust the gain with great care. **Start with a lower gain and verify the behavior first, then increase it gradually.** If you execute an action with a large position difference while using a high gain, some controllers may generate dangerously high velocities.
+:::
