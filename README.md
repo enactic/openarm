@@ -1,5 +1,7 @@
 # OpenArm
 
+日本語版はこちら: [README.ja.md](README.ja.md)
+
 **OpenArm** is an open-source 7DOF humanoid arm designed for physical AI research and deployment in contact-rich environments. With high backdrivability and compliance, it excels at safe human-robot interaction while delivering practical payload capabilities for real-world applications.
 
 <img width="5216" height="2810" alt="leader-follower1" src="website/static/img/teleop/leader-follower/unilateral.png" />
