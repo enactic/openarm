@@ -51,7 +51,7 @@ cd openarm_teleop
 left_arm (default can bus is can1 can3)
 ```bash
 cd openarm_teleop
-./script/launch_bilateral.sh left_arm can1 can3
+./script/launch_unilateral.sh left_arm can1 can3
 ```
 
 ### Arguments
