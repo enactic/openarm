@@ -14,8 +14,6 @@
 
 import eslint from '@eslint/js';
 import tseslint from 'typescript-eslint';
-import react from 'eslint-plugin-react';
-import reactHooks from 'eslint-plugin-react-hooks';
 
 export default tseslint.config(
   eslint.configs.recommended,
@@ -30,15 +28,6 @@ export default tseslint.config(
   },
   {
     files: ['**/*.{ts,tsx}'],
-    plugins: {
-      react,
-      'react-hooks': reactHooks,
-    },
-    settings: {
-      react: {
-        version: 'detect',
-      },
-    },
     rules: {
       // Allow require() for Docusaurus dynamic asset imports
       '@typescript-eslint/no-require-imports': 'off',
