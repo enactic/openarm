@@ -35,9 +35,9 @@
     "@docusaurus/tsconfig": "3.9.2",
     "@docusaurus/types": "3.9.2",
     "@eslint/js": "^10.0.1",
-    "eslint": "^10.0.1",
+    "eslint": "^10.0.2",
     "typescript": "~5.9.3",
-    "typescript-eslint": "^8.56.0"
+    "typescript-eslint": "^8.56.1"
   },
   "browserslist": {
     "production": [
