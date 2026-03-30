@@ -72,6 +72,11 @@ You might want to connect all the hardware components first using the reference 
 
 ### Open the Port
 
+:::warning
+* The Damiao Debugging Tool communicates via **serial (UART)**, not CAN.
+* The serial connection runs at **921600 bps**.
+:::
+
 If it does not detect the correct serial port, it's usually the last one in the drop-down list.
 
 <BlockImage src="software/setup/damiao-debugging-tools-port.png" alt="Damiao Debugging Tools port" width="20%" />
