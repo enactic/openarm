@@ -1,0 +1,50 @@
+---
+title: Windows Dual Boot
+sidebar_position: 1
+---
+
+import TOCInline from '@theme/TOCInline';
+
+# Dual Booting With Windows
+
+You can install Ubuntu alongside Windows using a shared disk with partitioning.
+
+### Step 1: Prepare Windows
+
+1. Back up your data (just in case).
+2. Open Disk Management (Win + X → Disk Management).
+3. Right-click your main drive (usually C:) → Shrink Volume.
+4. Free at least 20–50 GB for Ubuntu (recommended).
+5. Leave the new space unallocated (do not format it).
+
+### Step 2: Boot the Ubuntu USB Installer
+
+1. Insert the USB and reboot the system
+2. Enter BIOS/UEFI (usually by pressing F2, Del, F12, or Esc during startup)
+3. Set the USB as the first boot device
+4. Save changes and reboot
+
+### Step 3: Install Ubuntu Alongside Windows
+
+1. Select Try or Install Ubuntu
+2. When prompted for installation type, select: **Install Ubuntu alongside Windows Boot Manager**
+3. Use the slider to allocate how much space to give to Ubuntu
+4. Continue installation as prompted
+
+### Step 4: Bootloader Setup
+
+1. After installation, you’ll see the GRUB boot menu at startup
+2. Select between Ubuntu and Windows each time you boot
+
+---
+
+### Fixing Boot Issues
+
+If Windows doesn't show up in the GRUB menu:
+
+```bash
+sudo os-prober
+sudo update-grub
+```
+
+Or use Boot-Repair from a live USB.

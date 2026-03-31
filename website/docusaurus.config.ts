@@ -59,6 +59,12 @@ const config: Config = {
           remarkPlugins: [require('remark-math')],
           rehypePlugins: [require('rehype-katex')],
           showLastUpdateTime: true,
+          lastVersion: '1.1',
+          versions: {
+            '1.1': {
+              label: '1.1',
+            },
+          },
         },
         blog: {
           showReadingTime: true,
@@ -143,6 +149,10 @@ const config: Config = {
           label: 'FAQ',
         },
         // {to: '/blog', label: 'Blog', position: 'left'},
+        {
+          type: 'docsVersionDropdown',
+          position: 'right',
+        },
         {
           href: 'https://github.com/enactic/openarm',
           label: 'GitHub',

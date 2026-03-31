@@ -1,0 +1,26 @@
+---
+slug: /teleop/
+---
+
+import BlockImage from '@site/src/components/BlockImage';
+
+# Leader-Follower Teleoperation
+
+OpenArm supports 1:1 teleoperation from a **leader** arm to a **follower** arm in two control modes:
+
+## Unilateral Control
+
+This is the **basic teleoperation setup**, where the follower arm directly mimics the leader’s movements through position commands.
+It’s a **one-way control** scheme — the leader sends motion commands, but no force feedback is returned.
+
+- **Pros:** Simple and robust; ideal for initial tests and free-space motion
+- **Cons:** No tactile feedback, making it easy to apply excessive force or lose alignment during contact tasks
+- **Best for:** Basic teleoperation, open-space manipulation, fast and lightweight operations without contact forces
+
+<BlockImage src="teleop/leader-follower/unilateral.png" alt="Unilateral leader-follower control" width="100%" />
+
+## Bilateral Control
+
+Bilateral control enables **two-way force feedback** between the leader and follower arms, allowing the operator to feel what the follower arm touches.
+
+For detailed setup and configuration, see the [Bilateral Control guide](/teleop/leader-follower/bilateral-control/).
