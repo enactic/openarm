@@ -16,7 +16,12 @@
   // This file is not used in compilation. It is here just for a nice editor experience.
   "extends": "@docusaurus/tsconfig",
   "compilerOptions": {
-    "baseUrl": ".",
+    // TODO: Remove baseUrl and paths overrides when Docusaurus v4 drops baseUrl.
+    // See: https://github.com/facebook/docusaurus/pull/11843#issuecomment-4134659968
+    "baseUrl": null,
+    "paths": {
+      "@site/*": ["./*"]
+    },
   },
   "exclude": [".docusaurus", "build"],
 }
