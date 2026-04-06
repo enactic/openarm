@@ -14,11 +14,13 @@
 
 import React, { type ReactNode } from 'react';
 
-export interface TableColumn<T> {
-  header: string;
-  key: keyof T;
-  render?: (row: T, value: T[keyof T]) => ReactNode;
-}
+export type TableColumn<T> = {
+  [K in keyof T]: {
+    header: string;
+    key: K;
+    render?: (row: T, value: T[K]) => ReactNode;
+  };
+}[keyof T];
 
 interface TableProps<T> {
   columns: TableColumn<T>[];
