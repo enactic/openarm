@@ -25,7 +25,7 @@
     "katex": "^0.16.45",
     "prism-react-renderer": "^2.3.0",
     "react": "^19.1.1",
-    "react-dom": "^19.2.4",
+    "react-dom": "^19.2.5",
     "react-player": "^3.4.0",
     "rehype-katex": "^7.0.1",
     "remark-math": "^6.0.0"
