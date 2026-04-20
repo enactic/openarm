@@ -117,21 +117,21 @@ const config: Config = {
       items: [
         {
           type: 'docSidebar',
-          sidebarId: 'gettingStartedSidebar',
+          sidebarId: 'overviewSidebar',
           position: 'left',
-          label: 'Getting started',
+          label: 'Overview',
         },
         {
           type: 'docSidebar',
-          sidebarId: 'hardwareSidebar',
+          sidebarId: 'manufacturingSidebar',
           position: 'left',
-          label: 'Hardware',
+          label: 'Hardware', // todo: Rename when v2 is ready.
         },
         {
           type: 'docSidebar',
-          sidebarId: 'softwareSidebar',
+          sidebarId: 'apiReferenceSidebar',
           position: 'left',
-          label: 'Software',
+          label: 'Software', // todo: Rename when v2 is ready.
         },
         {
           type: 'docSidebar',
