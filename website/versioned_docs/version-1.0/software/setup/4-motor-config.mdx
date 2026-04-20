@@ -1,0 +1,143 @@
+---
+title: '4. Motor Configuration'
+sidebar_position: 5
+---
+import BlockImage from '@site/src/components/BlockImage';
+
+# Step 4: Motor Configuration
+
+:::info
+**Prerequisites:** Before proceeding, ensure you have:
+- ✅ Motor IDs configured (Step 1)
+- ✅ CAN interface configured (Step 2)
+- ✅ Basic communication tested (Step 3)
+:::
+
+## Overview
+
+We now need to complete the motor setup sprocess. This involves three key tasks:
+1. [Set Motor Baudrate](#step-1-set-motor-baudrate)
+2. [Set Zero Position](#step-2-zero-position-calibration)
+3. [Verify Motor Communication](#step-3-verify-motor-communication)
+
+
+## Step 1: Set Motor Baudrate
+
+:::warning
+- Be sure to use the CAN interface on 2.0 during the baudrate setup regardless of your target baudrate. Configure it back to your target baudrate after this step is finished.
+- Motor parameters has a 10000 time write limits, it should not be run frequently in scripts.
+:::
+
+Set the baudrate for each motor (replace `1` with your motor CAN ID and `5000000` with desired baudrate):
+
+Set temporarily:
+```bash
+openarm-can-change-baudrate --baudrate 5000000 --canid 1 --socketcan can0
+```
+
+Save permanently:
+
+```bash
+openarm-can-change-baudrate --baudrate 5000000 --canid 1 --socketcan can0 --flash
+```
+
+**Important:** After completing the baudrate configuration, reconfigure your CAN interface to match the motor's new baudrate setting for proper communication if necessary.
+
+**Supported Baudrates:**
+
+| Option | Baudrate | Description |
+|--------|----------|-------------|
+| 0      | 125000   | 125 kbps    |
+| 1      | 200000   | 200 kbps    |
+| 2      | 250000   | 250 kbps    |
+| 3      | 500000   | 500 kbps    |
+| 4      | 1000000  | 1 mbps      |
+| 5      | 2000000  | 2 mbps      |
+| 6      | 2500000  | 2.5 mbps    |
+| 7      | 3200000  | 3.2 mbps    |
+| 8      | 4000000  | 4 mbps      |
+| 9      | 5000000  | 5 mbps      |
+
+
+## Step 2: Zero Position Calibration
+
+:::info
+Physically position the arms to roughly match the zero position shown below before running calibration.  
+For grippers, the closed position is used as zero by default.
+<BlockImage src="software/setup/zeropos.jpg" alt="zeropos" width="40%" />
+:::
+
+:::info
+When setting up in a Leader-Follower configuration, please run the zero position calibration for the Leader and the Follower separately, while they are in their independent states.
+:::
+
+:::warning
+Safety First! The robot will move automatically when calibration starts. Wear safety gear, clear the workspace, and be ready to emergency stop.
+:::
+
+The zero position calibration runs **one arm at a time**.  
+Run the zero position calibration (this defaults to can 0, right arm):
+```bash
+openarm-can-zero-position-calibration
+```
+For specific arms, run:
+```bash
+# Leader-side Left
+openarm-can-zero-position-calibration --canport can1 --arm_side left_arm
+```
+```bash
+# Follower-side Right
+openarm-can-zero-position-calibration --canport can2 --arm_side right_arm
+```
+```bash
+# Follower-side Left
+openarm-can-zero-position-calibration --canport can3 --arm_side left_arm
+```
+<div style={{display: 'flex', justifyContent: 'center'}}>
+  <iframe 
+    width="315"
+    height="560"
+    src="https://www.youtube.com/embed/Dr-Eeoaq8pU" 
+    title="YouTube video player" 
+    frameBorder="0" 
+    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+    allowFullScreen
+  />
+</div>
+
+
+
+
+## Step 3: Verify Motor Communication
+
+Run the motor check executable, replace `1` and `17` with your motor's send and receive CAN IDs.
+Note: CAN ID 17 is the decimal representation of 0x11
+
+For CAN 2.0
+```bash
+openarm-can-motor-check 1 17 can0
+```
+
+For CAN FD mode:
+```bash
+openarm-can-motor-check 1 17 can0 -fd
+```
+
+The output should display the motor's receiver ID, baudrate, and status information.
+
+**Verification steps:**
+1. **Check baudrate**: Verify the displayed baudrate matches what you configured earlier
+2. **Test permanent settings**: If you used `--flash`, power cycle the motor and run the check again to confirm the settings persisted
+3. **Troubleshoot**: If the baudrate doesn't match, switch your CAN interface to 2.0 and re-run the baudrate change script
+
+:::warning
+It is important to get the openarm-can-motor-check working before running the demo.
+:::
+
+## Troubleshooting
+- Check CAN interface is UP
+- Verify motor is physically connected and powered, set with the correct ID
+- Verify can connection is stable (important!)
+- Use `candump` to monitor the traffic
+- Check CAN interface baudrate matches motor's current baudrate
+- Verify send/receive CAN IDs are correct. Common pairs: 1→17, 2→18, 3→19, etc.

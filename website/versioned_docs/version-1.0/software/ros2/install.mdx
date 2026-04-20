@@ -1,0 +1,134 @@
+---
+title: Installation
+sidebar_position: 1
+---
+
+import TOCInline from '@theme/TOCInline';
+
+# Installing ROS 2
+
+This guide walks you through installing ROS 2 and setting up a ROS 2 workspace.
+
+ROS 2 (Robot Operating System 2) is a modern, open-source framework for building robotic software: https://www.ros.org/
+
+### Prerequisites
+
+- Ubuntu ([Install Ubuntu →](../ubuntu/))
+
+### Choose your ROS 2
+
+Select a [ROS 2 distribution](https://docs.ros.org/en/humble/Releases.html) to install (Humble is recommended).
+
+### Install
+
+Here are the steps for Humble and Jazzy.
+For other distributions, please follow the installation guide on the website.
+
+:::note Quick Link
+Replace `humble` with your chosen ROS 2 distro: https://docs.ros.org/en/humble/Installation/Ubuntu-Install-Debs.html
+:::
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+<Tabs>
+<TabItem value="humble" label="Humble" default>
+Follow the website installation guide: https://docs.ros.org/en/humble/Installation/Ubuntu-Install-Debs.html
+
+The packages you need to install vary based on the tools you use, but OpenArm recommends installing `ros-humble-desktop`.
+
+```bash
+sudo apt install -y ros-humble-desktop # or ros-humble-ros-base - Minimal setup (no GUI tools)
+```
+
+To use the [openarm_ros2](https://github.com/enactic/openarm_ros2) repository, you'll also need the following packages, so install them.
+
+```bash
+sudo apt install -y \
+  ros-humble-controller-manager \
+  ros-humble-gripper-controllers \
+  ros-humble-hardware-interface \
+  ros-humble-joint-state-broadcaster \
+  ros-humble-joint-trajectory-controller
+
+# You must also install the following packages when using MoveIt2.
+sudo apt install -y \
+  ros-humble-forward-command-controller \
+  ros-humble-moveit-configs-utils \
+  ros-humble-moveit-planners \
+  ros-humble-moveit-ros-move-group \
+  ros-humble-moveit-ros-visualization \
+  ros-humble-moveit-simple-controller-manager
+```
+
+Source ROS 2 Environment:
+
+```bash
+echo "source /opt/ros/humble/setup.bash" >> ~/.bashrc
+source ~/.bashrc
+```
+
+Install Development Tools: https://docs.ros.org/en/humble/Installation/Alternatives/Ubuntu-Development-Setup.html#install-development-tools-and-ros-tools
+</TabItem>
+
+<TabItem value="jazzy" label="Jazzy">
+
+:::info
+We are currently working on Jazzy support, so it may be unstable at times. Please report any issues.
+:::
+
+Follow the website installation guide: https://docs.ros.org/en/jazzy/Installation/Ubuntu-Install-Debs.html
+
+The packages you need to install vary based on the tools you use, but OpenArm recommends installing `ros-jazzy-desktop`.
+
+```bash
+sudo apt install -y ros-jazzy-desktop # or ros-jazzy-ros-base - Minimal setup (no GUI tools)
+```
+
+To use the [openarm_ros2](https://github.com/enactic/openarm_ros2) repository, you'll also need the following packages, so install them.
+
+```bash
+sudo apt install -y \
+  ros-jazzy-controller-manager \
+  ros-jazzy-gripper-controllers \
+  ros-jazzy-hardware-interface \
+  ros-jazzy-joint-state-broadcaster \
+  ros-jazzy-joint-trajectory-controller
+
+# You must also install the following packages when using MoveIt2.
+sudo apt install -y \
+  ros-jazzy-forward-command-controller \
+  ros-jazzy-moveit-configs-utils \
+  ros-jazzy-moveit-planners \
+  ros-jazzy-moveit-ros-move-group \
+  ros-jazzy-moveit-ros-visualization \
+  ros-jazzy-moveit-simple-controller-manager
+```
+
+Source ROS 2 Environment:
+
+```bash
+echo "source /opt/ros/jazzy/setup.bash" >> ~/.bashrc
+source ~/.bashrc
+```
+
+Install Development Tools: https://docs.ros.org/en/jazzy/Installation/Alternatives/Ubuntu-Development-Setup.html#install-development-tools
+</TabItem>
+</Tabs>
+
+```bash
+sudo apt install -y \
+  python3-flake8-docstrings \
+  python3-pip \
+  python3-pytest-cov \
+  ros-dev-tools
+```
+
+### Verify Installation
+
+Try running:
+
+```bash
+ros2 -h
+ros2 topic list
+```

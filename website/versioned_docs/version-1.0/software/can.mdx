@@ -1,0 +1,257 @@
+---
+title: CAN Library
+sidebar_position: 4
+---
+
+import TOCInline from '@theme/TOCInline';
+
+# OpenArm CAN Library
+
+## Overview
+
+The [OpenArm CAN](https://github.com/enactic/openarm_can/) Library serves as the primary communication bridge between high-level OpenArm control applications and low-level motor protocols.
+It abstracts CAN bus communication via utilizing Linux's SocketCAN interface, providing an API for motor control and state monitoring. The library allows extensibility for various CAN devices beyond motors.
+
+SocketCAN is Linux's implementation of the CAN (Controller Area Network) protocol stack, providing a socket-based interface for CAN communication.
+For detailed setup instructions including CAN interface configuration, library build, and verification steps, see [Setup Guide](/software/setup).
+
+## Table of Contents
+
+<TOCInline
+  toc={toc.filter(({ value }) => !['Overview', 'Table of Contents'].includes(value))}
+  maxHeadingLevel={2}
+/>
+
+---
+
+## 1. CAN/Socket Library Overview
+
+The OpenArm CAN library is organized in a three-layer architecture. Mostly only using can/socket should suffices.
+
+```
+can/socket (High-level Components)
+├── OpenArm (Main orchestrator)
+├── ArmComponent (Multiple motor coordination)
+└── GripperComponent (Single motor with gripper logic)
+
+damiao_motor (Motor Protocol)
+├── DMDeviceCollection (Base class for motor groups)
+├── Motor (Individual motor interface)
+└── DMCANDevice (Motor device implementation)
+
+canbus (Low-level CAN Communication)
+├── CANSocket (SocketCAN interface)
+├── CANDeviceCollection (Generic device management)
+└── CANDevice (Generic CAN device)
+```
+
+### Key Classes
+
+**OpenArm**: Main interface managing CAN socket and motor components. Provides global operations across all connected motors.
+
+**ArmComponent**: Inherits from `DMDeviceCollection`, manages multiple arm motors as a coordinated system.
+
+**GripperComponent**: Inherits from `DMDeviceCollection`, manages a single motor with gripper-specific operations (`open()`, `close()`, `set_position()`).
+
+**DMDeviceCollection**: Base class providing common motor operations:
+- Bulk control (`enable_all()`, `mit_control_all()`)
+- Individual control (`mit_control_one()`, `refresh_one()`)
+- Parameter queries (`query_param_all()`)
+
+### Motor Control
+
+All motor control uses **Damiao Motor protocol** with MIT control mode:
+- **MITParam**: `{kp, kd, q, dq, tau}` for position/velocity/torque control
+- **State feedback**: Position, velocity, torque, and temperature monitoring
+- **Callback modes**: `STATE` for control responses, `PARAM` for parameter queries
+
+### Usage Pattern
+
+1. **Initialize** OpenArm with CAN interface
+2. **Register** motor devices with type and CAN IDs
+3. **Enable** motors and set callback mode
+4. **Control** via MIT parameters or high-level commands
+5. **Monitor** parse the received feedback frames
+
+---
+
+## 2. Usage Examples
+
+### Demo Overview
+
+The demo (`openarm_can/examples/demo.cpp`) demonstrates the complete OpenArm API workflow, from initialization to motor control. This comprehensive example serves as a practical guide for integrating the OpenArm CAN library into your own applications.
+
+### Step-by-Step Breakdown
+
+#### 1. Initialization
+
+The first step involves creating the OpenArm instance and registering all motor devices with their corresponding CAN IDs and types.
+
+:::warning Vector Length Consistency
+Ensure that `motor_types`, `send_can_ids`, and `recv_can_ids` vectors have the same length. Each motor requires exactly one entry in each vector at the corresponding index. Mismatched vector lengths can result in initialization errors or undefined behavior.
+:::
+
+```cpp
+// Create OpenArm instance with CAN-FD support
+openarm::can::socket::OpenArm openarm("can0", true);
+
+// Initialize arm motors (example: 2x DM4310)
+std::vector<openarm::damiao_motor::MotorType> motor_types = {
+    openarm::damiao_motor::MotorType::DM4310, openarm::damiao_motor::MotorType::DM4310};
+std::vector<uint32_t> send_can_ids = {0x01, 0x02};
+std::vector<uint32_t> recv_can_ids = {0x11, 0x12};
+openarm.init_arm_motors(motor_types, send_can_ids, recv_can_ids);
+
+// Initialize gripper motor
+openarm.init_gripper_motor(openarm::damiao_motor::MotorType::DM4310, 0x08, 0x18);
+```
+
+
+#### 2. Motor Parameter Query and Status Check
+
+This section demonstrates how to enable motors and query their internal parameters, such as motor IDs, to verify proper communication.
+Switch callback mode properly to parse the received frames.
+
+
+:::warning Timeout Values
+Use longer timeout values (1000-2000 microseconds) for slow operations like motor enabling and parameter queries. Fast control operations may use shorter timeouts (300-500 microseconds). Insufficient timeout values can result in missed responses and communication failures.
+:::
+
+```cpp
+// Set callback mode to ignore and enable all motors
+openarm.set_callback_mode_all(openarm::damiao_motor::CallbackMode::IGNORE);
+openarm.enable_all();
+openarm.recv_all(2000);  // Allow 2ms for motor response
+
+// Set callback mode to param and query motor IDs
+openarm.set_callback_mode_all(openarm::damiao_motor::CallbackMode::PARAM);
+openarm.query_param_all(static_cast<int>(openarm::damiao_motor::RID::MST_ID));
+openarm.recv_all(2000);  // Allow 2ms for parameter response
+
+// Access motor information
+for (const auto& motor : openarm.get_arm().get_motors()) {
+    std::cout << "Arm Motor: " << motor.get_send_can_id() << " ID: "
+              << motor.get_param(static_cast<int>(openarm::damiao_motor::RID::MST_ID))
+              << std::endl;
+}
+```
+
+
+#### 3. OpenArm Control
+
+This section demonstrates the different control modes available for both arm and gripper components.
+
+##### 3.1 Arm Control
+
+This subsection demonstrates coordinated control of multiple arm motors using different control modes.
+
+```cpp
+// Set callback mode for state monitoring
+openarm.set_callback_mode_all(openarm::damiao_motor::CallbackMode::STATE);
+
+// Position control - return to zero position
+openarm.get_arm().mit_control_all({
+    openarm::damiao_motor::MITParam{2, 1, 0, 0, 0},  // Motor 1: kp=2, kd=1, q=0
+    openarm::damiao_motor::MITParam{2, 1, 0, 0, 0}   // Motor 2: kp=2, kd=1, q=0
+});
+openarm.recv_all(500);
+
+// Torque control
+openarm.get_arm().mit_control_all({
+    openarm::damiao_motor::MITParam{0, 0, 0, 0, 0.1},  // Motor 1: tau=0.1 Nm
+    openarm::damiao_motor::MITParam{0, 0, 0, 0, 0.1}   // Motor 2: tau=0.1 Nm
+});
+openarm.recv_all(500);
+```
+
+##### 3.2 Gripper Control
+
+The gripper component provides high-level commands for common gripper operations.
+
+```cpp
+// Control gripper
+openarm.get_gripper().open(); // Use close() or directly sending MIT commands
+openarm.recv_all(1000);
+```
+
+#### 4. Real-time Monitoring
+
+This example shows how to continuously query motor states in a control loop.
+
+```cpp
+// Monitor motor states
+for (int i = 0; i < 10; i++) {
+    std::this_thread::sleep_for(std::chrono::milliseconds(100));
+
+    openarm.refresh_all();  // Query motor states
+    openarm.recv_all(300);  // Process responses
+
+    // Display arm motor positions
+    for (const auto& motor : openarm.get_arm().get_motors()) {
+        std::cout << "Arm Motor: " << motor.get_send_can_id()
+                  << " position: " << motor.get_position() << std::endl;
+    }
+
+    // Display gripper state
+    for (const auto& motor : openarm.get_gripper().get_motors()) {
+        std::cout << "Gripper Motor: " << motor.get_send_can_id()
+                  << " position: " << motor.get_position() << std::endl;
+    }
+}
+
+```
+
+### Key Points
+
+1. **Callback Mode Management**: Use `STATE` mode when receiving frames from motor control calls, and `PARAM` mode when receiving frames from motor parameter query calls.
+2. **Response Processing**: Always call `recv_all(timeout_us)` after commands. Adjust the time span properly.
+3. **Timing**: Monitor the frame communication by `candump`. When unexpected traffic occurs allow time for motor responses between commands (hundreds of microseconds should suffice)
+
+---
+
+## 3. Advanced Control
+
+### Tuning Timeout for Optimal Control Cycle
+
+One can tune the timeout for receiving CAN frames in `openarm_can/can/socket/openarm.cpp` within the `recv_all` function, specifically at the call to `is_data_available(timeout_in_us)`.
+Adjusting this timeout is crucial for achieving optimal control cycle performance.
+
+- **Recommended timeout values:**
+  - `100` microseconds is the minimum and may require you to manually insert a sleep of several hundred microseconds between control commands and `recv_all` (try increasing sleep progressively).
+  - `500` microseconds is relatively safe but may not be optimal for all setups.
+  - `2000` microseconds is relatively safe for slow operations like enable/disable or parameter query.
+
+:::note
+For an 8-motor setup, exceeding a 1000 Hz control cycle can result in unstable CAN connections.
+Use this as a cue to adjust both the timeout and any sleep intervals for your application.
+:::
+
+Use the code snippet below and `candump` together can aid your control cycle frequency measurement and help guide your tuning.
+
+```cpp
+int frame_count = 0;
+int total_steps = 20000;
+auto start_time = std::chrono::high_resolution_clock::now();
+auto last_hz_display = start_time;
+
+for (int i = 0; i < total_steps; i++) {
+    openarm.refresh_all(); // Or your commands
+    openarm.recv_all();
+
+    frame_count++;
+    auto current_time = std::chrono::high_resolution_clock::now();
+
+    // Calculate and display Hz every second
+    auto time_since_last_display = std::chrono::duration_cast<std::chrono::milliseconds>(current_time - last_hz_display).count();
+    if (time_since_last_display >= 1000) {
+        auto total_time = std::chrono::duration_cast<std::chrono::milliseconds>(current_time - start_time).count();
+        double hz = (frame_count * 1000.0) / total_time;
+        std::cout << "=== Loop Frequency: " << hz << " Hz ===" << std::endl;
+        last_hz_display = current_time;
+    }
+}
+
+// Clean shutdown
+openarm.disable_all();
+openarm.recv_all(1000);
+```

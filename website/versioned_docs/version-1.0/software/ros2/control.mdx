@@ -1,0 +1,133 @@
+---
+title: Control
+sidebar_position: 2
+---
+
+import BlockImage from '@site/src/components/BlockImage';
+
+# ROS2 Control
+
+To get started, follow this [guide](install) to install ROS2 first to setup and test the [OpenArm description](../description) package which you will need for ROS2 control.
+
+The `openarm_description` package provides the complete robot model and visual representation of the OpenArm system.
+
+## Setup
+
+The [openarm_ros2](https://github.com/enactic/openarm_ros2) repository contains a collection of packages for use with [ros2_control](https://control.ros.org/humble/index.html).
+
+It abstracts away the hardware control to expose the arm as a interface that receives position, velocity, and torque commands and outputs joint states.
+
+To get started, clone the openarm_ros2 repository, build the packages, and source the workspace.
+
+```sh
+git clone https://github.com/enactic/openarm_ros2 ~/ros2_ws/src/openarm_ros2
+
+# You can skip this step if openarm_can is installed system-wide
+# You can also skip it when testing with mock hardware only.
+(cd ~/ros2_ws/src && vcs import < ./openarm_ros2/openarm.repos)
+
+# If you only want to use mock hardware,
+# build with the `--packages-ignore openarm_hardware` option.
+cd ~/ros2_ws && colcon build
+
+source ~/ros2_ws/install/setup.bash
+```
+
+:::danger ⚠️ SAFETY REQUIREMENTS FOR HARDWARE OPERATION
+
+Before operating with real hardware, you MUST:
+
+- COMPLETE [SETUP GUIDE](../setup): All configuration steps are mandatory
+- ZERO POSITION: Ensure you have set safe zero positions for all motors
+- EMERGENCY STOP: Keep emergency stop button within immediate reach at ALL times
+- CLEAR WORKSPACE: Remove ALL obstacles, tools, and personnel from arm movement area
+- POWER DISCONNECT: Know how to quickly disconnect power if needed
+
+**Improper operation can cause serious injury or equipment damage. Always prioritize safety.**
+:::
+
+
+## 🚧 ROS2 Control Integration
+
+The [openarm_bringup](https://github.com/enactic/openarm_ros2/tree/main/openarm_bringup) package provides launch files that integrates with the ROS2 control framework through the `openarm_bringup` package. This package provides launch files and configuration to start the hardware interface, load controllers, and connect the physical arm to the ROS2 ecosystem. Once launched, you can use standard ROS2 control tools and interfaces to command the arm and receive feedback.
+
+The bringup package supports both mock hardware (for simulation/testing) and real hardware through a hardware plugin. When using real hardware, you'll need to first build the openarmcan library by following the [CAN setup guide](../can).
+
+:::warning Hardware Bridge Status
+The hardware bridging components are currently being updated and may be unstable. The gripper bridging logic is particularly under active development.
+:::
+
+Launch the OpenArm with v1.0 configuration and fake hardware:
+
+```sh
+ros2 launch openarm_bringup openarm.launch.py arm_type:=v10 use_fake_hardware:=true
+```
+
+**launch files**
+- `openarm.launch.py` - Single arm configuration
+- `openarm.bimanual.launch.py` - Dual arm configuration
+
+**Key Parameters**
+- `arm_type` - Arm type (default: v10)
+- `use_fake_hardware` - Use fake hardware instead of real hardware (default: false)
+- `can_interface` - CAN interface to use (default: can0)
+- `robot_controller` - Controller type: joint_trajectory_controller or forward_position_controller
+
+When you run the bringup launch files, robot state publisher, controller manager, etc. will be launched.
+
+After the controllers are successfully launched, you can verify they're working by checking the available actions:
+
+```sh
+ros2 action list
+```
+
+To test joint movement, send a simple trajectory command:
+
+```sh
+ros2 action send_goal /joint_trajectory_controller/follow_joint_trajectory control_msgs/action/FollowJointTrajectory '{trajectory: {joint_names: ["openarm_joint1", "openarm_joint2", "openarm_joint3", "openarm_joint4", "openarm_joint5", "openarm_joint6", "openarm_joint7"], points: [{positions: [0.15, 0.15, 0.15, 0.15, 0.15, 0.15, 0.15], time_from_start: {sec: 3, nanosec: 0}}]}}'
+```
+
+This command moves all arm joints to a 0.15 radian position over 3 seconds.
+
+
+## 🚧 MoveIt2 Integration
+
+[MoveIt2](https://moveit.picknik.ai/main/index.html) is a powerful framework for robotic manipulators that combines inverse kinematics, perception, path planning, and control capabilities.
+
+**The OpenArm MoveIt2 integration is currently under active development.**
+
+### Getting Started with MoveIt2
+
+To use the MoveIt2 integration:
+
+**Launch the MoveIt2 demo:**
+```sh
+ros2 launch openarm_bimanual_moveit_config demo.launch.py
+```
+
+<BlockImage src="software/ros2/bimanual-moveit2.png" alt="MoveIt2 Static" width="65%" />
+<br/>
+
+### Motion Planning
+
+<BlockImage src="software/ros2/bimanual-moveit2-planning.png" alt="MoveIt2 Planning" width="65%" />
+<br/>
+
+Target positions can be set in the `Joints` tab in the MotionPlanning panel on the left. Alternatively, the targets on the arms can be dragged and rotated to a target pose, or the goal state can be selected from a list of preset keypoints under `Planning` > `Goal State`
+
+The `Planning` tab provides a GUI to generate trajectories to reach a goal position. Clicking on `Plan` to preview the path is recommended.
+
+:::info
+The MoveIt2 integration is actively being developed. Check the [openarm_ros2 repository](https://github.com/enactic/openarm_ros2) for the latest updates and features.
+:::
+
+## Control gain
+
+The default gain is set to a relatively low value for safety. As a result, the arm may not be able to reach high angles in some cases. The gain can be adjusted by editing the following configuration file and rebuilding.
+
+* Edit [~/ros2_ws/src/openarm_description/config/arm/v10/control_gains.yaml](https://github.com/enactic/openarm_description/blob/main/config/arm/v10/control_gains.yaml).
+* Rebuild by `colcon build`.
+
+:::danger ⚠️ GAIN TUNING SAFETY
+Please adjust the gain with great care. **Start with a lower gain and verify the behavior first, then increase it gradually.** If you execute an action with a large position difference while using a high gain, some controllers may generate dangerously high velocities.
+:::
