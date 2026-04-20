@@ -1,0 +1,215 @@
+---
+title: Robot Description
+sidebar_position: 3
+---
+
+import TOCInline from '@theme/TOCInline';
+import BlockImage from '@site/src/components/BlockImage';
+
+# OpenArm Description Package
+
+## Overview
+
+This [OpenArm description](https://github.com/enactic/openarm_description) package contains URDF/xacro description files for the OpenArm robot system,
+supporting both single-arm and bimanual configurations.
+
+## Table of Contents
+
+<TOCInline
+  toc={toc.filter(({ value }) => !['Overview', 'Table of Contents'].includes(value))}
+  maxHeadingLevel={2}
+/>
+
+---
+
+## Xacro Structure
+
+The package follows a hierarchical xacro structure with the following organization.
+
+### Robot (Overarching Structure)
+
+- `robot/openarm_robot.xacro` - Main robot macro that orchestrates all components
+- `robot/v10.urdf.xacro` - Entry point for v1.0 arm configuration
+
+### Component Structure
+
+- `arm/` - Arm kinematics, joints, and links
+  - `openarm_arm.xacro` - Arm assembly
+  - `openarm_macro.xacro` - Arm macro definitions
+- `body/` - Robot base/body components
+  - `openarm_body.xacro` - Body assembly
+  - `openarm_body_macro.xacro` - Body macro definitions
+- `ee/` - End-effector components
+  - `openarm_hand.xacro` - OpenArm hand gripper
+  - `openarm_hand_macro.xacro` - Hand macro definitions
+  - `ee_with_one_link.xacro` - Simple single-link end-effector
+- `ros2_control/` - ROS2 Control with hardware interfaces
+  - `openarm.ros2_control.xacro` - Single arm control interface
+  - `openarm.bimanual.ros2_control.xacro` - Bimanual control interface
+
+### Configuration Files
+
+- `config/arm/v10/` - v1.0 arm parameters (kinematics, limits, inertials)
+- `config/body/v10/` - v1.0 body parameters
+- `config/hand/openarm_hand/` - Hand configuration
+
+---
+
+## Installation
+
+To use this package, make sure you have: [ROS2 installed](ros2/install)
+Then set up the workspace:
+
+```bash
+# Set up environment variables if you haven't already (customize as needed)
+export ROS_DISTRO=humble  # Change to your ROS2 distro (humble, iron, jazzy, etc.)
+export ROS_WS=~/ros2_ws   # Customize workspace path
+
+# Head to the workspace
+cd $ROS_WS/src
+
+# Source your ros2 distro
+source /opt/ros/$ROS_DISTRO/setup.bash
+
+# Clone the package
+git clone https://github.com/enactic/openarm_description.git
+
+# Build the workspace
+cd $ROS_WS
+colcon build
+
+# Source the workspace
+source $ROS_WS/install/setup.bash
+```
+
+---
+
+## Universal Robot Description Files (URDF)
+
+The coordinate transforms of each link and joint constraints of OpenArm are defined in the URDF. ROS2 uses a XML macro language called xacro to generate these files.
+
+### Generate URDF Files
+
+#### Single Arm Configuration
+
+```bash
+# Basic single arm with hand
+xacro $ROS_WS/src/openarm_description/urdf/robot/v10.urdf.xacro arm_type:=v10 bimanual:=false > openarm_single.urdf
+
+# Single arm without end-effector
+xacro $ROS_WS/src/openarm_description/urdf/robot/v10.urdf.xacro arm_type:=v10 bimanual:=false ee_type:=none > openarm_single_no_ee.urdf
+
+# Single arm with ROS2 control
+xacro $ROS_WS/src/openarm_description/urdf/robot/v10.urdf.xacro arm_type:=v10 bimanual:=false ros2_control:=true can_interface:=can0 > openarm_single_control.urdf
+```
+
+#### Bimanual Configuration
+
+```bash
+# Basic bimanual setup
+xacro $ROS_WS/src/openarm_description/urdf/robot/v10.urdf.xacro arm_type:=v10 bimanual:=true > openarm_bimanual.urdf
+
+# Bimanual with ROS2 control
+xacro $ROS_WS/src/openarm_description/urdf/robot/v10.urdf.xacro arm_type:=v10 bimanual:=true ros2_control:=true left_can_interface:=can1 right_can_interface:=can0 > openarm_bimanual_control.urdf
+
+# Bimanual with fake hardware for simulation
+xacro $ROS_WS/src/openarm_description/urdf/robot/v10.urdf.xacro arm_type:=v10 bimanual:=true ros2_control:=true use_fake_hardware:=true > openarm_bimanual_sim.urdf
+```
+
+### Visualization
+To display the robot in RViz with a simple joint state GUI:
+
+:::tip
+If you're receiving errors regarding the `.dae` files, try changing mesh formats to `.stl` or `.obj`.
+:::
+
+#### Single Arm
+
+```bash
+# Display single arm with hand
+ros2 launch openarm_description display_openarm.launch.py arm_type:=v10 bimanual:=false
+
+# Display single arm without end-effector
+ros2 launch openarm_description display_openarm.launch.py arm_type:=v10 bimanual:=false ee_type:=none
+```
+
+<BlockImage src="software/description/single-arm-urdf-rviz.png" alt="Single Arm URDF Rviz" width="65%" />
+
+
+#### Bimanual
+
+```bash
+# Display bimanual configuration
+ros2 launch openarm_description display_openarm.launch.py arm_type:=v10 bimanual:=true
+
+# Display bimanual without end-effectors
+ros2 launch openarm_description display_openarm.launch.py arm_type:=v10 bimanual:=true ee_type:=none
+```
+
+<BlockImage src="software/description/bimanual-urdf-rviz.png" alt="Bimanual URDF Rviz" width="65%" />
+
+### Exporting URDFs
+
+Sometimes, it may be necessary to export a URDF for use in other applications. To generate a new URDF file, run the xacro command with arguments.
+
+To generate a bimanual URDF:
+```sh
+URDF_OUT=openarm_bimanual.urdf
+xacro ~/ros2_ws/src/openarm_description/urdf/robot/v10.urdf.xacro arm_type:=v10 bimanual:=true > $URDF_OUT
+```
+
+Or a single arm URDF:
+```sh
+URDF_OUT=openarm.urdf
+xacro ~/ros2_ws/src/openarm_description/urdf/robot/v10.urdf.xacro arm_type:=v10 > $URDF_OUT
+```
+
+---
+
+## Available Arguments
+
+Below are some configurable variables for the OpenArm robot description that allows customization when generating URDFs with xacro.
+
+### Core Arguments
+
+- `arm_type` - Arm version (eg.: "v10")
+- `body_type` - Body version (eg.: "v10")
+- `ee_type` - End-effector type (default: "openarm_hand", options: "openarm_hand", "none")
+- `bimanual` - Enable bimanual configuration (default: false)
+
+### ROS2 Control Arguments
+
+- `ros2_control` - Enable ROS2 control hardware interface (default: false)
+- `use_fake_hardware` - Use fake hardware for simulation (default: false)
+- `fake_sensor_commands` - Enable fake sensor commands (default: false)
+- `can_interface` - CAN interface for single arm (default: "can0")
+- `left_can_interface` - CAN interface for left arm in bimanual setup (default: "can1")
+- `right_can_interface` - CAN interface for right arm in bimanual setup (default: "can0")
+
+### Positioning Arguments
+
+- `parent` - Parent frame (default: "world")
+- `xyz` - Position offset (default: "0 0 0")
+- `rpy` - Orientation offset (default: "0 0 0")
+- `left_arm_base_xyz` - Left arm base position (default: "0.0 0.031 0.698")
+- `left_arm_base_rpy` - Left arm base orientation (default: "-1.5708 0 0")
+- `right_arm_base_xyz` - Right arm base position (default: "0.0 -0.031 0.698")
+- `right_arm_base_rpy` - Right arm base orientation (default: "1.5708 0 0")
+
+### Running Multiple Robots with ROS Namespaces and ROS_DOMAIN_ID
+
+When running multiple instances of OpenArm, one option is to namespace arms to control multiple sets of arms with one device.
+
+For example, when running multiple instances of bimanual, it is possible to namespace packages with:
+
+```sh
+ros2 launch openarm_description openarm.bimanual.launch.py arm_prefix:=leader right_can_interface:=can0 left_can_interface:=can1
+```
+
+and
+
+```sh
+ros2 launch openarm_description openarm.bimanual.launch.py arm_prefix:=follower right_can_interface:=can2 left_can_interface:=can3
+```
+
+If network isolation is required (e.g. multiple sets of OpenArm teleoperation), the [ROS_DOMAIN_ID](https://docs.ros.org/en/humble/Concepts/Intermediate/About-Domain-ID.html) environment variable can be set.

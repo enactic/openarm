@@ -59,6 +59,21 @@ const config: Config = {
           remarkPlugins: [require('remark-math')],
           rehypePlugins: [require('rehype-katex')],
           showLastUpdateTime: true,
+
+          // Versioning.
+          // todo: Temporary settings until 2.0 is released.
+          lastVersion: '1.0',
+          versions: {
+            current: {
+              label: '2.0 (Preview)',
+              path: '2.0',
+              banner: 'unreleased',
+            },
+            '1.0': {
+              label: '1.0',
+              // 1.0 is the default version, served at `/`.
+            },
+          },
         },
         blog: {
           showReadingTime: true,
@@ -146,6 +161,10 @@ const config: Config = {
         {
           href: 'https://github.com/enactic/openarm',
           label: 'GitHub',
+          position: 'right',
+        },
+        {
+          type: 'docsVersionDropdown',
           position: 'right',
         },
       ],
