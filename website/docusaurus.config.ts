@@ -123,27 +123,59 @@ const config: Config = {
         },
         {
           type: 'docSidebar',
+          sidebarId: 'tutorialSidebar',
+          position: 'left',
+          label: 'Tutorial',
+          docsVersions:['current'],
+        },
+        {
+          type: 'docSidebar',
+          sidebarId: 'hardwareSidebar',
+          position: 'left',
+          label: 'Hardware',
+          docsVersions:['1.0'],
+        },
+        {
+          type: 'docSidebar',
           sidebarId: 'manufacturingSidebar',
           position: 'left',
-          label: 'Hardware', // todo: Rename when v2 is ready.
+          label: 'Manufacturing guide',
+          docsVersions:['current'],
+        },
+        {
+          type: 'docSidebar',
+          sidebarId: 'softwareSidebar',
+          position: 'left',
+          label: 'Software',
+          docsVersions:['1.0'],
         },
         {
           type: 'docSidebar',
           sidebarId: 'apiReferenceSidebar',
           position: 'left',
-          label: 'Software', // todo: Rename when v2 is ready.
+          label: 'API Reference',
+          docsVersions:['current'],
+        },
+        {
+          type: 'docSidebar',
+          sidebarId: 'datasetSidebar',
+          position: 'left',
+          label: 'Dataset',
+          docsVersions:['current'],
         },
         {
           type: 'docSidebar',
           sidebarId: 'teleopSidebar',
           position: 'left',
           label: 'Teleop',
+          docsVersions:['1.0'],
         },
         {
           type: 'docSidebar',
           sidebarId: 'simulationSidebar',
           position: 'left',
           label: 'Simulation',
+          docsVersions:['1.0'],
         },
         {
           type: 'docSidebar',
