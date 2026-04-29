@@ -13,8 +13,8 @@
 // limitations under the License.
 
 // Wraps every navbar item type so that any item declared in `themeConfig.navbar.items`
-// can be restricted to specific docs versions via an extra field:
-// `docsVersions: ['2.0']`
+// can be restricted to specific docs versions via an extra field containing
+// docs version names, for example: `docsVersions: ['current']`
 // Items without `docsVersions` keep the original behavior (always shown).
 
 import React from 'react';
