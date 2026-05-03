@@ -62,8 +62,8 @@ cd openarm_teleop
 
 If the CAN interfaces are omitted, the script uses the following defaults:
 
-- For `right_arm`: leader = `can0`, follower = `can1`
-- For `left_arm`: leader = `can2`, follower = `can3`
+- For `right_arm`: leader = `can0`, follower = `can2`
+- For `left_arm`: leader = `can1`, follower = `can3`
 
 ### What the Script Does
 
