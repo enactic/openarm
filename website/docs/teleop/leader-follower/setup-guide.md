@@ -22,7 +22,7 @@ git clone https://github.com/enactic/openarm_teleop.git
 cd openarm_teleop
 ```
 
-### 2. Install Dependancy
+### 2. Install Dependency
 
 ```bash
 sudo apt install -y software-properties-common
