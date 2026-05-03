@@ -32,7 +32,7 @@ Core control logic is encapsulated in the `Control` class, which supports both:
 | **Fo** | Friction offset (bias correction) |
 
 
-### Friction compasation Model
+### Friction compensation Model
 
 The following tanh-based model is used for friction compensation:
 
