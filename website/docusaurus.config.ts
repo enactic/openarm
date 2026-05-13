@@ -133,14 +133,6 @@ const config: Config = {
           sidebarId: 'hardwareSidebar',
           position: 'left',
           label: 'Hardware',
-          docsVersions: ['1.0'],
-        },
-        {
-          type: 'docSidebar',
-          sidebarId: 'manufacturingSidebar',
-          position: 'left',
-          label: 'Manufacturing guide',
-          docsVersions: ['current'],
         },
         {
           type: 'docSidebar',
