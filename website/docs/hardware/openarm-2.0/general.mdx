@@ -1,0 +1,63 @@
+---
+title: General
+sidebar_position: 1
+---
+
+```mdx-code-block
+import BlockImage from '@site/src/components/BlockImage';
+```
+
+# General
+
+## Key features
+
+<BlockImage src="hardware/openarm-2.0/general/openarm-2.0.png" alt="OpenArm 2.0" />
+
+## Manufacturing Information
+
+<div style={{padding: '20px', border: '2px solid #e1e8ed', borderRadius: '8px', textAlign: 'center'}}>
+  <h3>📁 3DCAD and BOM</h3>
+  <p>
+    3D CAD data required for manufacturing and customization,
+    along with a bill of materials (BOM) containing purchasing information for each component.
+  </p>
+  <a href="#" style={{
+    display: 'inline-block',
+    padding: '10px 20px',
+    backgroundColor: '#007acc',
+    color: 'white',
+    textDecoration: 'none',
+    borderRadius: '5px',
+    fontWeight: 'bold'
+  }}>View Drive</a>
+</div>
+
+## General Dimensions
+
+OpenArm 2.0 has a small human-like physique.
+The support pillars are made of MiSUMi aluminum frames, making it easy to adjust the dimensions and attach cameras, sensors, and other attachments.
+The base plate has evenly spaced M6 taps, allowing it to be fixed directly to a table or other surface.
+Each joint has a mechanical limit that restricts the range of motion for safety.
+
+<BlockImage src="hardware/openarm-2.0/general/dimensions.png" alt="OpenArm 2.0 Dimensions" />
+
+## Payload definition
+
+### Nominal payload : 4.1kg
+
+Nominal payload means the weight that could be held for one minute in the worst posture (arms extended to maximum).
+
+<BlockImage src="hardware/openarm-2.0/general/nominal-payload.png" alt="OpenArm 2.0 Nominal Payload" />
+
+### Peak payload : 6.0kg
+
+Peak payload means the weight that could be moved from the arms down to the worst posture over a period of 3 seconds and held for 1 second before returning.
+
+<BlockImage src="hardware/openarm-2.0/general/peak-payload.png" alt="OpenArm 2.0 Peak Payload" />
+
+:::warning
+
+Note that the payload contains the end effector. For example, if a 1.5 kg end-effector is attached to the OpenArm 2.0,
+the nominal payload is 2.6 kg and the peak payload is 4.5 kg.
+
+:::

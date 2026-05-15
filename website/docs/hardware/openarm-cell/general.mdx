@@ -1,0 +1,68 @@
+---
+title: General
+sidebar_position: 1
+---
+
+```mdx-code-block
+import BlockImage from '@site/src/components/BlockImage';
+```
+
+# General
+
+## Key features
+
+OpenArm Cell is developed to provide a standardized benchmark for accurately comparing and evaluating the performance of robotic foundation models.
+By defining not only the robot arm itself, but also all other elements that affect training and inference—including lighting, cameras, and calibration procedures—as part of a unified system, OpenArm Cell improves the reproducibility of model performance evaluation.
+
+<BlockImage src="hardware/openarm-cell/general/openarm-cell.png" alt="OpenArm Cell" />
+
+## Manufacturing Information
+
+<div style={{padding: '20px', border: '2px solid #e1e8ed', borderRadius: '8px', textAlign: 'center'}}>
+  <h3>📁 3DCAD and BOM</h3>
+  <p>
+    3D CAD data required for manufacturing and customization,
+    along with a bill of materials (BOM) containing purchasing information for each component.
+  </p>
+  <a href="#" style={{
+    display: 'inline-block',
+    padding: '10px 20px',
+    backgroundColor: '#007acc',
+    color: 'white',
+    textDecoration: 'none',
+    borderRadius: '5px',
+    fontWeight: 'bold'
+  }}>View Drive</a>
+</div>
+
+## General Dimensions
+
+OpenArm Cell incorporates the manufacturing concept of a "cell" into the design philosophy of OpenArm, using widely available off-the-shelf components from companies such as MISUMI to construct the enclosure and power system.
+This approach provides a robust operating environment capable of withstanding repetitive task execution while maintaining excellent maintainability and component availability.
+
+The system also features a vertically adjustable Z-axis, enabling flexible task execution that can adapt to different workpiece heights and layouts.
+
+<BlockImage src="hardware/openarm-cell/general/dimensions.png" alt="OpenArm Cell Dimensions" />
+
+:::warning
+
+When installing OpenArm Cell, please ensure that the available electrical capacity and floor load capacity at the installation site are sufficient for the number of units to be deployed.
+In addition, verify in advance that all access routes from the building entrance to the installation location—including door widths and heights, as well as elevator dimensions—provide adequate clearance for physical transport and installation.
+
+:::
+
+## Operational Support Features
+
+### Reach-In Stop
+
+OpenArm Cell is equipped with an intrusion detection system based on area sensors.
+It detects unexpected entry into the workspace during operation and automatically shuts off power, helping to ensure the safe and reliable management of the experimental environment.
+
+<BlockImage src="hardware/openarm-cell/general/reach-in-stop.gif" alt="OpenArm Cell Reach-In Stop" width="90%" />
+
+### Zero-Position Calibration Jig
+
+OpenArm Cell also includes a high-precision dedicated calibration jig that secures the gripper in a fixed position and physically constrains all degrees of freedom to their ideal CAD-defined angles.
+By eliminating unavoidable assembly errors and component tolerances through calibration, it ensures a consistent data foundation that is essential for operation in diverse environments around the world.
+
+<BlockImage src="hardware/openarm-cell/general/zero-position.gif" alt="OpenArm Cell Zero-Position Calibration Jig" width="90%" />
