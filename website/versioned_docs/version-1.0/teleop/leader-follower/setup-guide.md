@@ -9,7 +9,7 @@ This guide walks you through the steps to set up and build the `openarm_teleop` 
 
 Before proceeding, please ensure the following dependencies are satisfied:
 
-- ✅ `openarm_description` library (see [OpenArm Description](/software/description))
+- ✅ `openarm_description` library (see [OpenArm Description](../../software/description.mdx))
 
 ---
 
