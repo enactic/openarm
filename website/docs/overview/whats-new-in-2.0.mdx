@@ -1,0 +1,73 @@
+---
+title: What's New in 2.0
+sidebar_position: 2
+---
+
+# What's New in 2.0
+
+OpenArm 2.0 is the second major release of the project. Beyond a refreshed arm, it expands OpenArm from "an open-source robot arm" into a full stack for reproducible physical-AI research: the arm, a standardized evaluation cell, and a passive teaching device, all designed to work together.
+
+This page summarizes what changed since 1.0 and why.
+
+## At a Glance
+
+| Area | 1.0 | 2.0 |
+|---|---|---|
+| Hardware lineup | OpenArm (arm only) | OpenArm 2.0 arm + [OpenArm Cell](../hardware/openarm-cell/general.mdx) + [OpenArm KER](../hardware/openarm-ker/general.mdx) (not yet released) |
+| Gripper | Linkage-driven parallel gripper, no in-hand camera | Compact gripper with an in-hand camera and replaceable fingers |
+| Evaluation | Ad-hoc, per-lab setups | Reproducible cell with standardized lighting, cameras, calibration |
+| Teaching / leader device | Leader-follower with a powered arm | Optional motorless [KER](../hardware/openarm-ker/general.mdx) leader for low-fatigue, long-session teleop |
+
+## Hardware: OpenArm 2.0 Arm
+
+The arm keeps the human-scale form factor and payload envelope of 1.0 (7DOF, 4.1 kg nominal / 6.0 kg peak, MISUMI-frame base), and refines the parts that matter most for data collection in tight spaces.
+
+- Redesigned end-effector. The gripper uses a simpler actuation mechanism to keep the overall envelope compact, making it easier to reach into confined spaces than the 1.0 gripper.
+- In-hand camera. A camera is integrated inside the gripper case, so in-hand vision is captured directly during grasping. The finger geometry is shaped both for stable grasping and to minimize blind spots in that view.
+- Replaceable fingers. The finger components are easy to swap, so users can iterate on geometries for specific tasks or objects without redesigning the gripper itself.
+
+See [Hardware → OpenArm 2.0](../hardware/openarm-2.0/general.mdx) for full dimensions, payload definitions, motor specifications, and the CAD/BOM drive link.
+
+## New: OpenArm Cell
+
+[OpenArm Cell](../hardware/openarm-cell/general.mdx) is a new piece of hardware introduced in 2.0. It is a standardized evaluation enclosure that fixes the things that usually drift between labs — background, lighting, cameras, and the arm's mounted position — so that benchmark numbers can actually be compared.
+
+Highlights:
+
+- Off-the-shelf MISUMI-based enclosure and power system for maintainability and global availability of parts.
+- Vertically adjustable Z-axis to accommodate different workpiece heights.
+- Area-sensor reach-in stop that cuts power on intrusion into the workspace.
+- Dedicated zero-position calibration jig that mechanically constrains the gripper to its CAD-defined angles, eliminating assembly tolerances from the dataset.
+
+The motivation is simple: "Model A outperforms Model B" only carries meaning when both were evaluated under the same conditions. The Cell is the shared substrate that makes that possible.
+
+## New: OpenArm KER
+
+[OpenArm KER](../hardware/openarm-ker/general.mdx) (Kinematic Equivalent Replica) is a motorless leader arm whose kinematics match OpenArm 2.0 exactly. With zero actuators, it is lightweight enough to wear or mount near the operator and avoids the fatigue of moving a powered leader for long teleoperation sessions.
+
+KER is targeted at extended data-collection workflows where the operator needs to drive the follower for hours.
+
+:::note
+
+KER is part of the OpenArm 2.0 lineup but has not been released yet. The design is being finalized, and full CAD and BOM will be published once it is ready.
+
+:::
+
+## Documentation and Workflow
+
+The documentation was reorganized around the 2.0 product lineup:
+
+- Hardware is split per product (OpenArm 2.0, OpenArm Cell, OpenArm KER) instead of a single "Specifications" section.
+- A dedicated Dataset section was added for data-collection workflows that feed the Cell-based evaluation loop.
+- The Overview category was simplified: the previous "Discover OpenArm" and "Project Overview" pages are merged into a single [Project Overview](./index.mdx), and this page was added.
+
+## Continuity from 1.0
+
+Some things deliberately did not change:
+
+- 7DOF human-scale arm with a MISUMI-frame base.
+- Same motor lineup (DM-J4310-2EC, DM4340, DM-J8009P) as 1.0.
+- Same payload envelope: 4.1 kg nominal / 6.0 kg peak, including the end-effector.
+- Open hardware and software, buildable from public CAD, BOM, and code.
+
+If you are still on 1.0, the [1.0 documentation](https://docs.openarm.dev/1.0/) remains available.

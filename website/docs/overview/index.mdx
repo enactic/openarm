@@ -1,19 +1,20 @@
 ---
 slug: /
+title: Project Overview
 sidebar_position: 1
 ---
 
 import BlockImage from '@site/src/components/BlockImage';
 
-# Discover OpenArm
+# Project Overview
 
-**OpenArm** is an open-source 7DOF humanoid arm designed for physical AI research and deployment in contact-rich environments. All hardware and software are completely open-source and ready for you to build, hack, and deploy!
+OpenArm is an open-source 7DOF humanoid arm designed for physical AI research and deployment in contact-rich environments. Hardware and software — CAD, firmware, control code, and simulation tools — are openly available so you can build, hack, and deploy.
 
 We're in continuous development and actively seeking contributors, research partners, and company collaborators to shape the next generation of practical humanoid systems.
 
 <div style={{ position: "relative", paddingBottom: "56.25%", height: 0, margin: "2rem 0", overflow: "hidden" }}>
   <iframe
-    src="https://www.youtube.com/embed/6ZLM6f8kF4Q"
+    src="https://www.youtube.com/embed/QzJSBbF7zIE"
     title="YouTube video player"
     style={{
       position: "absolute",
@@ -28,82 +29,95 @@ We're in continuous development and actively seeking contributors, research part
   />
 </div>
 
-<div style={{
-  display: 'flex',
-  flexDirection: 'column',
-  alignItems: 'center',
-  marginTop: '3rem',
-  marginBottom: '3rem'
-}}>
-  <div style={{
-    border: '2px solid #ebebeb',
-    borderRadius: '1rem',
-    padding: '2.5rem 2rem',
-    background: '#fff',
-    boxShadow: '0 4px 10px rgba(0,0,0,0.08)',
-    maxWidth: '100%',
-    width: '100%',
-    textAlign: 'center'
-  }}>
-    <h3 style={{
-      margin: 0,
-      fontSize: '1.75rem',
-      color: '#111827',
-      fontWeight: '700'
-    }}>
-      📦 Purchase Your OpenArm!
-    </h3>
-    <p style={{
-      marginTop: '1rem',
-      marginBottom: '1.5rem',
-      fontSize: '1rem',
-      color: '#374151',
-      lineHeight: '1.6'
-    }}>
-      Get your OpenArm, assembled or DIY, and join the global community!<br/>
-      Browse verified and certified manufacturers worldwide.
-    </p>
-    <a href="../purchase" style={{
-      display: 'inline-block',
-      padding: '10px 20px',
-      backgroundColor: '#5FBBC7',
-      color: 'white',
-      textDecoration: 'none',
-      borderRadius: '5px',
-      fontWeight: '600'
-    }}
-    onMouseOver={(e) => {
-      e.currentTarget.style.background = '#3b8089';
-      e.currentTarget.style.transform = 'translateY(-2px)';
-    }}
-    onMouseOut={(e) => {
-      e.currentTarget.style.background = '#5Fbbc7';
-      e.currentTarget.style.transform = 'none';
-    }}
-    >Buy Now →</a>
-  </div>
-</div>
+## Making SOTA Reproducible
+
+OpenArm 2.0 is a unified environment for data collection and reproducible auto-evaluation — the open-source foundation to turn isolated experiments into shared progress. Claims like "Model A outperforms Model B" only hold meaning when results can be reproduced under identical conditions, so the project pairs the arm itself with a standardized evaluation environment and teaching tools.
 
 ## What's Unique?
 
-- **Human-Scale Design**
-  OpenArm is designed with human-like proportions and dimensions, scaled for a person around 160-165cm tall. This provides an optimal balance between practical reach and manageable inertia for safe, responsive operation.
+- Human-scale design, with proportions and dimensions scaled for a person around 160–165 cm tall. This provides a good balance between practical reach and manageable inertia for safe, responsive operation.
+- Safety-first architecture. QDD backdrivable motors and high compliance prioritize safe human–robot interaction while maintaining practical payload (6.0 kg peak / 4.1 kg nominal) for real-world tasks.
+- Bilateral force feedback for contact-rich teleoperation and high-fidelity data collection, beyond what unilateral leader–follower setups can capture.
+- Built for durability. Critical structural components use aluminum and stainless steel construction for robust performance under repetitive data collection and continuous research use.
+- Fully accessible and buildable. Every component — from CNC parts and 3D-printed casings to electrical wiring — is purchasable and buildable by individual researchers and labs, with complete fabrication data provided.
+- Practical and affordable. OpenArm delivers research-grade capabilities at a fraction of traditional humanoid robot costs, making advanced robotics accessible to more teams and applications.
 
-- **Safety-First Architecture**
-  Built with QDD backdrivable motors and high compliance, OpenArm prioritizes safe human-robot interaction while maintaining practical payload capabilities (6.0kg peak / 4.1kg nominal) for real-world tasks.
+<BlockImage src="hardware/openarm-2.0/general/openarm-2.0.png" alt="OpenArm 2.0" width="100%" />
 
-- **Built for Durability**
-  Critical structural components use aluminum and stainless steel construction, ensuring robust performance for repetitive data collection and continuous research use.
+## The OpenArm Ecosystem
 
-- **Fully Accessible & Buildable**
-  Every component — from CNC parts and 3D-printed casings to electrical wiring — is designed to be purchasable and buildable by individual researchers and labs, with complete fabrication data provided.
+OpenArm 2.0 is more than the arm. It is a coordinated set of hardware that targets the full loop of data collection, training, and reproducible evaluation.
 
-- **Practical & Affordable**
-  At 6,500 USD for a complete bimanual system, OpenArm delivers research-grade capabilities at a fraction of traditional humanoid robot costs, making advanced robotics accessible to more teams and applications.
+- [OpenArm 2.0](../hardware/openarm-2.0/general.mdx) — the 7DOF arm itself: human-scale dimensions, QDD backdrivable joints, an in-hand camera in a redesigned compact gripper, and a MISUMI-frame base that is easy to mount and extend.
+- [OpenArm Cell](../hardware/openarm-cell/general.mdx) — a reproducible evaluation cell that standardizes background, lighting, cameras, and arm position so that model comparisons are fair and automatable.
+- [OpenArm KER](../hardware/openarm-ker/general.mdx) — Kinematic Equivalent Replica, a motorless leader arm with identical kinematics to OpenArm 2.0 for intuitive, low-fatigue teleoperation and teaching.
 
+## Specifications at a Glance
 
-<BlockImage src="getting-started/index/unique.png" alt="leader-follower" width="100%" />
+OpenArm 2.0 has a small human-like physique. The support pillars are made of MISUMI aluminum frames, making it easy to adjust the dimensions and attach cameras, sensors, and other attachments. The base plate has evenly spaced M6 taps so it can be fixed directly to a table or other surface, and each joint has a mechanical limit that restricts the range of motion for safety.
 
+<table>
+  <tbody>
+    <tr><td>DOF</td><td>7 per arm</td></tr>
+    <tr><td>Nominal payload</td><td>4.1 kg (held for 1 minute in the worst posture)</td></tr>
+    <tr><td>Peak payload</td><td>6.0 kg (3 s move + 1 s hold in the worst posture)</td></tr>
+    <tr><td>Joints</td><td>QDD backdrivable, mechanical limits on every axis</td></tr>
+    <tr><td>Control bus</td><td>CAN-FD</td></tr>
+    <tr><td>Structure</td><td>Aluminum + stainless steel, MISUMI-frame base</td></tr>
+    <tr><td>End-effector</td><td>Compact parallel gripper with in-hand camera</td></tr>
+  </tbody>
+</table>
 
+See [Hardware → OpenArm 2.0 → General](../hardware/openarm-2.0/general.mdx) for full dimensions, payload definitions, and CAD/BOM downloads.
 
+## Purchase OpenArm
 
+OpenArm is available as a DIY kit or as a fully assembled unit from verified manufacturers worldwide.
+
+<div style={{ margin: '1.5rem 0' }}>
+  <a href="../purchase" style={{
+    display: 'inline-block',
+    padding: '10px 20px',
+    backgroundColor: '#5FBBC7',
+    color: 'white',
+    textDecoration: 'none',
+    borderRadius: '5px',
+    fontWeight: '600'
+  }}
+  onMouseOver={(e) => {
+    e.currentTarget.style.background = '#3b8089';
+    e.currentTarget.style.transform = 'translateY(-2px)';
+  }}
+  onMouseOut={(e) => {
+    e.currentTarget.style.background = '#5Fbbc7';
+    e.currentTarget.style.transform = 'none';
+  }}
+  >Buy Now →</a>
+</div>
+
+## Project and Repositories
+
+OpenArm is organized across multiple platforms to support different aspects of development, collaboration, and community engagement.
+
+- Main site: [openarm.dev](https://openarm.dev) — project homepage with announcements, visualizations, and contact forms.
+- Documentation: [docs.openarm.dev](https://docs.openarm.dev) — complete technical guides and tutorials.
+- GitHub: [enactic/openarm](https://github.com/enactic/openarm) — open-source repositories, issue tracking, and feature requests.
+- Discord: [Join the community](https://discord.gg/GmYa262ETH) — real-time discussions, support, and collaboration.
+
+| Repository | Documentation | Description and Contents |
+|--------------|-----------------|-------------------------------|
+| [openarm](https://github.com/enactic/openarm) |   | Main project repository with ideas, issues, and feature requests |
+| [openarm_hardware](https://github.com/enactic/openarm_hardware) | [Hardware Docs](https://docs.openarm.dev/hardware) | Complete CAD data: STL files, STEP files, Fusion 360 assemblies |
+| [openarm_description](https://github.com/enactic/openarm_description) | [Description Docs](https://docs.openarm.dev/software/description) | Robot description files with URDF/xacro for simulation |
+| [openarm_can](https://github.com/enactic/openarm_can) | [CAN Docs](https://docs.openarm.dev/software/can/) | CAN control library for low-level motor communication |
+| [openarm_ros2](https://github.com/enactic/openarm_ros2) | [ROS2 Docs](https://docs.openarm.dev/software/ros2/install) | ROS2 integration packages and nodes |
+| [openarm_teleop](https://github.com/enactic/openarm_teleop) | [Teleop Docs](https://docs.openarm.dev/teleop/) | Teleoperation packages with unilateral and bilateral control |
+| [openarm_isaac_lab](https://github.com/enactic/openarm_isaac_lab) | [Isaac Docs](https://docs.openarm.dev/simulation/) | Isaac Lab simulation environment and training tasks |
+
+## Get Help
+
+Our community and team are ready to help:
+
+- Discord — connect with other builders, researchers, and the OpenArm team for real-time support and discussions: [Join Now](https://discord.gg/GmYa262ETH)
+- GitHub Issues — report bugs or request features directly in our repository: [Open an Issue](https://github.com/enactic/openarm/issues)
+- GitHub Discussions — ask technical questions in our repository: [Start a Discussion](https://github.com/enactic/openarm/discussions)
