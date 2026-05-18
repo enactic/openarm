@@ -6,6 +6,56 @@ title: OpenArm Dataset
 OpenArm Dataset is a format for storing data collected by OpenArm.
 This dataset format is designed to be flexible, easy to use.
 
+repository: https://github.com/enactic/openarm_dataset 
+
+### Dataset Structure
+
+```
+dataset
+├── episodes
+│   ├── 0
+│   │   ├── action
+│   │   │   ├── arms
+│   │   │   │   ├── left
+│   │   │   │   │   └── qpos.parquet
+│   │   │   │   └── right
+│   │   │   │       └── qpos.parquet
+│   │   │   └── lifter
+│   │   │       └── elevation.parquet
+│   │   ├── cameras
+│   │   │   ├── ceiling
+│   │   │   │   ├── 1778841171518984960.jpeg
+│   │   │   │   |    ...
+│   │   │   ├── head_left
+│   │   │   │   ├── 1778841171520606976.jpeg
+│   │   │   │   │   ...
+│   │   │   ├── head_right
+│   │   │   │   ├── 1778841171520606976.jpeg
+│   │   │   │   │   ...
+│   │   │   ├── wrist_left
+│   │   │   │   ├── 1778841171528291840.jpeg
+│   │   │   │   │   ...
+│   │   │   └── wrist_right
+│   │   │       ├── 1778841171519556096.jpeg
+│   │   │       │   ...
+│   │   └── obs
+│   │       ├── arms
+│   │       │   ├── left
+│   │       │   │   └── state.parquet
+│   │       │   └── right
+│   │       │       └── state.parquet
+│   │       └── lifter
+│   │           └── elevation.parquet
+│   ├── 1
+│   │   ├── action
+│   │   ├── cameras
+│   │   └── obs
+│   └── ...
+└── metadata.yaml
+```
+
+
+
 ### Install
 
 ```bash
@@ -16,7 +66,7 @@ or install from source:
 ```bash
 git clone https://github.com/enactic/openarm_dataset
 cd openarm_dataset
-pip install -e .
+uv sync
 ```
 
 Requires Python 3.10+.
