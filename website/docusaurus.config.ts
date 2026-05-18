@@ -198,32 +198,8 @@ const config: Config = {
           title: 'Docs',
           items: [
             {
-              label: 'Getting Started',
+              label: 'Overview',
               to: '/',
-            },
-            {
-              label: 'Hardware',
-              to: '/hardware/',
-            },
-            {
-              label: 'Software',
-              to: '/software/',
-            },
-            {
-              label: 'Teleop',
-              to: '/teleop/',
-            },
-            {
-              label: 'Simulation',
-              to: '/simulation/',
-            },
-            {
-              label: 'Purchase',
-              to: '/purchase/',
-            },
-            {
-              label: 'FAQ',
-              to: '/faq/',
             },
           ],
         },
