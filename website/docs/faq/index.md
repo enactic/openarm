@@ -15,7 +15,7 @@ See the [troubleshooting section](../api-reference/setup/1-motor-id.mdx#trouble-
 
 ## Do you have any recommended CAN devices?
 
-Please use the devices listed in the [Bill of Materials > Electronics](/hardware/bill-of-materials/electrical).
+Please use the CAN-FD devices listed in the [OpenArm 1.0 Bill of Materials > Electronics](/1.0/hardware/bill-of-materials/electrical).
 Using other CAN devices may result in unexpected behavior.
 
 ## How accurate and repeatable is it?
