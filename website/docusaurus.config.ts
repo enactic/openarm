@@ -61,17 +61,15 @@ const config: Config = {
           showLastUpdateTime: true,
 
           // Versioning.
-          // todo: Temporary settings until 2.0 is released.
-          lastVersion: '1.0',
+          lastVersion: 'current',
           versions: {
             current: {
-              label: '2.0 (Preview)',
-              path: '2.0',
-              banner: 'unreleased',
+              label: '2.0',
+              // 2.0 is the default version, served at `/`.
             },
             '1.0': {
               label: '1.0',
-              // 1.0 is the default version, served at `/`.
+              path: '1.0',
             },
           },
         },
