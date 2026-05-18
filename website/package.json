@@ -23,7 +23,7 @@
     "@docusaurus/preset-classic": "3.10.1",
     "@mdx-js/react": "^3.1.1",
     "clsx": "^2.0.0",
-    "katex": "^0.16.45",
+    "katex": "^0.16.47",
     "prism-react-renderer": "^2.3.0",
     "react": "^19.1.1",
     "react-dom": "^19.2.6",
