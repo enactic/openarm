@@ -1,5 +1,100 @@
 ---
-title: Dataset
+title: OpenArm Dataset
 ---
 
-## ...
+## Overview
+OpenArm Dataset is a format for storing data collected by OpenArm.
+This dataset format is designed to be flexible, easy to use.
+
+### Install
+
+```bash
+pip install openarm_dataset
+```
+or install from source:
+
+```bash
+git clone https://github.com/enactic/openarm_dataset
+cd openarm_dataset
+pip install -e .
+```
+
+Requires Python 3.10+.
+
+
+### Open a dataset
+
+Point `Dataset` at the root directory of a recording:
+
+```python
+>>> import openarm_dataset
+>>> dataset = openarm_dataset.Dataset("tests/fixture/dataset_0.3.0")
+>>> dataset.num_episodes
+2
+>>> dataset.meta.e
+dataset.meta.episodes  dataset.meta.equipment
+>>> dataset.meta.episodes
+[{'id': '0', 'success': False, 'task_index': 0}, {'id': '3', 'success': True, 'task_index': 0}]
+>>> dataset.meta.tasks
+[{'prompt': 'Run test.', 'description': 'Longer task description if need.'}]
+```
+
+### Load observations and actions
+
+Observations and actions are returned as a dict of pandas DataFrames keyed by
+signal name, indexed by timestamp. Pass `use_unixtime=True` for a float index
+instead of a datetime index.
+
+```python
+>>> obs = dataset.load_obs(0)
+>>> obs.keys()
+dict_keys(['arms/right/qpos', 'arms/right/qvel', 'arms/right/qtorque', 'arms/left/qpos', 'arms/left/qvel', 'arms/left/qtorque', 'lifter/elevation'])
+>>> obs["arms/right/qpos"].shape
+(746, 8)
+
+>>> action = dataset.load_action(0)
+>>> action["arms/right/qpos"].columns.tolist()
+['joint1', 'joint2', 'joint3', 'joint4', 'joint5', 'joint6', 'joint7', 'gripper']
+```
+
+### Load camera frames
+
+```python
+>>> cameras = dataset.load_cameras(0)
+>>> cameras.keys()
+dict_keys(['left_wrist', 'right_wrist', 'ceiling', 'head'])
+>>> ceiling = cameras["ceiling"]
+>>> ceiling.num_frames
+3
+>>> frame = ceiling.get_frame(0).load()  # returns a numpy array
+>>> frame.shape  # (H, W, 3) uint8
+(600, 960, 3)
+>>> for f in ceiling.frames():
+...     frame=f.load() # iterate frames 
+>>> for path in ceiling.all_files:
+...     print(path) # iterate frame file paths
+```
+
+### Sample synchronized timesteps
+
+`dataset.sample` aligns observations, actions, and camera frames onto a fixed
+rate so a policy can consume them as one timestep:
+
+```python
+>>> samples = dataset.sample(hz=30, episode_index=0)
+>>> samples[0].timestamp
+np.float64(1772010251.6202147)
+>>> samples[0].obs.keys()
+dict_keys(['arms/right/qpos', 'arms/right/qvel', 'arms/right/qtorque', 'arms/left/qpos', 'arms/left/qvel', 'arms/left/qtorque', 'lifter/elevation'])
+>>> [(name, img.load().shape) for name, img in samples[0].cameras.items()]
+[('wrist_left', (600, 960, 3)), ('wrist_right', (600, 960, 3)), ('ceiling', (600, 960, 3)), ('head', (600, 960, 3))]
+```
+
+### Conversion to other formats
+
+#### Conversion to Lerobot Dataset (v2.1)
+
+```bash
+openarm-dataset-convert /path/to/OpenArmDataset /path/to/lerobot_dataset --format lerobot_v2.1
+```
+
