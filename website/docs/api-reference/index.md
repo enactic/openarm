@@ -56,17 +56,6 @@ Middleware for connecting OpenArm with the broader ROS2 ecosystem. Enables compa
 ---
 
 
-### Advanced Controls
-
-**[Learn more under Controls →](controls)**
-
-Control guides and algorithms for OpenArm systems. This is an active area of development where we're implementing and testing various control approaches.
-
-- **In development**: System identification guide, gravity compensation, cartesian space control
-- **Help wanted**: Algorithm implementations, validation testing, control theory expertise
-
----
-
 
 ## 🤝 Join the Community
 

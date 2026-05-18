@@ -1,0 +1,500 @@
+---
+title: OpenArm CAN CLI
+sidebar_position: 4
+---
+
+# OpenArm CAN CLI Tool
+
+`openarm-can-cli` is a command-line tool for configuring and monitoring DaMiao motors over CAN/CAN-FD interfaces.
+
+---
+
+## Prerequisites
+
+### Install
+
+```bash
+sudo apt install -y libopenarm-can-dev openarm-can-utils
+```
+
+For manual installation or other platforms, see the [build guide](https://github.com/enactic/openarm_can/tree/main/dev).
+
+Verify the socketcan interface is available:
+
+```bash
+ip link show | grep can
+```
+
+---
+
+## Quick Start
+
+### 1. Configure the CAN interface
+
+Before communicating with motors, configure the CAN interface baudrate to match your motors.
+
+```bash
+# Default: 1Mbps nominal, 5Mbps data, CAN-FD
+openarm-can-cli -i can0 can_configure
+
+# Classic CAN (1Mbps only, no FD)
+openarm-can-cli -i can0 can_configure --no-fd
+```
+
+### 2. Discover connected motors
+
+```bash
+openarm-can-cli -i can0 discover
+```
+
+### 3. Enable motors and check status
+
+```bash
+# Enable all arm motors (IDs 1-8)
+openarm-can-cli -i can0 enable
+
+# Monitor motor status
+openarm-can-cli -i can0 monitor
+```
+
+---
+
+## Global Options
+
+| Option | Description | Default |
+|--------|-------------|---------|
+| `-i, --interface` | SocketCAN interface | `can0` |
+| `-h, --help` | Print help message | |
+
+The `-i` option applies to all subcommands:
+
+```bash
+openarm-can-cli -i can1 monitor
+```
+
+---
+
+## Subcommands
+
+### `can_configure` — Configure CAN Interface
+
+Set up the SocketCAN interface baudrate and mode.
+
+```bash
+openarm-can-cli -i can0 can_configure [OPTIONS]
+```
+
+| Option | Description | Default |
+|--------|-------------|---------|
+| `-b, --bitrate` | Nominal (arbitration) bitrate | `1000000` |
+| `-d, --dbitrate` | Data phase bitrate (CAN-FD) | `5000000` |
+| `--sp` | Sample point for nominal phase | `0.75` |
+| `--dsp` | Sample point for data phase | `0.75` |
+| `--dsjw` | Data SJW | `2` |
+| `--rm` | Auto-restart time (ms) | `100` |
+| `--no-fd` | Disable CAN-FD mode | |
+
+**Examples:**
+
+```bash
+# Default (1Mbps / 5Mbps FD)
+openarm-can-cli -i can0 can_configure
+
+# 8Mbps data rate
+openarm-can-cli -i can0 can_configure -d 8000000 --dsp 0.6 --dsjw 1
+
+# Classic CAN (no FD)
+openarm-can-cli -i can0 can_configure --no-fd
+```
+
+:::note
+When `-i` is not specified, `can_configure` applies to all interfaces (`can0`–`can3`).
+:::
+
+---
+
+### `discover` — Scan for Motors
+
+Scan the CAN bus for connected motors.
+
+```bash
+openarm-can-cli -i can0 discover [OPTIONS]
+```
+
+| Option | Description | Default |
+|--------|-------------|---------|
+| `-m, --max-id` | Maximum motor ID to scan | `16` |
+| `--full-scan` | Scan all 12 baudrates | Fast scan (1M/5M/8M/10M) |
+
+**Examples:**
+
+```bash
+# Fast scan (recommended)
+openarm-can-cli -i can0 discover
+
+# Full scan (slower but more thorough)
+openarm-can-cli -i can0 discover --full-scan
+
+# Scan up to ID 32
+openarm-can-cli -i can0 discover -m 32
+```
+
+**Example output:**
+
+```
+=========================================================
+ DISCOVERY SUMMARY (Total: 8 motors found)
+---------------------------------------------------------
+Send ID     Recv ID     Internal Baudrate Setting
+---------------------------------------------------------
+0x01        0x11        5 Mbps (FD) (Code: 9)
+0x02        0x12        5 Mbps (FD) (Code: 9)
+...
+=========================================================
+⚠️  WARNING: CAN interface is now configured at 10 Mbps (FD).
+   Run 'can_configure' to restore the baudrate for your motors.
+```
+
+:::note
+After `discover`, always run `can_configure` to restore the correct baudrate before using other commands.
+:::
+
+---
+
+### `show_param` — Read Motor Parameters
+
+Read all internal parameters from motors.
+
+```bash
+openarm-can-cli -i can0 show_param [OPTIONS]
+```
+
+| Option | Description | Default |
+|--------|-------------|---------|
+| `-a, --arm` | Read from arm motors (IDs 1-8) | enabled |
+| `--id` | Specific motor IDs | |
+
+**Examples:**
+
+```bash
+# Read parameters from all arm motors
+openarm-can-cli -i can0 show_param
+
+# Read from specific motors
+openarm-can-cli -i can0 show_param --id 1,2,3
+openarm-can-cli -i can0 show_param --id 1 2 3
+```
+
+**Example output:**
+
+```
+==================================================
+ MOTOR ID: 0x1 (Response ID: 0x11)
+==================================================
+Parameter                      R/W  Type      Range                Value
+--------------------------------------------------------------------------------
+Master ID                      RW   uint32    [0, 0x7FF]           17
+Motor (ESC) ID                 RW   uint32    [0, 0x7FF]           1
+Control Mode                   RW   uint32    [0, 4]               1 (MIT)
+CAN Baudrate                   RW   uint32    [0, 9]               9 (5M)
+...
+```
+
+---
+
+### `write_param` — Write Motor Parameter
+
+Write a value to a specific motor register.
+
+```bash
+openarm-can-cli -i can0 write_param -c <ID> -r <RID> -v <VALUE> [--save]
+```
+
+| Option | Description |
+|--------|-------------|
+| `-c, --id` | Target motor ID (required) |
+| `-r, --rid` | Register ID (required) |
+| `-v, --value` | Value to write (required) |
+| `--save` | Save to flash (⚠️ limit: ~10,000 cycles) |
+
+**Example:**
+
+```bash
+# Set control mode to MIT (RID=10, value=1)
+openarm-can-cli -i can0 write_param -c 1 -r 10 -v 1
+```
+
+---
+
+### `enable` / `disable` — Motor Power Control
+
+Enable or disable motor torque output.
+
+```bash
+openarm-can-cli -i can0 enable [OPTIONS]
+openarm-can-cli -i can0 disable [OPTIONS]
+```
+
+| Option | Description | Default |
+|--------|-------------|---------|
+| `-a, --arm` | All arm motors (IDs 1-8) | enabled |
+| `--id` | Specific motor IDs | |
+
+**Examples:**
+
+```bash
+# Enable all arm motors
+openarm-can-cli -i can0 enable
+
+# Enable specific motors
+openarm-can-cli -i can0 enable --id 1,2,3
+
+# Disable all arm motors
+openarm-can-cli -i can0 disable
+```
+
+---
+
+### `monitor` — Live Telemetry Dashboard
+
+Display real-time motor position, velocity, torque, and temperature.
+
+```bash
+openarm-can-cli -i can0 monitor [OPTIONS]
+```
+
+| Option | Description | Default |
+|--------|-------------|---------|
+| `-a, --arm` | Monitor arm motors (IDs 1-8) | enabled |
+| `--id` | Specific motor IDs | |
+| `-t, --tick` | Update interval (ms) | `100` |
+| `-d, --duration` | Total duration (ms) | `6000` |
+
+**Examples:**
+
+```bash
+# Monitor all arm motors for 6 seconds
+openarm-can-cli -i can0 monitor
+
+# Monitor specific motors
+openarm-can-cli -i can0 monitor --id 1,2,3
+
+# Monitor for 30 seconds with 50ms update interval
+openarm-can-cli -i can0 monitor -d 30000 -t 50
+```
+
+---
+
+### `change_baud` — Change Motor Baudrate
+
+Change the internal CAN baudrate of a motor.
+
+```bash
+openarm-can-cli -i can0 change_baud -b <BAUDRATE> -c <ID> [--save]
+```
+
+| Option | Description |
+|--------|-------------|
+| `-b, --baudrate` | Target baudrate (required) |
+| `-c, --canid` | Motor ID (required) |
+| `--save` | Save to flash (⚠️ limit: ~10,000 cycles) |
+
+**Supported baudrates:**
+
+| Code | Baudrate |
+|------|----------|
+| 0 | 125K |
+| 1 | 200K |
+| 2 | 250K |
+| 3 | 500K |
+| 4 | 1M |
+| 5 | 2M |
+| 6 | 2.5M |
+| 7 | 3.2M |
+| 8 | 4M |
+| 9 | 5M |
+| 10 | 8M |
+| 11 | 10M |
+
+**Example:**
+
+```bash
+# 1. First, configure the interface to match the motor's CURRENT baudrate
+openarm-can-cli -i can0 can_configure -d 5000000  # if motor is currently at 5Mbps
+
+# 2. Change motor baudrate and save
+openarm-can-cli -i can0 change_baud -b 8000000 -c 3 --save
+
+# 3. Power cycle the motor
+
+# 4. Reconfigure interface to the NEW baudrate
+openarm-can-cli -i can0 can_configure -d 8000000
+```
+
+:::danger
+- Always configure the CAN interface to match the motor's **current** baudrate before running this command. If they don't match, the command will not reach the motor.
+- The `--save` flag writes to flash memory. Flash memory has a **hard limit of ~10,000 write cycles**. Do not run `--save` in a loop or repeatedly. Exceeding this limit will permanently damage the motor's flash memory.
+- After saving, a **power cycle is required** for the new baudrate to take effect.
+:::
+
+---
+
+### `change_id` — Change Motor CAN ID
+
+Change the Slave ID and Master ID of a motor.
+
+```bash
+openarm-can-cli -i can0 change_id -c <CURRENT_ID> -s <NEW_SLAVE_ID> [OPTIONS]
+```
+
+| Option | Description | Default |
+|--------|-------------|---------|
+| `-c, --current` | Current Slave ID (required) | |
+| `-s, --new-slave` | New Slave ID (required) | |
+| `-m, --new-master` | New Master ID | `17` |
+| `--save` | Save to flash | |
+
+**Example:**
+
+```bash
+# Change motor ID from 5 to 6
+openarm-can-cli -i can0 change_id -c 5 -s 6 --save
+```
+
+:::danger
+- Always configure the CAN interface to match the motor's **current** baudrate before running this command.
+- If two motors on the same bus share the same ID, CAN communication will fail. Make sure all motor IDs on a bus are unique before enabling them. Use `discover` to check current IDs.
+- The `--save` flag writes to flash memory. Flash memory has a **hard limit of ~10,000 write cycles**. Do not run `--save` repeatedly.
+:::
+
+---
+
+### `set_zero` — Set Motor Zero Position
+
+```bash
+# Set zero for all arm motors
+openarm-can-cli -i can0 set_zero
+
+# Set zero for specific motors
+openarm-can-cli -i can0 set_zero --id 1,2
+```
+
+---
+
+### `clear_error` — Clear Motor Errors
+
+Reset motor error flags.
+
+```bash
+openarm-can-cli -i can0 clear_error [OPTIONS]
+```
+
+| Option | Description | Default |
+|--------|-------------|---------|
+| `-a, --arm` | Clear errors on arm motors (IDs 1-8) | enabled |
+| `--id` | Specific motor IDs | |
+
+---
+
+## Common Workflows
+
+### First-time motor connection
+
+```bash
+# 1. Configure interface (match your motor baudrate)
+openarm-can-cli -i can0 can_configure
+
+# 2. Discover motors and check baudrates
+openarm-can-cli -i can0 discover
+
+# 3. Restore interface to motor baudrate after discover
+openarm-can-cli -i can0 can_configure
+
+# 4. Check motor parameters
+openarm-can-cli -i can0 show_param
+
+# 5. Enable and monitor
+openarm-can-cli -i can0 enable
+openarm-can-cli -i can0 monitor
+```
+
+### Change motor baudrate from 5Mbps to 8Mbps
+
+```bash
+# 1. Configure interface to current motor baudrate (5Mbps)
+openarm-can-cli -i can0 can_configure -d 5000000
+
+# 2. Change motor baudrate
+openarm-can-cli -i can0 change_baud -b 8000000 -c 1 --save
+
+# 3. Power cycle the motor
+
+# 4. Reconfigure interface to new baudrate
+openarm-can-cli -i can0 can_configure -d 8000000 --dsp 0.6 --dsjw 1
+```
+
+---
+
+## Troubleshooting
+
+### General Checklist
+
+Before diving into specific issues, go through this checklist:
+
+- [ ] Motor power is on
+- [ ] CAN cable is connected and not broken
+- [ ] CAN interface baudrate matches the motor's internal baudrate
+- [ ] Termination resistors (120Ω) are connected at both ends of the bus
+- [ ] All motor IDs on the bus are unique
+- [ ] CAN driver is loaded
+
+---
+
+### No motors found in `discover`
+
+1. Go through the general checklist above
+2. Try `--full-scan` to scan all baudrates:
+   ```bash
+   openarm-can-cli -i can0 discover --full-scan
+   ```
+
+### `show_param` shows no response
+
+```
+[!] NO RESPONSE FROM MOTOR - possible causes:
+    - CAN cable not connected
+    - Motor power not on
+    - Baudrate mismatch (run 'discover' to find correct baudrate)
+    - Wrong motor ID
+```
+
+Run `discover` to find the correct baudrate and motor IDs, then reconfigure the interface:
+
+```bash
+openarm-can-cli -i can0 discover
+openarm-can-cli -i can0 can_configure -d <BAUDRATE_FROM_DISCOVER>
+```
+
+### BUS OFF errors in `dmesg`
+
+```bash
+dmesg | grep -i "bus-off"
+```
+
+1. Go through the general checklist above
+2. Try adjusting sample point settings:
+   ```bash
+   openarm-can-cli -i can0 can_configure -d 8000000 --dsp 0.6 --dsjw 1
+   ```
+3. If using high baudrates (8Mbps+), shorten the cable length
+
+### `change_baud` not taking effect
+
+1. Go through the general checklist above
+2. Ensure interface baudrate matches motor's **current** baudrate before running
+3. After `--save`, power cycle the motor
+4. Use `candump` to verify frames and responses:
+   ```bash
+   candump can0
+   ```
+   A successful flash save shows a response frame from the motor (e.g. `0x11` for motor ID 1).

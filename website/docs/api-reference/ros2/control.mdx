@@ -15,20 +15,27 @@ The `openarm_description` package provides the complete robot model and visual r
 
 The [openarm_ros2](https://github.com/enactic/openarm_ros2) repository contains a collection of packages for use with [ros2_control](https://control.ros.org/humble/index.html).
 
-It abstracts away the hardware control to expose the arm as a interface that receives position, velocity, and torque commands and outputs joint states.
+It abstracts away the hardware control to expose the arm as an interface that receives position, velocity, and torque commands and outputs joint states.
 
-To get started, clone the openarm_ros2 repository, build the packages, and source the workspace.
+To get started, clone the `openarm_ros2` repository, build the packages, and source the workspace.
 
 ```sh
 git clone https://github.com/enactic/openarm_ros2 ~/ros2_ws/src/openarm_ros2
 
-# You can skip this step if openarm_can is installed system-wide
-# You can also skip it when testing with mock hardware only.
-(cd ~/ros2_ws/src && vcs import < ./openarm_ros2/openarm.repos)
+# Install openarm_can via apt (Ubuntu)
+sudo apt install -y libopenarm-can-dev openarm-can-utils
+# For manual installation or other platforms, see:
+# https://github.com/enactic/openarm_can/tree/main/dev
+# Alternatively, build from source via vcs:
+# (cd ~/ros2_ws/src && vcs import < ./openarm_ros2/openarm.repos)
+
+# Install ROS2 dependencies
+cd ~/ros2_ws
+rosdep install --from-paths src --ignore-src -r -y
 
 # If you only want to use mock hardware,
 # build with the `--packages-ignore openarm_hardware` option.
-cd ~/ros2_ws && colcon build
+colcon build
 
 source ~/ros2_ws/install/setup.bash
 ```
@@ -46,48 +53,95 @@ Before operating with real hardware, you MUST:
 **Improper operation can cause serious injury or equipment damage. Always prioritize safety.**
 :::
 
-
 ## 🚧 ROS2 Control Integration
 
-The [openarm_bringup](https://github.com/enactic/openarm_ros2/tree/main/openarm_bringup) package provides launch files that integrates with the ROS2 control framework through the `openarm_bringup` package. This package provides launch files and configuration to start the hardware interface, load controllers, and connect the physical arm to the ROS2 ecosystem. Once launched, you can use standard ROS2 control tools and interfaces to command the arm and receive feedback.
+The [openarm_bringup](https://github.com/enactic/openarm_ros2/tree/main/openarm_bringup) package provides launch files that integrate with the ROS2 control framework. This package provides launch files and configuration to start the hardware interface, load controllers, and connect the physical arm to the ROS2 ecosystem. Once launched, you can use standard ROS2 control tools and interfaces to command the arm and receive feedback.
 
-The bringup package supports both mock hardware (for simulation/testing) and real hardware through a hardware plugin. When using real hardware, you'll need to first build the openarmcan library by following the [CAN setup guide](../can).
+The bringup package supports both mock hardware (for simulation/testing) and real hardware through a hardware plugin. When using real hardware, you'll need to first install the `openarm_can` library by following the [CAN setup guide](../can).
 
 :::warning Hardware Bridge Status
 The hardware bridging components are currently being updated and may be unstable. The gripper bridging logic is particularly under active development.
 :::
 
-Launch the OpenArm with v1.0 configuration and fake hardware:
+### Launch
+
+Both v1.0 and v2.0 are supported via the `arm_type` argument.
 
 ```sh
-ros2 launch openarm_bringup openarm.launch.py arm_type:=v10 use_fake_hardware:=true
+# v2.0 with fake hardware (default)
+ros2 launch openarm_bringup openarm.bimanual.launch.py arm_type:=v2.0
+
+# v2.0 with real hardware
+ros2 launch openarm_bringup openarm.bimanual.launch.py arm_type:=v2.0 use_fake_hardware:=false right_can_interface:=can0 left_can_interface:=can1
+
+# v1.0 with fake hardware
+ros2 launch openarm_bringup openarm.bimanual.launch.py arm_type:=v1.0
+
+# v1.0 with real hardware
+ros2 launch openarm_bringup openarm.bimanual.launch.py arm_type:=v1.0 use_fake_hardware:=false right_can_interface:=can0 left_can_interface:=can1
 ```
 
-**launch files**
-- `openarm.launch.py` - Single arm configuration
+**Launch files**
 - `openarm.bimanual.launch.py` - Dual arm configuration
 
 **Key Parameters**
-- `arm_type` - Arm type (default: v10)
-- `use_fake_hardware` - Use fake hardware instead of real hardware (default: false)
-- `can_interface` - CAN interface to use (default: can0)
-- `robot_controller` - Controller type: joint_trajectory_controller or forward_position_controller
 
-When you run the bringup launch files, robot state publisher, controller manager, etc. will be launched.
+| Argument | Default | Description |
+|---|---|---|
+| `arm_type` | `openarm_v2.0` | Robot version. Accepts `v1.0`, `v10`, `openarm_v1.0`, `v2.0`, `v20`, `openarm_v2.0`, etc. |
+| `use_fake_hardware` | `true` | Use fake hardware instead of real hardware |
+| `right_can_interface` | `can0` | CAN interface for the right arm |
+| `left_can_interface` | `can1` | CAN interface for the left arm |
+| `robot_controller` | `joint_trajectory_controller` | Controller type: `joint_trajectory_controller` or `forward_position_controller` |
+| `arm_prefix` | `` | Prefix for topic namespacing (for running multiple robots) |
+| `controllers_file` | `openarm_bimanual_controllers.yaml` | Controllers configuration file |
 
-After the controllers are successfully launched, you can verify they're working by checking the available actions:
+### Topics
+
+After launching, the following topics are available:
+
+| Topic | Type | Description |
+|---|---|---|
+| `/joint_states` | `sensor_msgs/JointState` | Current joint states for all joints |
+| `/dynamic_joint_states` | `control_msgs/DynamicJointState` | Dynamic joint states |
+| `/robot_description` | `std_msgs/String` | Robot URDF description |
+| `/tf` | `tf2_msgs/TFMessage` | Transform tree |
+| `/tf_static` | `tf2_msgs/TFMessage` | Static transforms |
+| `/left_joint_trajectory_controller/joint_trajectory` | `trajectory_msgs/JointTrajectory` | **Command**: left arm trajectory input |
+| `/right_joint_trajectory_controller/joint_trajectory` | `trajectory_msgs/JointTrajectory` | **Command**: right arm trajectory input |
+| `/left_joint_trajectory_controller/state` | `control_msgs/JointTrajectoryControllerState` | Left arm controller state |
+| `/right_joint_trajectory_controller/state` | `control_msgs/JointTrajectoryControllerState` | Right arm controller state |
+| `/left_gripper_controller/joint_trajectory` | `trajectory_msgs/JointTrajectory` | **Command**: left gripper trajectory input |
+| `/right_gripper_controller/joint_trajectory` | `trajectory_msgs/JointTrajectory` | **Command**: right gripper trajectory input |
+| `/left_gripper_controller/state` | `control_msgs/JointTrajectoryControllerState` | Left gripper controller state |
+| `/right_gripper_controller/state` | `control_msgs/JointTrajectoryControllerState` | Right gripper controller state |
+
+### Actions
+
+| Action | Type | Description |
+|---|---|---|
+| `/left_joint_trajectory_controller/follow_joint_trajectory` | `control_msgs/action/FollowJointTrajectory` | Execute trajectory on left arm |
+| `/right_joint_trajectory_controller/follow_joint_trajectory` | `control_msgs/action/FollowJointTrajectory` | Execute trajectory on right arm |
+| `/left_gripper_controller/follow_joint_trajectory` | `control_msgs/action/FollowJointTrajectory` | Execute trajectory on left gripper |
+| `/right_gripper_controller/follow_joint_trajectory` | `control_msgs/action/FollowJointTrajectory` | Execute trajectory on right gripper |
+
+### Verifying the Controllers
+
+After the controllers are successfully launched, you can verify they're working by checking the available topics and actions:
 
 ```sh
+ros2 topic list
 ros2 action list
 ```
 
 To test joint movement, send a simple trajectory command:
 
 ```sh
-ros2 action send_goal /joint_trajectory_controller/follow_joint_trajectory control_msgs/action/FollowJointTrajectory '{trajectory: {joint_names: ["openarm_joint1", "openarm_joint2", "openarm_joint3", "openarm_joint4", "openarm_joint5", "openarm_joint6", "openarm_joint7"], points: [{positions: [0.15, 0.15, 0.15, 0.15, 0.15, 0.15, 0.15], time_from_start: {sec: 3, nanosec: 0}}]}}'
+ros2 action send_goal /left_joint_trajectory_controller/follow_joint_trajectory control_msgs/action/FollowJointTrajectory \
+  '{trajectory: {joint_names: ["openarm_left_joint1", "openarm_left_joint2", "openarm_left_joint3", "openarm_left_joint4", "openarm_left_joint5", "openarm_left_joint6"], points: [{positions: [0.15, 0.15, 0.15, 0.15, 0.15, 0.15], time_from_start: {sec: 3, nanosec: 0}}]}}'
 ```
 
-This command moves all arm joints to a 0.15 radian position over 3 seconds.
+This command moves all left arm joints to a 0.15 radian position over 3 seconds.
 
 
 ## 🚧 MoveIt2 Integration
@@ -98,22 +152,39 @@ This command moves all arm joints to a 0.15 radian position over 3 seconds.
 
 ### Getting Started with MoveIt2
 
-To use the MoveIt2 integration:
+Both v1.0 and v2.0 are supported via the `arm_type` argument. The MoveIt2 demo launch starts the move group, RViz, ROS2 control, and all controllers in one command.
 
-**Launch the MoveIt2 demo:**
 ```sh
-ros2 launch openarm_bimanual_moveit_config demo.launch.py
+# v2.0 with fake hardware (default)
+ros2 launch openarm_bimanual_moveit_config demo.launch.py arm_type:=v2.0
+
+# v2.0 with real hardware
+ros2 launch openarm_bimanual_moveit_config demo.launch.py arm_type:=v2.0 use_fake_hardware:=false right_can_interface:=can0 left_can_interface:=can1
+
+# v1.0 with fake hardware
+ros2 launch openarm_bimanual_moveit_config demo.launch.py arm_type:=v1.0
+
+# v1.0 with real hardware
+ros2 launch openarm_bimanual_moveit_config demo.launch.py arm_type:=v1.0 use_fake_hardware:=false right_can_interface:=can0 left_can_interface:=can1
 ```
 
-<BlockImage src="software/ros2/bimanual-moveit2.png" alt="MoveIt2 Static" width="65%" />
-<br/>
+**Key Parameters**
+
+| Argument | Default | Description |
+|---|---|---|
+| `arm_type` | `openarm_v2.0` | Robot version. Accepts `v1.0`, `v10`, `openarm_v1.0`, `v2.0`, `v20`, `openarm_v2.0`, etc. |
+| `use_fake_hardware` | `true` | Use fake hardware instead of real hardware |
+| `right_can_interface` | `can0` | CAN interface for the right arm |
+| `left_can_interface` | `can1` | CAN interface for the left arm |
+| `robot_controller` | `joint_trajectory_controller` | Controller type: `joint_trajectory_controller` or `forward_position_controller` |
+
 
 ### Motion Planning
 
-<BlockImage src="software/ros2/bimanual-moveit2-planning.png" alt="MoveIt2 Planning" width="65%" />
-<br/>
+<BlockImage src="software/ros2/moveit_v1.0.png" alt="MoveIt2 v1.0" width="85%" />
+<BlockImage src="software/ros2/moveit_v2.0.png" alt="MoveIt2 v2.0" width="85%" />
 
-Target positions can be set in the `Joints` tab in the MotionPlanning panel on the left. Alternatively, the targets on the arms can be dragged and rotated to a target pose, or the goal state can be selected from a list of preset keypoints under `Planning` > `Goal State`
+Target positions can be set in the `Joints` tab in the MotionPlanning panel on the left. Alternatively, the targets on the arms can be dragged and rotated to a target pose, or the goal state can be selected from a list of preset keypoints under `Planning` > `Goal State`.
 
 The `Planning` tab provides a GUI to generate trajectories to reach a goal position. Clicking on `Plan` to preview the path is recommended.
 
@@ -121,12 +192,17 @@ The `Planning` tab provides a GUI to generate trajectories to reach a goal posit
 The MoveIt2 integration is actively being developed. Check the [openarm_ros2 repository](https://github.com/enactic/openarm_ros2) for the latest updates and features.
 :::
 
-## Control gain
+## Control Gains
 
 The default gain is set to a relatively low value for safety. As a result, the arm may not be able to reach high angles in some cases. The gain can be adjusted by editing the following configuration file and rebuilding.
 
-* Edit [~/ros2_ws/src/openarm_description/config/arm/v10/control_gains.yaml](https://github.com/enactic/openarm_description/blob/main/config/arm/v10/control_gains.yaml).
-* Rebuild by `colcon build`.
+**v2.0:**
+- Edit `assets/robot/openarm_v2.0/config/arm/control/control_gains.yaml`
+- Rebuild by `colcon build`
+
+**v1.0:**
+- Edit `assets/robot/openarm_v1.0/config/arm/control_gains.yaml`
+- Rebuild by `colcon build`
 
 :::danger ⚠️ GAIN TUNING SAFETY
 Please adjust the gain with great care. **Start with a lower gain and verify the behavior first, then increase it gradually.** If you execute an action with a large position difference while using a high gain, some controllers may generate dangerously high velocities.

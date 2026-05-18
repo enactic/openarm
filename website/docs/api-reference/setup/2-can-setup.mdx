@@ -41,10 +41,20 @@ The OpenArm CAN library includes convenient setup commands, example usage:
 
 ```bash
 # For CAN 2.0
-openarm-can-configure-socketcan can0
+openarm-can-configure-socketcan-4-arms
 
 # For CAN FD at 5mbps (recommended)
-openarm-can-configure-socketcan can0 -fd -b 1000000 -d 5000000
+openarm-can-configure-socketcan-4-arms -fd -b 1000000 -d 5000000
+```
+
+Alternatively, use `openarm-can-cli` to configure individual interfaces. For detailed usage, see [CAN CLI Reference ](../cli#can_configure--configure-can-interface).
+
+```bash
+# CAN FD at 5Mbps (recommended)
+openarm-can-cli -i can0 can_configure
+
+# CAN 2.0
+openarm-can-cli -i can0 can_configure --no-fd
 ```
 
 ### Option 2: setup manually
