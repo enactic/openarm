@@ -44,6 +44,9 @@ OpenArm features **human-scale** proportions, safety and compliance, and practic
 | **[openarm_ros2](https://github.com/enactic/openarm_ros2)** | [ROS2 Docs](https://docs.openarm.dev/api-reference/ros2/install) | [Apache-2.0](https://github.com/enactic/openarm_ros2/blob/main/LICENSE) | ROS2 integration packages and nodes |
 | **[openarm_teleop](https://github.com/enactic/openarm_teleop)** | [Teleop Docs](https://docs.openarm.dev/teleop/) | [Apache-2.0](https://github.com/enactic/openarm_teleop/blob/main/LICENSE.txt) | Teleoperation packages with unilateral and bilateral control |
 | **[openarm_isaac_lab](https://github.com/enactic/openarm_isaac_lab)** | [Isaac Docs](https://docs.openarm.dev/simulation/) | [Apache-2.0](https://github.com/enactic/openarm_isaac_lab/blob/main/LICENSE.txt) | Isaac Lab simulation environment and training tasks |
+| **[openarm_mujoco](https://github.com/enactic/openarm_mujoco)** | [MuJoCo Docs](https://docs.openarm.dev/simulation/mujoco) | [Apache-2.0](https://github.com/enactic/openarm_mujoco/blob/master/LICENSE) | MuJoCo specification files and assets for OpenArm |
+| **[openarm_dataset](https://github.com/enactic/openarm_dataset)** | [Dataset Docs](https://docs.openarm.dev/dataset/) | [Apache-2.0](https://github.com/enactic/openarm_dataset/blob/main/LICENSE.txt) | Dataset format, recording tools, and Python API |
+| **[dora-openarm](https://github.com/enactic/dora-openarm)** | [Dora Docs](https://docs.openarm.dev/api-reference/dora/) | [Apache-2.0](https://github.com/enactic/dora-openarm/blob/main/LICENSE) | Dora dataflow nodes for data collection, inference, and teleop |
 
 
 ## 📄 Code of Conduct
