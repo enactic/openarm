@@ -100,6 +100,29 @@ const config: Config = {
 
   plugins: [
     './src/plugins/csv-loader/index.ts',
+    [
+      '@docusaurus/plugin-client-redirects',
+      {
+        redirects: [
+          { from: '/getting-started/contribute', to: '/overview/contribute' },
+          { from: '/getting-started/project-overview', to: '/' },
+          { from: '/getting-started/safety-guide', to: '/overview/safety-guide' },
+        ],
+        createRedirects(existingPath: string) {
+          const removedInV2 = [
+            '/1.0/hardware/assembly-guide',
+            '/1.0/hardware/bill-of-materials',
+            '/1.0/hardware/specifications',
+            '/1.0/hardware/wiring-and-casing-guide',
+            '/1.0/software',
+          ];
+          if (!removedInV2.some((path) => existingPath.startsWith(path))) {
+            return;
+          }
+          return [existingPath.replace(/^\/1\.0/, '')];
+        },
+      },
+    ],
   ],
 
   themeConfig: {
