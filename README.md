@@ -1,8 +1,10 @@
 # OpenArm
 
-**OpenArm** is an open-source 7DOF humanoid arm designed for physical AI research and deployment in contact-rich environments. With high backdrivability and compliance, it excels at safe human-robot interaction while delivering practical payload capabilities for real-world applications.
+**OpenArm** is an open-source 7DOF humanoid arm designed for physical AI research and deployment in contact-rich environments. With high backdrivability and compliance, it is built with safe human-robot interaction in mind while delivering practical payload capabilities for real-world applications.
 
 <img alt="OpenArm in cell environment" src="website/static/img/hardware/openarm_and_cell.png" />
+
+**OpenArm Cell** (on the right) is a standardized environment with unified background, lighting, and camera placement. Research performed using OpenArm can be reproduced around the world in consistent evaluation conditions, facilitating the global discussion on state of the art physical AI research.
 
 OpenArm features **human-scale** proportions, safety and compliance, and practical payloads. At $6,500 USD for a complete bimanual system, it provides a flexible platform for teleoperation, imitation learning, simulation, and real-world data collection in contact-rich tasks.
 
@@ -13,16 +15,6 @@ OpenArm features **human-scale** proportions, safety and compliance, and practic
 > Browse verified and certified manufacturers worldwide. 
 > 
 > [**Buy Now →**](https://docs.openarm.dev/purchase)
-
-## ⭐ Star History
-
-<a href="https://www.star-history.com/#enactic/openarm&type=date&legend=top-left">
- <picture>
-   <source media="(prefers-color-scheme: dark)" srcset="https://api.star-history.com/svg?repos=enactic/openarm&type=date&theme=dark&legend=top-left" />
-   <source media="(prefers-color-scheme: light)" srcset="https://api.star-history.com/svg?repos=enactic/openarm&type=date&legend=top-left" />
-   <img alt="Star History Chart" src="https://api.star-history.com/svg?repos=enactic/openarm&type=date&legend=top-left" />
- </picture>
-</a>
 
 ## 🔗 Quick Links
 
@@ -37,7 +29,6 @@ OpenArm features **human-scale** proportions, safety and compliance, and practic
 
 | Repository | Documentation | License | Description |
 |------------|---------------|---------|-------------|
-| **[openarm](https://github.com/enactic/openarm)** | [General Docs](https://docs.openarm.dev) | [Apache-2.0](LICENSE) | Main project repository with ideas, issues, and feature requests |
 | **[openarm_hardware](https://github.com/enactic/openarm_hardware)** | [Hardware Docs](https://docs.openarm.dev/hardware) | [CERN-OHL-S-2.0](https://github.com/enactic/openarm_hardware/blob/main/LICENSE.txt) | Complete CAD data: STL files, STEP files, Fusion 360 assemblies |
 | **[openarm_description](https://github.com/enactic/openarm_description)** | [Description Docs](https://docs.openarm.dev/api-reference/description/) | [Apache-2.0](https://github.com/enactic/openarm_description/blob/main/LICENSE.txt) | Robot description files with URDF/xacro for simulation |
 | **[openarm_can](https://github.com/enactic/openarm_can)** | [CAN Docs](https://docs.openarm.dev/api-reference/can/) | [Apache-2.0](https://github.com/enactic/openarm_can/blob/main/LICENSE.txt) | CAN control library for low-level motor communication |
