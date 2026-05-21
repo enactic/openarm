@@ -104,7 +104,7 @@ Official Manufacturing Partners and Certified Manufacturers work closely with th
       flexWrap: 'wrap'
     }}>
       <a
-        href="https://shop.wowrobo.com/products/openarm-open-source-humanoid-robot-arm-by-enactic"
+        href="https://shop.wowrobo.com/collections/openarm"
         target="_blank"
         rel="noopener noreferrer"
         style={{ textDecoration: 'none' }}
@@ -129,7 +129,7 @@ Official Manufacturing Partners and Certified Manufacturers work closely with th
       <div style={{ flex: 1, minWidth: '200px', position: 'relative', top: '8px' }}>
         <h3 style={{ margin: 0, fontSize: '1.5rem', color: '#111827' }}>
           <a
-            href="https://shop.wowrobo.com/products/openarm-open-source-humanoid-robot-arm-by-enactic"
+            href="https://shop.wowrobo.com/collections/openarm"
             target="_blank"
             rel="noopener noreferrer"
             style={{
@@ -152,17 +152,47 @@ Official Manufacturing Partners and Certified Manufacturers work closely with th
         </div>
       </div>
     </div>
-    <div style={{ marginTop: '1.75rem', marginBottom: '1rem' }}>
-      <img
-        src={require("@site/static/img/purchase/wowrobo-openarm.png").default}
-        alt="OpenArm by WowRobo"
-        style={{
-          width: '100%',
-          borderRadius: '0.75rem',
-          boxShadow: '0 2px 8px rgba(0,0,0,0.1)',
-          objectFit: 'cover'
-        }}
-      />
+    <div style={{
+      marginTop: '1.75rem',
+      marginBottom: '1rem',
+      display: 'grid',
+      gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))',
+      gap: '1rem'
+    }}>
+      <div>
+        <img
+          src={require("@site/static/img/purchase/wowrobo-openarm-2.png").default}
+          alt="OpenArm 2 by WowRobo"
+          style={{
+            width: '100%',
+            borderRadius: '0.75rem',
+            boxShadow: '0 2px 8px rgba(0,0,0,0.1)',
+            objectFit: 'cover',
+            display: 'block'
+          }}
+        />
+        <div style={{ marginTop: '0.5rem', textAlign: 'center', fontSize: '0.9rem' }}>
+          <div style={{ fontWeight: '600', color: '#111827' }}>OpenArm 2</div>
+          <div style={{ color: '#6b7280' }}>{'from $6,500'}</div>
+        </div>
+      </div>
+      <div>
+        <img
+          src={require("@site/static/img/purchase/wowrobo-openarm-cell.png").default}
+          alt="OpenArm Cell by WowRobo"
+          style={{
+            width: '100%',
+            borderRadius: '0.75rem',
+            boxShadow: '0 2px 8px rgba(0,0,0,0.1)',
+            objectFit: 'cover',
+            display: 'block'
+          }}
+        />
+        <div style={{ marginTop: '0.5rem', textAlign: 'center', fontSize: '0.9rem' }}>
+          <div style={{ fontWeight: '600', color: '#111827' }}>OpenArm Cell</div>
+          <div style={{ color: '#6b7280' }}>{'from $6,200'}</div>
+        </div>
+      </div>
     </div>
     <div style={{
       background: '#f9fafb',
@@ -178,7 +208,9 @@ Official Manufacturing Partners and Certified Manufacturers work closely with th
       }}>
         <div>
           <div style={{ color: '#6b7280' }}>📦 Starting Price</div>
-          <div style={{ fontWeight: '600' }}>$5,000 USD</div>
+          <div style={{ fontWeight: '600' }}>{'$5,400 (V1.1)'}</div>
+          <div style={{ fontWeight: '600' }}>{'$6,500 (V2)'}</div>
+          <div style={{ fontWeight: '600' }}>{'$6,200 (Cell)'}</div>
         </div>
         <div>
           <div style={{ color: '#6b7280' }}>⏱️ Lead Time (Order→Ship)</div>
@@ -207,9 +239,15 @@ Official Manufacturing Partners and Certified Manufacturers work closely with th
       <div style={{ marginTop: '0.5rem' }}>
         As the official manufacturer of the SO-ARM101, we're proud to have refined our processes even further for OpenArm, achieving an even higher level of precision, reliability, and overall build quality. Our philosophy is simple: deliver the finest craftsmanship with minimal profit, and grow together with the OpenArm project and its global community.
       </div>
+      <div style={{ marginTop: '0.75rem' }}>
+        <strong>Now shipping OpenArm 2</strong> — the latest bimanual platform with 7 DoF per arm, in-hand cameras, and 1 kHz CAN-FD real-time control. A V1 -> V2 upgrade kit is also available for existing OpenArm V1 owners.
+      </div>
+      <div style={{ marginTop: '0.5rem' }}>
+        <strong>OpenArm Cell Modular Kit</strong> {'(from $6,200)'} — a standardized workspace cell for reproducible embodied AI experiments. Includes a MISUMI-frame enclosure (1100 × 926 × 1883 mm), a 300 mm Z-axis, a top stereo camera, and controlled lighting. Shipped in modular sections for easier international delivery.
+      </div>
     </div>
     <a
-      href="https://shop.wowrobo.com/products/openarm-open-source-humanoid-robot-arm-by-enactic"
+      href="https://shop.wowrobo.com/collections/openarm"
       target="_blank"
       rel="noopener noreferrer"
       style={{
@@ -268,7 +306,7 @@ Before purchasing, please consider:
 <div style={{ overflowX: 'auto', marginTop: '3rem' }}>
   | Company                                                    | Lead Time            | Shipping Region | Price* (USD)        | Quality ▼                                               | Notes                                                                                                                                                                                                                       |
   |------------------------------------------------------------|----------------------|-----------------|---------------------|---------------------------------------------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-  | **WowRobo** (ShenZhen)                                     | 20-40 days           | Worldwide       | $5,000              | Certified <span style={{ color: 'orange' }}>★★★</span> | [**Accepting orders** (website)](https://shop.wowrobo.com/products/openarm-open-source-humanoid-robot-arm-by-enactic)<br />Discord: `@Leo Xiao @WowRobo`<br />Wechat: `xiaonian52`<br />Email: `leo.xiao@wowrobo.com`       |
+  | **WowRobo** (ShenZhen)                                     | 20-40 days           | Worldwide       | \$5,400 (V1.1) / \$6,500 (V2) / \$6,200 (Cell) | Certified <span style={{ color: 'orange' }}>★★★</span> | [**Accepting orders** (website)](https://shop.wowrobo.com/collections/openarm)<br />V1.1, V2, V1 -> V2 upgrade kit, and OpenArm Cell modular kit available.<br />Discord: `@Leo Xiao @WowRobo`<br />Wechat: `xiaonian52`<br />Email: `leo.xiao@wowrobo.com` |
   | **RT Corporation** (Tokyo)                                 | -                    | Japan           | -                   | Evaluating...                                           | Not yet accepting orders.                                                                                                                                                                                                   |
   | VLAI Robotics (ShenZhen)                                   | 3-12 days            | Worldwide       | $4,699              | Evaluating...                                           | [**Accepting bulk orders** (website)](https://vlai.cn/)<br />WeChat: `VLAIBOT`<br />Email: `zhang@vlai.cn` |
   | Cereboto (Dongguan)                                        | 20 days              | Worldwide       | $5,000              | Evaluating...                                           | [**Accepting orders** (website)](https://cereboto.com/product/openarm/) [(taobao)](https://item.taobao.com/item.htm?id=985310497224)<br />Discord: `@chuck.yu`<br />WeChat: `U_Charles`<br />Email: `chuck.yu@cereboto.com`   |
