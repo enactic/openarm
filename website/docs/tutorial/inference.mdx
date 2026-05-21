@@ -123,7 +123,7 @@ Write a single JSON line back to the socket:
 ```json
 {
   "interval": 33333333,
-  "cutoff_hz": 5,
+  "cutoff_hz": 15,
   "positions": [
     [q0, q1, q2, q3, q4, q5, q6, q7, q8, q9, q10, q11, q12, q13, q14, q15],
     ...
@@ -134,7 +134,7 @@ Write a single JSON line back to the socket:
 | Field | Type | Meaning |
 |---|---|---|
 | `interval` | int (ns) | Time between consecutive position steps. `int(1e9 / 30)` ≈ 33 ms for 30 Hz |
-| `cutoff_hz` | number, optional | Execute only the first N steps of the chunk before the next inference for receding horizon control |
+| `cutoff_hz` | number, optional | The low-pass filter cutoff frequency (Hz) lower = smoother motion, higher = more responsive. |
 | `positions` | `List[List[float]]` length T | Each inner list is 16 floats: `right_arm[7] + right_gripper[1] + left_arm[7] + left_gripper[1]` |
 
 If you want to skip inference this tick (e.g. rate-limiting), return an empty positions list:
