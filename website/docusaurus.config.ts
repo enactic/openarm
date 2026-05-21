@@ -107,6 +107,7 @@ const config: Config = {
           { from: '/getting-started/contribute', to: '/overview/contribute' },
           { from: '/getting-started/project-overview', to: '/' },
           { from: '/getting-started/safety-guide', to: '/overview/safety-guide' },
+          { from: '/1.0/purchase', to: '/purchase' },
         ],
         createRedirects(existingPath: string) {
           const removedInV2 = [
@@ -195,6 +196,7 @@ const config: Config = {
           sidebarId: 'purchaseSidebar',
           position: 'left',
           label: 'Purchase',
+          docsVersions: ['current'],
         },
         {
           type: 'docSidebar',
