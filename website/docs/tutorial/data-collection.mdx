@@ -51,9 +51,8 @@ Also, this section is useful for testing your VR teleoperation setup and to make
 ### Setup for MuJoCo environment
 
 ```bash
-git clone https://github.com/enactic/dora-openarm-data-collection.git
+git clone --recurse-submodules https://github.com/enactic/dora-openarm-data-collection.git
 cd dora-openarm-data-collection
-git submodule update --init --recursive
 uv venv .venv
 source .venv/bin/activate
 uv pip install dora-rs-cli
