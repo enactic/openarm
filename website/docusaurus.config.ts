@@ -93,10 +93,13 @@ const config: Config = {
   ],
 
   markdown: {
+    mermaid: true,
     preprocessor: ({filePath: _filePath, fileContent}) => {
       return fileContent.replaceAll('{{OPENARM_CAN_VERSION}}', '1.2.2');
     },
   },
+
+  themes: ['@docusaurus/theme-mermaid'],
 
   plugins: [
     './src/plugins/csv-loader/index.ts',
