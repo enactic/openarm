@@ -37,7 +37,7 @@ flowchart TB
   end
 
   subgraph venv_server ["inference server"]
-    inference["inference_server<br>ACT Policy · LeRobot · PyTorch · GPU"]
+    inference["inference_server<br> · Loads model (local or Docker) · JSON in/out via socket"]
   end
 
   timer -- tick --> tick_gate -- tick --> observer
