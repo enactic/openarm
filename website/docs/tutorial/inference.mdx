@@ -59,7 +59,7 @@ flowchart TB
 
 ## The Policy Server Contract
 
-This is the what one needs to implement when adapting to a new model.
+This is what one needs to implement when adapting to a new model.
 
 ### Transport
 
@@ -220,9 +220,9 @@ The `observation` output of `quittable-observer` is what your server receives as
 
 ## Running Example
 
-In order to understand the inference loop, let's run a simple example with lerobot ACT policy withy MuJoCo sim. 
+In order to understand the inference loop, let's run a simple example with lerobot ACT policy with MuJoCo sim. 
 
-The data is collected via [VR teleoperation](../data-collection.mdx) so you can also collect your own dataset and run inference on it.
+The data is collected via [VR teleoperation](./data-collection.mdx) so you can also collect your own dataset and run inference on it.
 
 
 ### Prerequisites
@@ -267,7 +267,6 @@ You need to prepare the following dora nodes for running the inference dataflow:
 * https://github.com/enactic/dora-openarm-docker-policy-server.git
 
 
-**TODO** commitの指定 (一応)
 ```bash
 # Clone the repositories
 mkdir dora-openarm-lerobot-inference
@@ -283,7 +282,7 @@ git submodule add https://github.com/enactic/dora-openarm-docker-policy-server.g
 
 ### A. local policy server (for debugging)
 
-#### write the dataflow YAML
+#### Write the dataflow YAML
 
 Here is a sample dataflow YAML for running the local policy server. 
 The key nodes are `observer`, `quittable-observer`, `policy-server`, and `actions-executor`. The `mujoco-collect` node simulates the robot and cameras in MuJoCo, but you can replace it with the real robot nodes if you want to run on hardware.
@@ -555,7 +554,7 @@ You should see the MuJoCo sim window open, and the robot should start moving acc
 
 ### B. policy server in Docker 
 
-#### write the dataflow YAML
+#### Write the dataflow YAML
 
 The dataflow YAML is mostly the same as the local policy server version, except that you use `dora-openarm-docker-policy-server` instead of `dora-openarm-local-policy-server` and set the `IMAGE` environment variable to your Docker image.
 
@@ -647,14 +646,15 @@ nodes:
 
 Save the YAML as `dataflow-docker-inference.yaml`.
 
-#### prepare the policy server Docker image
+#### Prepare the policy server Docker image
 
 First, you need to write the policy server script that loads the model and runs inference, similar to the local policy server version. 
 
-Sample code for the policy server script with Dcoker is provided [here](https://github.com/enactic/dora-openarm-docker-policy-server/blob/main/example/openarm_docker_policy_server_example/main.py)
+Sample code for the policy server script with Docker is provided [here](https://github.com/enactic/dora-openarm-docker-policy-server/blob/main/example/openarm_docker_policy_server_example/main.py)
 
 <details>
 <summary>sample docker server script with lerobot ACT policy</summary>
+
 ```python
 """Docker-based policy server for OpenArm inference with LeRobot."""
 import json
