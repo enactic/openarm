@@ -51,25 +51,26 @@ Also, this section is useful for testing your VR teleoperation setup and to make
 ### Setup for MuJoCo environment
 
 ```bash
-git clone https://github.com/enactic/dora-openarm-vr.git
-cd dora-openarm-vr
-uv sync
+git clone --recurse-submodules https://github.com/enactic/dora-openarm-data-collection.git
+cd dora-openarm-data-collection
+uv venv .venv
 source .venv/bin/activate
-dora build config/dataflow-mujoco.yaml --uv
+uv pip install dora-rs-cli
+dora build dataflow-vr-mujoco.yaml --uv
 ```
 
 ### Teleoperation in MuJoCo environment
 
 ```bash
-dora run config/dataflow-mujoco.yaml --uv
+dora run dataflow-vr-mujoco.yaml --uv
 ```
 
 If VR teleoperation is working properly, you should see the robot arm moving in the MuJoCo environment when you operate the VR controllers.
 
-To collect data in mujoco, use the dataflow below.
+To collect data in MuJoCo, use the same dataflow.
 
 ```bash
-dora run config/dataflow-mujoco-data-collection.yaml --uv
+dora run dataflow-vr-mujoco.yaml --uv
 ```
 
 The data collection web UI will open automatically, and you can check the data collection status at `http://localhost:8000`.
@@ -104,16 +105,16 @@ If you fail the task, press the B button to stop recording and mark the episode 
 
 ### Check the collected data
 
-Default data path can be found in `dataflow-mujoco.yaml` `DIRECTORY: "test_data/mujoco_collection"`.
+Default data path can be found in `dataflow-vr-mujoco.yaml` `DIRECTORY: "vr_mujoco_data"`.
 If you want to change the data path, you can change the value of `DIRECTORY` in the config file.
 
 ```yaml
 - id: recorder
-  build: pip install -e node/dora-openarm-dataset-recorder
+  build: pip install -e nodes/dora-openarm-dataset-recorder
   path: dora-openarm-dataset-recorder
   env:
-    METADATA_FILE: "test_metadata.yaml"
-    DIRECTORY: "test_data/mujoco_collection"
+    METADATA_FILE: "metadata_mujoco.yaml"
+    DIRECTORY: "vr_mujoco_data"
 ```
 
 After finishing the data collection, you can check the collected data in the specified directory. The data will be stored in the OpenArmDataset format.
@@ -127,11 +128,11 @@ First, make sure that the CAN interface is up and running and the cameras are se
 ### Start data collection
 
 ```bash
-uv run dora build config/dataflow.yaml --uv
-uv run dora run config/dataflow.yaml --uv
+dora build dataflow-vr.yaml --uv
+dora run dataflow-vr.yaml --uv
 ```
 
-Same as the MuJoCo data collection, you can specify the output directory by modifying `config/dataflow.yaml`.
+Same as the MuJoCo data collection, you can specify the output directory by modifying `dataflow-vr.yaml`.
 
 If the command runs successfully, the arm will move to the initial position. You need to align your VR controllers to the arm first by holding the trigger button.
 
