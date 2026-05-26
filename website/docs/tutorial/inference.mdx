@@ -1,6 +1,6 @@
 ---
 title: Inference
-sidebar_position: 3
+sidebar_position: 4
 ---
 
 # Inference
@@ -68,10 +68,6 @@ The node connects to a UNIX socket (path set via `$SOCKET`). The Dora node
 model code lives in the process it launches.
 
 For local development, the server listens on the socket:
-
-```
-SOCKET=/dev/shm/policy-server.socket dora run dataflow-inference.yaml --uv
-```
 
 ### Observation Input
 
@@ -161,100 +157,20 @@ If you want to skip inference this tick (e.g. rate-limiting), return an empty po
 
 ---
 
-## Dataflow YAML — Key Nodes
-
-The three nodes you care about most in the YAML. Everything else (ticks, cameras,
-arms) is boilerplate you copy verbatim.
-
-```yaml
-nodes:
-  # --- observer: collects arms + cameras into one Arrow IPC bundle ---
-  - id: observer
-    path: dora-openarm-observer
-    inputs:
-      tick:               quittable-tick-observer/tick   # 30 Hz gate
-      arm_right:          arm-right/position
-      arm_left:           arm-left/position
-      camera_wrist_right: camera-wrist-right/image
-      camera_wrist_left:  camera-wrist-left/image
-      camera_head:        camera-head/image
-      camera_ceiling:     camera-ceiling/image
-      phase_classifier_result: phase-classifier/result
-    outputs:
-      - observation   # Arrow IPC file path + metadata, written to /dev/shm
-
-  # --- quittable-observer: gate controlled by controller ---
-  - id: quittable-observer
-    path: dora-openarm-quitter
-    inputs:
-      command:     controller/command
-      observation: observer/observation
-    outputs:
-      - observation
-
-  # --- policy-server: YOUR node ---
-  - id: policy-server
-    path: dora-openarm-local-policy-server
-    env:
-      SOCKET: /dev/shm/policy-server.socket   # must match your running server
-    inputs:
-      observation: quittable-observer/observation
-    outputs:
-      - actions   # JSON: {interval, cutoff_hz, positions: [[16D], ...]}
-
-  # --- actions-executor: unpacks the chunk and drives the arms ---
-  - id: actions-executor
-    path: dora-openarm-actions-executor
-    args: "--upsample-on --filter-on"
-    inputs:
-      actions: policy-server/actions
-    outputs:
-      - move_position_right   # → arm-right
-      - move_position_left    # → arm-left
-```
-
-The `observation` output of `quittable-observer` is what your server receives as
-`request["data_path"]`. The `actions` output is what you write back via the socket.
-
----
-
 ## Running Example
 
 In order to understand the inference loop, let's run a simple example with lerobot ACT policy with MuJoCo sim. 
-
-The data is collected via [VR teleoperation](./data-collection.mdx) so you can also collect your own dataset and run inference on it.
-
-
-### Prerequisites
-
-* Python 3.12+
-* uv
-* CUDA-capable GPU (falls back to CPU/MPS but model inference and MuJoCo sim require GPU for good performance)
-
-### Dataset and Model
-
-* Dataset : https://huggingface.co/datasets/k1000dai/openarm_mujoco_pick_cube_3_cam
-
-You can use this dataset to train lerobot ACT policy. 
-Here is a sample training script for the ACT policy:
-
-```bash
-# Train ACT policy on the dataset with lerobot==0.3.3
-lerobot-train \
-  --dataset.repo_id=k1000dai/openarm_mujoco_pick_cube_3_cam \
-  --policy.type=act \
-  --output_dir=outputs/train \
-  --policy.device=cuda \
-  --wandb.enable=false \
-  --policy.repo_id=$HF_USER/act_policy \
-  --policy.push_to_hub False
-```
-For more details on training the ACT policy, please check the [LeRobot Documentation](https://huggingface.co/docs/lerobot/index).
 
 For simplicity, we will use the trained model from Hugging Face Hub in this tutorial. 
 This is the model trained on the above dataset with the above training script with 40k steps.
 
 * Model : https://huggingface.co/k1000dai/act_openarm_pick_cube_40k
+
+### Prerequisites
+
+* Python 3.12+
+* uv
+* GPU machine (falls back to CPU/MPS but model inference and MuJoCo sim require GPU for good performance)
 
 ### Prepare the required dora nodes
 
