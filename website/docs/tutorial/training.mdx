@@ -23,15 +23,15 @@ We assume you already have the dataset in the LeRobot dataset format. If you don
 
 However, in order to make it easier for you to follow the inference tutorial later, we will use the dataset that we collected and converted in the data collection tutorial. 
 
-* Dataset : https://huggingface.co/datasets/k1000dai/openarm_mujoco_pick_cube_3_cam
+* Dataset : https://huggingface.co/datasets/enactic/openarm-2-cell-pick_up_cube_mujoco-lerobot
 
-You can use this dataset to train the policy.
+You can use this dataset to train the policy. In order to make training faster, we filtered out ceiling and head_right. 
 
 ### Training setup
 
 #### Pre-requisites
 * ffmpeg
-* GPU machin (ACT is not large but still benefits from GPU for training)
+* GPU machine (ACT is not large but still benefits from GPU for training)
 * Hugging Face Hub account (if you want to push the trained model to the Hub)
 
 #### Software
@@ -49,14 +49,13 @@ After setting up the environment, you can use the following script to train the 
 ```bash
 # Train ACT policy on the dataset with lerobot==0.3.3
 lerobot-train \
-  --dataset.repo_id=k1000dai/openarm_mujoco_pick_cube_3_cam \
+  --dataset.repo_id=enactic/openarm-2-cell-pick_up_cube_mujoco-lerobot \
   --policy.type=act \
   --output_dir=outputs/train \
   --policy.device=cuda \
   --wandb.enable=false \
-  --policy.repo_id=$HF_USER/act-openarm-2-cell-mujoco_pick_cube \
+  --policy.repo_id=$HF_USER/act-openarm-2-cell-pick_up_cube_mujoco \
   --policy.push_to_hub True
 ```
 
 For more details on training the ACT policy, please check the [LeRobot Documentation](https://huggingface.co/docs/lerobot/index).
-

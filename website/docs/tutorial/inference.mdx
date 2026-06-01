@@ -164,7 +164,7 @@ In order to understand the inference loop, let's run a simple example with lerob
 For simplicity, we will use the trained model from Hugging Face Hub in this tutorial. 
 This is the model trained on the above dataset with the above training script with 40k steps.
 
-* Model : https://huggingface.co/k1000dai/act_openarm_pick_cube_40k
+* Model : enactic/act-openarm-2-cell-pick_up_cube_mujoco
 
 ### Prerequisites
 
@@ -316,7 +316,7 @@ from PIL import Image
 from lerobot.policies.pretrained import PreTrainedConfig
 from lerobot.policies.factory import get_policy_class
 
-PRETRAINED_PATH = "k1000dai/act_openarm_pick_cube_40k"
+PRETRAINED_PATH = "enactic/act-openarm-2-cell-pick_up_cube_mujoco"
 DEFAULT_SOCKET = "/dev/shm/policy-server.socket"
 
 CAMERA_KEY_MAP = {
@@ -585,7 +585,7 @@ from PIL import Image
 from lerobot.policies.factory import get_policy_class
 from lerobot.policies.pretrained import PreTrainedConfig
 
-PRETRAINED_PATH = "k1000dai/act_openarm_pick_cube_40k"
+PRETRAINED_PATH = "enactic/act-openarm-2-cell-pick_up_cube_mujoco"
 
 CAMERA_KEY_MAP = {
     "camera_head_left": "observation.images.head_left",
@@ -729,8 +729,8 @@ ENV VIRTUAL_ENV=/project/.venv \
 RUN python -c "\
 from lerobot.policies.pretrained import PreTrainedConfig; \
 from lerobot.policies.factory import get_policy_class; \
-cfg = PreTrainedConfig.from_pretrained('k1000dai/act_openarm_pick_cube_40k'); \
-cfg.pretrained_path = 'k1000dai/act_openarm_pick_cube_40k'; \
+cfg = PreTrainedConfig.from_pretrained('enactic/act-openarm-2-cell-pick_up_cube_mujoco'); \
+cfg.pretrained_path = 'enactic/act-openarm-2-cell-pick_up_cube_mujoco'; \
 get_policy_class(cfg.type).from_pretrained(config=cfg, pretrained_name_or_path=cfg.pretrained_path)" \
     && python -c "import torchvision; torchvision.models.resnet18(weights=torchvision.models.ResNet18_Weights.DEFAULT)"
 
