@@ -2,6 +2,7 @@
 title: Inference
 sidebar_position: 4
 ---
+import BlockVideo from '@site/src/components/BlockVideo';
 
 # Inference
 
@@ -251,3 +252,8 @@ Now you can run the dataflow with the Docker-based policy server.
 dora build dataflow-docker-inference.yaml --uv
 dora run dataflow-docker-inference.yaml --uv
 ```
+
+Here is the expected MuJoCo sim window when you run the dataflow (with either local or Docker policy server):
+
+<BlockVideo src="tutorial/inference_mujoco.mp4" width="75%"/>
+<BlockVideo src="tutorial/inference_mujoco_top.mp4" width="75%"/>
