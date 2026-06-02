@@ -1,7 +1,8 @@
 ---
 title: Inference
-sidebar_position: 3
+sidebar_position: 4
 ---
+import BlockVideo from '@site/src/components/BlockVideo';
 
 # Inference
 
@@ -20,42 +21,52 @@ The robot runtime is a [Dora](https://dora-rs.ai/) dataflow.
 ---
 
 ## Dataflow Architecture
+```mermaid
+flowchart TB
+  subgraph venv ["dora dataflow"]
+    subgraph dora_timer ["dora timer"]
+      timer(["millis/4 · 250Hz"])
+    end
 
-```
-Hardware
-  arm_right (250 Hz)     ──┐
-  arm_left  (250 Hz)     ──┤
-  camera_wrist_right     ──┤  observer  ──►  quittable-observer
-  camera_wrist_left      ──┤  (30 Hz)               │
-  camera_head            ──┤                observation (Arrow IPC)
-  camera_ceiling         ──┘                        │
-                                                    ▼
-                                        ┌─────────────────────────┐
-                                        │    policy-server        │  ← YOU WRITE THIS
-                                        │  (local or docker)      │
-                                        └─────────────────────────┘
-                                                    │
-                                                actions JSON
-                                                    │
-                                                    ▼
-                                            actions-executor
+    tick_gate["quittable-tick-observer<br>(gate)"]
+    obs_gate["quittable-observer<br>(gate)"]
+
+    observer["observer<br>JPEG→RGB · concat arms · Arrow StructArray"]
+    policy["policy-server<br>Arrow IPC on /dev/shm · JSON via socket"]
+    executor["actions-executor<br>Hermite upsample 30→250 Hz · Biquad LPF 15 Hz"]
+    mujoco["Hardware or MuJoCo simulator<br>OpenArm 2.0 bimanual + 5 cameras"]
+  end
+
+  subgraph venv_server ["inference server"]
+    inference["inference_server<br> · Loads model (local or Docker) · JSON in/out via socket"]
+  end
+
+  timer -- tick --> tick_gate -- tick --> observer
+
+  mujoco -- "arm_right, arm_left<br>float32[8]" --> observer
+  mujoco -- "camera x 5<br>JPEG uint8[]" --> observer
+
+  observer -- "observation<br>Arrow StructArray (16D + RGB)" --> obs_gate
+  obs_gate -- observation --> policy
+
+  policy -. "Arrow IPC + JSON req<br>Unix Socket" .-> inference
+  inference -. "JSON res<br>positions: N x 16D" .-> policy
+
+  policy -- "actions<br>list(float32) N x 16D" --> executor
+
+  executor -- "position_right<br>float32[8] @ 250 Hz" --> mujoco
+  executor -- "position_left<br>float32[8] @ 250 Hz" --> mujoco
 ```
 
 ## The Policy Server Contract
 
-This is the what one needs to implement when adapting to a new model.
+This is what one needs to implement when adapting to a new model.
 
 ### Transport
 
 The node connects to a UNIX socket (path set via `$SOCKET`). The Dora node
 `dora-openarm-local-policy-server` handles the socket I/O for you; your
 model code lives in the process it launches.
-
-For local development, the server listens on the socket:
-
-```
-SOCKET=/dev/shm/policy-server.socket dora run dataflow-inference.yaml --uv
-```
 
 ### Observation Input
 
@@ -67,8 +78,10 @@ Each request arrives as a JSON line over the socket:
   "data_path": "/dev/shm/obs_12345.arrow",
   "metadata": {
     "timestamp": 1716000000123456789,
-    "camera_head.height": 600,
-    "camera_head.width": 960,
+    "camera_head_left.height": 600,
+    "camera_head_left.width": 960,
+    "camera_head_right.height": 600,
+    "camera_head_right.width": 960,
     "camera_ceiling.height": 600,
     "camera_ceiling.width": 960,
     "camera_wrist_right.height": 600,
@@ -100,7 +113,8 @@ def read_camera(name):
     )
 
 frames = {
-    "head":        read_camera("camera_head"),
+    "head_left":        read_camera("camera_head_left"),
+    "head_right":       read_camera("camera_head_right"),
     "ceiling":     read_camera("camera_ceiling"),
     "right_wrist": read_camera("camera_wrist_right"),
     "left_wrist":  read_camera("camera_wrist_left"),
@@ -145,83 +159,101 @@ If you want to skip inference this tick (e.g. rate-limiting), return an empty po
 
 ---
 
-We will provide more full-fledged policy server and dataflow examples soon.
+## Running Example
 
----
+In order to understand the inference loop, let's run a simple example with LeRobot ACT policy with MuJoCo sim. 
 
-## Dataflow YAML — Key Nodes
+For simplicity, we will use the trained model from Hugging Face Hub in this tutorial. 
+This is the model trained for 40 steps on data collected in a MuJoCo simulation.
 
-The three nodes you care about most in the YAML. Everything else (ticks, cameras,
-arms) is boilerplate you copy verbatim.
-
-```yaml
-nodes:
-  # --- observer: collects arms + cameras into one Arrow IPC bundle ---
-  - id: observer
-    path: dora-openarm-observer
-    inputs:
-      tick:               quittable-tick-observer/tick   # 30 Hz gate
-      arm_right:          arm-right/position
-      arm_left:           arm-left/position
-      camera_wrist_right: camera-wrist-right/image
-      camera_wrist_left:  camera-wrist-left/image
-      camera_head:        camera-head/image
-      camera_ceiling:     camera-ceiling/image
-      phase_classifier_result: phase-classifier/result
-    outputs:
-      - observation   # Arrow IPC file path + metadata, written to /dev/shm
-
-  # --- quittable-observer: gate controlled by controller ---
-  - id: quittable-observer
-    path: dora-openarm-quitter
-    inputs:
-      command:     controller/command
-      observation: observer/observation
-    outputs:
-      - observation
-
-  # --- policy-server: YOUR node ---
-  - id: policy-server
-    path: dora-openarm-local-policy-server
-    env:
-      SOCKET: /dev/shm/policy-server.socket   # must match your running server
-    inputs:
-      observation: quittable-observer/observation
-    outputs:
-      - actions   # JSON: {interval, cutoff_hz, positions: [[16D], ...]}
-
-  # --- actions-executor: unpacks the chunk and drives the arms ---
-  - id: actions-executor
-    path: dora-openarm-actions-executor
-    args: "--upsample-on --filter-on"
-    inputs:
-      actions: policy-server/actions
-    outputs:
-      - move_position_right   # → arm-right
-      - move_position_left    # → arm-left
-```
-
-The `observation` output of `quittable-observer` is what your server receives as
-`request["data_path"]`. The `actions` output is what you write back via the socket.
-
----
-
-## Running
+* Model : [enactic/act-openarm-2-cell-pick_up_cube_mujoco](https://huggingface.co/enactic/act-openarm-2-cell-pick_up_cube_mujoco)
 
 ### Prerequisites
 
+* Python 3.12+
+* uv
+* GPU machine (falls back to CPU/MPS but model inference and MuJoCo sim require GPU for good performance)
+
+### Prepare the required dora nodes
+
+You need to prepare the following dora nodes for running the inference dataflow:
+* https://github.com/enactic/dora-openarm-actions-executor.git
+* https://github.com/enactic/dora-openarm-mujoco.git
+* https://github.com/enactic/dora-openarm-observer.git
+* https://github.com/enactic/dora-openarm-quitter.git
+* https://github.com/enactic/dora-openarm-local-policy-server.git
+* https://github.com/enactic/dora-openarm-docker-policy-server.git
+
+We offer the inference example repository for you to quickly get started. Please follow the instruction below!
+
 ```bash
-uv venv .venv-inference --python=3.12
-. .venv-inference/bin/activate
-uv pip install "dora-rs-cli==0.5.0" "dora-rs==0.5.0"
-dora build inference/dataflow-inference.yaml --uv
+git clone https://github.com/enactic/dora-openarm-inference.git --recurse-submodules
+cd dora-openarm-inference
 ```
 
-### Local policy server (debug)
+There are two ways to run the inference dataflow: A. local policy server (for debugging) and B. policy server in Docker.
+Here you can follow both of them to understand the whole inference pipeline.
 
-Start the policy server first, then run the dataflow:
+### A. local policy server (for debugging)
+
+You need to have two things ready for running the local policy server version:
+1. the policy server script that loads the trained model and serves inference requests
+2. the dataflow YAML that defines the Dora dataflow for inference
+
+In the `dora-openarm-inference` repository, we have prepared both of them for you. 
+The policy server script is located at [src/local_policy_server.py](https://github.com/enactic/dora-openarm-inference/blob/main/src/local_policy_server.py), 
+and the dataflow YAML is located at [dataflow-local-inference.yaml](https://github.com/enactic/dora-openarm-inference/blob/main/dataflow-local-inference.yaml).
+
+
+#### 1. Run the local policy server
 
 ```bash
-SOCKET=/dev/shm/policy-server.socket \
-  dora run inference/dataflow-inference.yaml --uv
+uv venv .venv_server
+source .venv_server/bin/activate
+uv pip install lerobot==0.3.3 pyarrow
+# uv pip install torch torchvision torchaudio --torch-backend=cu128 --upgrade  # for CUDA 12.8
+python src/local_policy_server.py /dev/shm/policy-server.socket
+``` 
+
+#### 2. In another terminal, run the dora dataflow:
+
+```bash
+uv venv .venv -p 3.12
+uv pip install dora-rs-cli
+source .venv/bin/activate
+dora build dataflow-local-inference.yaml --uv
+SOCKET=/dev/shm/policy-server.socket dora run dataflow-local-inference.yaml --uv
+``` 
+
+You should see the MuJoCo sim window open, and the robot should start moving according to the policy's actions.
+
+
+### B. policy server in Docker 
+
+In order to run the policy server in Docker, you need to have Docker installed on your machine.
+After that, you need to do the following steps:
+
+1. Write the server script that loads the trained model and serves inference requests (we have prepared an example for you at [src/docker_policy_server.py](https://github.com/enactic/dora-openarm-inference/blob/main/src/docker_policy_server.py))
+
+2. Write the Dockerfile that defines the Docker image for the policy server (we have prepared an example for you at [Dockerfile](https://github.com/enactic/dora-openarm-inference/blob/main/Dockerfile))
+
+3. Build the Docker image.
+
+```bash
+docker build -t openarm-inference-image-lerobot:latest .
 ```
+
+4. Write the dataflow YAML that defines the Dora dataflow for inference with Docker-based policy server (we have prepared an example for you at [dataflow-docker-inference.yaml](https://github.com/enactic/dora-openarm-inference/blob/main/dataflow-docker-inference.yaml)).
+Set the `IMAGE` environment variable in the dataflow YAML to the name of your Docker image.
+
+
+Now you can run the dataflow with the Docker-based policy server. 
+
+```bash
+dora build dataflow-docker-inference.yaml --uv
+dora run dataflow-docker-inference.yaml --uv
+```
+
+Here is the expected MuJoCo sim window when you run the dataflow (with either local or Docker policy server):
+
+<BlockVideo src="tutorial/inference_mujoco.mp4" width="75%"/>

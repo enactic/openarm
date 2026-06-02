@@ -1,0 +1,61 @@
+---
+title: Training
+sidebar_position: 3
+---
+```mdx-code-block
+import BlockImage from '@site/src/components/BlockImage';
+```
+
+
+# Training
+
+---
+
+## Overview
+
+After you collected the data and convert it, you can use it to train a policy.
+
+You can train any model you want, but in this tutorial, we will show how to train the LeRobot ACT policy.
+
+### Dataset
+
+We assume you already have the dataset in the LeRobot dataset format. If you don't have it, you can follow the data collection tutorial to collect the data in MuJoCo sim and convert it to the LeRobot dataset format.
+
+However, in order to make it easier for you to follow the inference tutorial later, we will use the dataset that we collected and converted in the data collection tutorial. 
+
+* Dataset : [enactic/openarm-2-cell-pick_up_cube_mujoco-lerobot](https://huggingface.co/datasets/enactic/openarm-2-cell-pick_up_cube_mujoco-lerobot)
+
+
+You can use this dataset to train the policy. In order to make training faster, we filtered out ceiling and head_right. 
+
+### Training setup
+
+#### Pre-requisites
+* ffmpeg
+* GPU machine (ACT is not large but still benefits from GPU for training)
+* Hugging Face Hub account (if you want to push the trained model to the Hub)
+
+#### Software
+Currently, we only support the LeRobot Dataset v2.1 format, so we will use LeRobot 0.3.3 for training the ACT policy.
+
+```bash
+uv venv 
+source .venv/bin/activate
+uv pip install lerobot==0.3.3
+```
+
+### Training script
+After setting up the environment, you can use the following script to train the ACT policy on the dataset.
+
+```bash
+lerobot-train \
+  --dataset.repo_id=enactic/openarm-2-cell-pick_up_cube_mujoco-lerobot \
+  --policy.type=act \
+  --output_dir=outputs/train \
+  --policy.device=cuda \
+  --wandb.enable=false \
+  --policy.repo_id=$HF_USER/act-openarm-2-cell-pick_up_cube_mujoco \
+  --policy.push_to_hub True
+```
+
+For more details on training the ACT policy, please check the [LeRobot Documentation](https://huggingface.co/docs/lerobot/index).
