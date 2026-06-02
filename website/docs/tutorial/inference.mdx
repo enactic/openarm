@@ -68,8 +68,6 @@ The node connects to a UNIX socket (path set via `$SOCKET`). The Dora node
 `dora-openarm-local-policy-server` handles the socket I/O for you; your
 model code lives in the process it launches.
 
-For local development, the server listens on the socket:
-
 ### Observation Input
 
 Each request arrives as a JSON line over the socket:
@@ -163,10 +161,10 @@ If you want to skip inference this tick (e.g. rate-limiting), return an empty po
 
 ## Running Example
 
-In order to understand the inference loop, let's run a simple example with lerobot ACT policy with MuJoCo sim. 
+In order to understand the inference loop, let's run a simple example with LeRobot ACT policy with MuJoCo sim. 
 
 For simplicity, we will use the trained model from Hugging Face Hub in this tutorial. 
-This is the model trained on data collected at MuJoCo sim with 40k
+This is the model trained on data collected at MuJoCo sim with 40k steps.
 
 * Model : [enactic/act-openarm-2-cell-pick_up_cube_mujoco](https://huggingface.co/enactic/act-openarm-2-cell-pick_up_cube_mujoco)
 
