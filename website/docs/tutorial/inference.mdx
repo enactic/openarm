@@ -202,7 +202,9 @@ You need to have two things ready for running the local policy server version:
 1. the policy server script that loads the trained model and serves inference requests
 2. the dataflow YAML that defines the Dora dataflow for inference
 
-In the `dora-openarm-inference` repository, we have prepared both of them for you. The policy server script is located at `src/local_policy_server.py`, and the dataflow YAML is located at `dataflow-local-inference.yaml`.
+In the `dora-openarm-inference` repository, we have prepared both of them for you. 
+The policy server script is located at [src/local_policy_server.py](https://github.com/enactic/dora-openarm-inference/blob/main/src/local_policy_server.py), 
+and the dataflow YAML is located at [dataflow-local-inference.yaml](https://github.com/enactic/dora-openarm-inference/blob/main/dataflow-local-inference.yaml).
 
 
 #### 1. Run the local policy server
@@ -233,9 +235,9 @@ You should see the MuJoCo sim window open, and the robot should start moving acc
 In order to run the policy server in Docker, you need to have Docker installed on your machine.
 After that, you need to do the following steps:
 
-1. Write the server script that loads the trained model and serves inference requests (we have prepared an example for you at `src/docker_policy_server.py`)
+1. Write the server script that loads the trained model and serves inference requests (we have prepared an example for you at [src/docker_policy_server.py](https://github.com/enactic/dora-openarm-inference/blob/main/src/docker_policy_server.py))
 
-2. Write the Dockerfile that defines the Docker image for the policy server (we have prepared an example for you at `Dockerfile`)
+2. Write the Dockerfile that defines the Docker image for the policy server (we have prepared an example for you at [Dockerfile](https://github.com/enactic/dora-openarm-inference/blob/main/Dockerfile))
 
 3. Build the Docker image.
 
@@ -243,7 +245,8 @@ After that, you need to do the following steps:
 docker build -t openarm-inference-image-lerobot:latest .
 ```
 
-4. Write the dataflow YAML that defines the Dora dataflow for inference with Docker-based policy server (we have prepared an example for you at `dataflow-docker-inference.yaml`). Set the `IMAGE` environment variable in the dataflow YAML to the name of your Docker image.
+4. Write the dataflow YAML that defines the Dora dataflow for inference with Docker-based policy server (we have prepared an example for you at [dataflow-docker-inference.yaml](https://github.com/enactic/dora-openarm-inference/blob/main/dataflow-docker-inference.yaml)).
+Set the `IMAGE` environment variable in the dataflow YAML to the name of your Docker image.
 
 
 Now you can run the dataflow with the Docker-based policy server. 
