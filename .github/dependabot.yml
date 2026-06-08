@@ -41,3 +41,6 @@ updates:
           - "@typescript-eslint/*"
           - "eslint*"
           - "typescript-eslint*"
+      react:
+        patterns:
+          - "react*"
