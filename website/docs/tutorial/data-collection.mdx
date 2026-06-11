@@ -185,6 +185,10 @@ output_path/
 │   │   |  └── ...
 ```
 
-We are planning to support the conversion to LeRobot Dataset v3.0 format in the future, but for now, we only support the conversion to LeRobot Dataset v2.1 format.
-If you want to convert to the LeRobot Dataset v3.0 format please check the article below:
-[LeRobot Dataset v3.0 format conversion](https://huggingface.co/docs/lerobot/porting_datasets_v3#migrating-from-dataset-v21)
+Also, you can convert to the LeRobot dataset v3.0 format by changing the `--format` argument to `lerobot_v3.0`. The v3.0 format is the latest version of the LeRobot dataset format, which has some changes in the file structure and metadata format. Please refer to the [LeRobot dataset documentation](https://lerobot.readthedocs.io/en/latest/dataset_format.html) for more details on the dataset format.
+
+```
+uv run openarm-dataset-convert path/to/collected_dataset_path path/to/output_path --format lerobot_v3.0
+```
+
+Please check LeRobot document for v3.0 format. https://huggingface.co/docs/lerobot/lerobot-dataset-v3 
