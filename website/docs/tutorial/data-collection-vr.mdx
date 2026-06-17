@@ -1,5 +1,5 @@
 ---
-title: Data collection
+title: Data collection (VR)
 sidebar_position: 2
 ---
 
@@ -7,7 +7,7 @@ sidebar_position: 2
 import BlockImage from '@site/src/components/BlockImage';
 ```
 
-# Data collection
+# Data collection with VR teleoperation
 
 ## VR setup
 
@@ -22,10 +22,10 @@ Sideload the APK onto your Quest 3 via Developer Hub.
 ### Per-session setup
 
 1. Put on the headset and launch the teleoperation app. After the app is launched, you should see the following screen in the headset.
-   <BlockImage src="tutorial/data-collection/in_vr_default.jpg" alt="Quest headset" width="90%" />
+   <BlockImage src="tutorial/data-collection-vr/in_vr_default.jpg" alt="Quest headset" width="90%" />
 
 2. Press the left controller menu button — a settings panel will appear.
-   <BlockImage src="tutorial/data-collection/in_vr_setting.png" alt="VR menu" width="90%" />
+   <BlockImage src="tutorial/data-collection-vr/in_vr_setting.png" alt="VR menu" width="90%" />
 
 3. Enter the IP address of your PC host and the port (default: `5006`).
 
@@ -39,13 +39,13 @@ Sideload the APK onto your Quest 3 via Developer Hub.
 
 5. Tape the center-of-eye sensor on the headset to keep it constantly activated (prevents the display from sleeping when worn at the neck).
    Before taping the sensor:
-   <BlockImage src="tutorial/data-collection/headset_uncover.png" alt="Headset sensor uncovered" width="90%" />
+   <BlockImage src="tutorial/data-collection-vr/headset_uncover.png" alt="Headset sensor uncovered" width="90%" />
 
    After taping the sensor:
-   <BlockImage src="tutorial/data-collection/headset_covered.png" alt="Headset sensor covered" width="90%" />
+   <BlockImage src="tutorial/data-collection-vr/headset_covered.png" alt="Headset sensor covered" width="90%" />
 
 6. Take off the headset and hang it around your neck — you will operate with the controllers while the headset rests there.
-   <BlockImage src="tutorial/data-collection/how_to_wear_headset.png" alt="Headset around neck" width="90%" />
+   <BlockImage src="tutorial/data-collection-vr/how_to_wear_headset.png" alt="Headset around neck" width="90%" />
 
 ## Data collection in MuJoCo environment
 
@@ -80,7 +80,7 @@ dora run dataflow-vr-mujoco.yaml --uv
 
 The data collection web UI will open automatically, and you can check the data collection status at `http://localhost:8000`.
 
-<BlockImage src="tutorial/data-collection/mujoco_datacollection.gif" alt="MuJoCo teleoperation" />
+<BlockImage src="tutorial/data-collection-vr/mujoco_datacollection.gif" alt="MuJoCo teleoperation" />
 
 left: MuJoCo environment, right: data collection web UI
 
@@ -88,18 +88,18 @@ left: MuJoCo environment, right: data collection web UI
 
 You can use button A and B on the right VR controller to control the data collection.
 
-<BlockImage src="tutorial/data-collection/quest_controller_right.jpg" alt="Controller button" width="40%" />
+<BlockImage src="tutorial/data-collection-vr/quest_controller_right.jpg" alt="Controller button" width="40%" />
 
 After the program starts, web UI will open.
 Please access `http://localhost:8000` to check the data collection status and control the data collection.
 
-<BlockImage src="tutorial/data-collection/data_collection_start_quit.png" alt="UI top" width="80%" />
+<BlockImage src="tutorial/data-collection-vr/data_collection_start_quit.png" alt="UI top" width="80%" />
 When the web UI looks like the image above, you can start the data collection by pressing the A button on the right VR controller. This will start recording the data.
 
 * **A** : start recording
 * **B** : stop recording and quit the program
 
-<BlockImage src="tutorial/data-collection/data_collection_success_fail.png" alt="UI recording" width="80%" />
+<BlockImage src="tutorial/data-collection-vr/data_collection_success_fail.png" alt="UI recording" width="80%" />
 
 when you start recording, the data collection will start.
 If you successfully complete the task, press the A button again to stop recording and mark the episode as success.
@@ -146,49 +146,3 @@ Once the alignment completes, you can fully control the arm with the VR controll
 {/*
 add photo of the real robot data collection.
 */}
-
-## Dataset format conversion to LeRobot dataset format
-
-After collecting the dataset, we need to convert the dataset to the LeRobot dataset format for training the policy.
-
-```bash
-git clone https://github.com/enactic/openarm_dataset.git
-cd openarm_dataset
-uv sync
-uv run openarm-dataset-convert path/to/collected_dataset_path path/to/output_path --format lerobot_v2.1
-```
-
-LeRobot Dataset v2.1 format file structure:
-
-```
-output_path/
-├── data/
-│   ├── chunk-000/
-│   │   ├── episode_000000.parquet
-│   │   ├── episode_000001.parquet
-│   │   └── ...
-├── meta/
-│   ├── info.json
-│   ├── episodes.jsonl
-│   ├── episodes_stats.jsonl
-│   ├── tasks.jsonl
-│   ├── stats.jsonl
-├── videos/
-│   ├── chunk-000/
-│   │   ├── observation.images.wrist_right/
-│   │   ├── observation.images.wrist_left/
-│   │   ├── observation.images.ceiling/
-│   │   ├── observation.images.head_left/
-│   │   ├── observation.images.head_right/
-│   │   |  ├── episode_000000.mp4
-│   │   |  ├── episode_000001.mp4
-│   │   |  └── ...
-```
-
-Also, you can convert to the LeRobotDataset v3.0 format by changing the `--format` argument to `lerobot_v3.0`. The v3.0 format is the latest version of the LeRobotDataset format, which has some changes in the file structure and metadata format. Please refer to the [LeRobotDataset v3.0 documentation](https://huggingface.co/docs/lerobot/lerobot-dataset-v3) for more details on the dataset format.
-
-```bash
-uv run openarm-dataset-convert path/to/collected_dataset_path path/to/output_path --format lerobot_v3.0
-```
-
-Please check LeRobotDocument for v3.0 format. https://huggingface.co/docs/lerobot/lerobot-dataset-v3 

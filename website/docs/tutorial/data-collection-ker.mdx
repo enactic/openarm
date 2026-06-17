@@ -1,0 +1,317 @@
+---
+title: Data collection (KER)
+sidebar_position: 3
+---
+
+```mdx-code-block
+import BlockImage from '@site/src/components/BlockImage';
+```
+
+# Data collection with KER
+
+OpenArm KER is a motorless leader arm that enables intuitive operation of OpenArm 2.0.
+
+<BlockImage src="hardware/openarm-ker/general/ker.gif" alt="OpenArm KER" width="90%" />
+
+
+## Prerequisites
+- Foot pedal (required for data collection)
+- OpenArm KER
+
+The Foot pedal is used to control the data collection. OpenArm KER is used to control the robot arms.
+
+### Core Repositories
+- **[openarm_ker](https://github.com/enactic/openarm_ker)**: PC-side data reception library.
+- **[dora-openarm-ker](https://github.com/enactic/dora-openarm-ker)**: dora-rs node implementation for the OpenArm KER.
+
+## Setup
+
+### Software setup
+
+1. Install system dependencies
+
+```bash
+sudo apt install libusb-1.0-0-dev
+```
+
+2. Set up udev rules
+
+```bash
+echo 'SUBSYSTEM=="usb", ATTRS{idVendor}=="303a", MODE="0666"' | sudo tee /etc/udev/rules.d/99-m5stack.rules
+sudo udevadm control --reload-rules && sudo udevadm trigger
+```
+
+If the KER is connected, you can check the connection with the following command.
+
+```bash
+lsusb | grep 303a
+```
+
+`303a:4002` should appear in the output.
+
+3. Ping KER with the CLI
+
+Install openarm_ker cli
+
+```bash
+uv pip install openarm_ker
+```
+
+then, you can ping KER with the following command.
+
+```bash
+openarm-ker-cli ping
+```
+If you get a response like below, the connection is successful.
+
+```
+{
+  "fw": "v1.0.0",
+  "hw": "KER-v1.0.0",
+  "updated": "2026-05-25"
+}
+```
+
+Also, you can check the data from the encoder with the following command.
+
+```bash
+openarm-ker-cli stream
+```
+
+Please push the green button on the KER display to start streaming the data. You will see the data from the encoder in the terminal.
+
+Example output
+
+```
+[Stream Data] {'timestamp': 1397863671, 'angles': [-14.282562255859375, 4.4276580810546875, 32.53425598144531, 55.142913818359375, -5.38348388671875, 44.62041091918945, 14.425567626953125, -30.7186279296875, 3.4595165252685547, -7.481842041015625, -32.2158203125, 40.9552001953125, -3.518857955932617, -43.488616943359375, -8.14105224609375, 39.925689697265625], 'errors': [False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False], 'encoder_value': 0, 'encoder_button': 0}
+```
+
+
+## Teleoperation and Data Collection
+
+After the setup, you can run the dataflow and start teleoperation / data collection with KER.
+
+### Clone the repository and build the dataflow
+
+```bash
+git clone https://github.com/enactic/dora-openarm-data-collection
+cd dora-openarm-data-collection
+uv venv -p 3.12
+uv pip install dora-rs-cli
+source .venv/bin/activate
+dora build dataflow-ker.yaml --uv
+```
+
+### How to attach
+1. Connect the device to your PC using a USB Type-C cable.
+2. The KER M5Stack display should turn on.
+
+<BlockImage src="tutorial/data-collection-ker/attachment.png" alt="attachment" width="90%" />
+
+### Run the dataflow
+
+```bash
+dora run dataflow-ker.yaml --uv
+```
+
+You can access the web UI at http://localhost:8000 to monitor the data collection process same as VR teleoperation.
+
+<BlockImage src="tutorial/data-collection-vr/data_collection_start_quit.png" alt="web ui" width="90%" />
+
+After you start the dataflow, you can align the KER with the OpenArm by pulling the KER trigger. After the alignment, OpenArm will follow the movement of KER, and you can do teleoperation smoothly with KER.
+
+During the data collection, you can use the foot pedal to control the start / stop / reset or success / failure of the data collection.
+
+We recommend using a [3-button foot pedal from SANWA Supply](https://direct.sanwa.co.jp/ItemPage/400-MA179). 
+
+<BlockImage src="tutorial/data-collection-ker/footpedal.jpg" alt="foot pedal" width="90%" />
+
+Button mapping:
+
+| Button | Start panel | Recording panel |
+| --- | --- | --- |
+| left (a) | - | fail |
+| middle (b) | quit | quit |
+| right (c) | start | success |
+
+If you use a different foot pedal, please check the button mapping and map the buttons to a,b,c accordingly.
+
+After you start the data collection, you can see the start or skip panel on the web UI. You can start the data collection by pressing the **right(c)** button. 
+
+<BlockImage src="tutorial/data-collection-ker/data-collect-start.jpg" alt="data collection start quit" width="80%" />
+
+After the data collection is started, you can see the success or fail panel on the web UI. 
+
+Press the **left(a)** button to mark the data collection as fail, or press the **right(c)** button to mark it as success.
+
+<BlockImage src="tutorial/data-collection-ker/data-collection-success-fail.jpg" alt="data collection fail success" width="80%" />
+
+Also, you can press the **middle(b)** button to quit the data collection at any time.
+
+### Troubleshooting
+If you see the following screen, check the possible causes below.
+
+#### 1. If the `ERR` bar is displayed
+
+Possible causes:
+
+* Check that all cables are connected securely.
+* Make sure the IC is properly seated and not loose.
+* Inspect the connectors and PCB for poor contact or damaged pins.
+
+<BlockImage src="tutorial/data-collection-ker/trouble.png" alt="error display" width="90%" />
+
+#### 2. If Jump Detect is displayed
+
+Please write the zero position again.
+
+
+<BlockImage src="tutorial/data-collection-ker/trouble.png" alt="error display" width="90%" />
+
+## For makers
+
+### How to write M5Stack firmware
+
+#### Repository
+
+**TODO**
+KER M5 link (TODO)
+
+#### Setup
+1. Connect the USB cable to the M5Stack and your PC.
+
+2. Set up udev rules for flashing the firmware. Please run the following command in your terminal.
+
+set up for normal use (you can skip this if you already set up the udev rules for ker cli)
+
+```bash
+echo 'SUBSYSTEM=="usb", ATTRS{idVendor}=="303a", MODE="0666"' | sudo tee /etc/udev/rules.d/99-m5stack.rules
+sudo udevadm control --reload-rules && sudo udevadm trigger
+```
+
+setup for flash firmware to M5Stack
+```bash
+SERIAL=$(udevadm info -q property -n /dev/ttyACM0 | grep ID_SERIAL_SHORT | cut -d= -f2)
+sudo tee -a /etc/udev/rules.d/99-m5stack.rules << EOF
+SUBSYSTEM=="tty", ATTRS{idVendor}=="303a", ATTRS{idProduct}=="1001", ATTRS{serial}=="$SERIAL", MODE="0666", SYMLINK+="m5_ker_485"
+EOF
+sudo udevadm control --reload-rules && sudo udevadm trigger
+```
+
+Verify the connection with the following command.
+
+```bash
+lsusb | grep 303a
+```
+
+`303a:4002` should appear in the output.
+
+3. PlatformIO project setup
+
+```bash
+git clone https://github.com/reazon-research/KER_M5_RS485
+cd KER_M5_RS485
+uv venv --seed 
+source .venv/bin/activate
+uv pip install platformio
+```
+
+4. Flash firmware
+
+Put M5Stack into boot mode (hold RST 3 seconds until green LED lights up), then:
+
+```bash
+pio run --target upload
+```
+
+Press RST once to reboot.
+
+#### Zero position calibration
+
+If the zero position has not been written to the KER, please refer to the following guide:  
+
+**TODO**
+「リンク to Hardware section ゼロポジガイド」
+
+
+
+### How to write to encoder module
+For this part, you need a USB-serial UPDI programmer (Adafruit UPDI Friend, serialUPDI). It appears as e.g. `/dev/ttyUSB0` (CH340E).
+
+For example, 
+
+* Standard — [Switch Science 9535](https://www.switch-science.com/products/9535)  /  [Adafruit 5879](https://www.adafruit.com/product/5879)
+
+* High-Voltage — [DigiKey 5893](https://www.digikey.jp/ja/products/detail/adafruit-industries-llc/5893/22596412) / [Adafruit 5893](https://www.adafruit.com/product/5893).
+  Adds a 12V pulse for chips whose UPDI pin is fused as reset/GPIO, and for unbricking.
+
+The standard version is enough for normal use; the HV version is handy if you ever need to recover a bricked chip.
+
+#### Repository
+
+**TODO**
+encoder module link (TODO)
+
+#### Connection
+
+PC → (USB) → USB-serial UPDI programmer → (UPDI) → encoder module
+
+#### Setup
+
+Set up the platformio project same as the m5 firmware section above.
+
+```bash
+git clone git@github.com:reazon-research/ker_encoder_module.git
+cd ker_encoder_module
+uv venv 
+source .venv/bin/activate
+uv pip install platformio
+```
+
+#### udev (or add user to dialout group)
+Add udev rules for the encoder module. Please run the following command in your terminal.
+```bash
+echo 'SUBSYSTEM=="tty", ATTRS{idVendor}=="1a86", ATTRS{idProduct}=="7523", MODE="0666"' | sudo tee /etc/udev/rules.d/99-serialwriter.rules
+sudo udevadm control --reload-rules && sudo udevadm trigger
+```
+
+or you can add the user to the dialout group to access the serial port without sudo.
+```bash
+sudo usermod -aG dialout $USER
+```
+
+#### Flash firmware through the USB-serial UPDI programmer
+After that you can write the firmware to the encoder module with the following command.
+
+Ensure that the USB-serial UPDI programmer is connected to the encoder module and the PC.
+
+<BlockImage src="tutorial/data-collection-ker/encoder_connection.jpg" alt="encoder connection" width="90%" />
+
+Then run the following command to flash the firmware.
+
+```bash
+PLATFORMIO_BUILD_FLAGS="-DDEVICE_ID=3" pio run -t upload --upload-port /dev/ttyUSB0
+```
+
+The example above flashes ID=3. Change DEVICE_ID to flash a different ID.
+
+IDs are assigned as follows.
+
+- Right arm: 1–8 (from shoulder to gripper)
+- Left arm: 9–16 (from shoulder to gripper)
+
+### Optional
+While the foot pedal is currently the officially supported interface for controlling data collection states, you may encounter cases where you need an interface directly on the hand/gripper section of the leader arm. 
+
+For instance, if your workflow requires complex menu navigation.
+
+The following M5Stack units are verified options that you might find necessary depending on your environment:
+
+* **[Unit-JoyStick2](https://docs.m5stack.com/en/unit/Unit-JoyStick2)**
+* **[UNIT-Scroll](https://docs.m5stack.com/en/unit/UNIT-Scroll)**
+
+We have verified that communicating with these external devices via the controller ports is fully functional.
+
+> [!WARNING]
+> **Signal Noise & Cable Length Constraints**
+> Due to the physical characteristics of communication protocols like I2C, longer Grove cable runs are highly susceptible to signal noise and voltage drops. This can easily lead to communication instabilities or packet loss during data collection.

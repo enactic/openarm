@@ -1,6 +1,6 @@
 ---
 title: Training
-sidebar_position: 3
+sidebar_position: 4
 ---
 ```mdx-code-block
 import BlockImage from '@site/src/components/BlockImage';
@@ -10,8 +10,48 @@ import BlockImage from '@site/src/components/BlockImage';
 # Training
 
 ---
+## Dataset format conversion to LeRobot dataset format
 
-## Overview
+After collecting the data, we need to convert the data  for training the policy.
+
+Here, we will show how to convert the collected data to the LeRobot dataset format.
+
+```bash
+git clone https://github.com/enactic/openarm_dataset.git
+cd openarm_dataset
+uv sync
+uv run openarm-dataset-convert path/to/collected_dataset_path path/to/output_path --format lerobot_v2.1
+```
+
+LeRobot Dataset v2.1 format file structure:
+
+```
+output_path/
+├── data/
+│   ├── chunk-000/
+│   │   ├── episode_000000.parquet
+│   │   ├── episode_000001.parquet
+│   │   └── ...
+├── meta/
+│   ├── info.json
+│   ├── episodes.jsonl
+│   ├── episodes_stats.jsonl
+│   ├── tasks.jsonl
+│   ├── stats.jsonl
+├── videos/
+│   ├── chunk-000/
+│   │   ├── observation.images.wrist_right/
+│   │   ├── observation.images.wrist_left/
+│   │   ├── observation.images.ceiling/
+│   │   ├── observation.images.head_left/
+│   │   ├── observation.images.head_right/
+│   │   |  ├── episode_000000.mp4
+│   │   |  ├── episode_000001.mp4
+│   │   |  └── ...
+```
+
+
+## Training the policy
 
 After you collected the data and convert it, you can use it to train a policy.
 
@@ -19,7 +59,7 @@ You can train any model you want, but in this tutorial, we will show how to trai
 
 ### Dataset
 
-We assume you already have the dataset in the LeRobot dataset format. If you don't have it, you can follow the data collection tutorial to collect the data in MuJoCo sim and convert it to the LeRobot dataset format.
+We assume you already have the dataset in the LeRobot dataset format. 
 
 However, in order to make it easier for you to follow the inference tutorial later, we will use the dataset that we collected and converted in the data collection tutorial. 
 
@@ -36,7 +76,7 @@ You can use this dataset to train the policy. In order to make training faster, 
 * Hugging Face Hub account (if you want to push the trained model to the Hub)
 
 #### Software
-Currently, we only support the LeRobot Dataset v2.1 format, so we will use LeRobot 0.3.3 for training the ACT policy.
+In the previous section we converted the data to the LeRobot Dataset v2.1 format, so we will use LeRobot 0.3.3 for training the ACT policy.
 
 ```bash
 uv venv 
