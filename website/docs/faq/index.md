@@ -4,6 +4,12 @@ sidebar_position: 1
 
 # Questions
 
+## Where is the OpenArm 1.0 documentation?
+
+This site shows the latest documentation (OpenArm 2.0) by default.
+To view the OpenArm 1.0 documentation, use the version dropdown in the top right of the navigation bar,
+or go directly to [the 1.0 documentation](/1.0/).
+
 ## Is there a mobile base?
 
 The OpenArm project does not currently have any short-term plans for a mobile base.
