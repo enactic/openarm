@@ -11,8 +11,7 @@ import BlockImage from '@site/src/components/BlockImage';
 
 OpenArm KER is a motorless leader arm that enables intuitive operation of OpenArm 2.0.
 
-<BlockImage src="hardware/openarm-ker/general/ker.gif" alt="OpenArm KER" width="90%" />
-
+<BlockImage src="tutorial/data-collection-ker/ker_how_to_wear.JPG" alt="OpenArm KER" width="90%" />
 
 ## Prerequisites
 - Foot pedal (required for data collection)
@@ -102,11 +101,19 @@ source .venv/bin/activate
 dora build dataflow-ker.yaml --uv
 ```
 
-### How to attach
+### How to wear KER
+
 1. Connect the device to your PC using a USB Type-C cable.
 2. The KER M5Stack display should turn on.
 
-<BlockImage src="tutorial/data-collection-ker/attachment.png" alt="attachment" width="90%" />
+<BlockImage src="tutorial/data-collection-ker/m5_turn_on.JPG" alt="attachment" width="60%" />
+
+3. Attach the KER to wear correctly. 
+
+<div style={{ display: 'flex', justifyContent: 'center', gap: '1rem', flexWrap: 'wrap' }}>
+  <BlockImage src="tutorial/data-collection-ker/kermount.JPG" alt="Front view" width="49%" />
+  <BlockImage src="tutorial/data-collection-ker/ker_attach.JPG" alt="Back view" width="49%" />
+</div>
 
 ### Run the dataflow
 
@@ -159,15 +166,23 @@ Possible causes:
 * Make sure the IC is properly seated and not loose.
 * Inspect the connectors and PCB for poor contact or damaged pins.
 
-<BlockImage src="tutorial/data-collection-ker/trouble.png" alt="error display" width="90%" />
+<BlockImage src="tutorial/data-collection-ker/cable-connection.JPG" alt="error display" width="90%" />
 
 #### 2. If Jump Detect is displayed
 
 Please write the zero position again.
 
+First, put the KER in the Box and fix the position of the KER with screws.
 
-<BlockImage src="tutorial/data-collection-ker/trouble.png" alt="error display" width="90%" />
+<BlockImage src="tutorial/data-collection-ker/ker-zero-pose.JPG" alt="error display" width="90%" />
 
+Then, turn on the KER by connecting the USB cable, and press the gray button(Zero Reset All) on the KER display.
+
+<BlockImage src="tutorial/data-collection-ker/ker-display.JPG" alt="popup" width="90%" />
+
+Pop up window will appear on the display. Please select `Yes` and press the button to write the zero position.
+
+<BlockImage src="tutorial/data-collection-ker/ker-calib.JPG" alt="popup" width="90%" />
 ## For makers
 
 ### How to write M5Stack firmware
@@ -285,7 +300,7 @@ After that you can write the firmware to the encoder module with the following c
 
 Ensure that the USB-serial UPDI programmer is connected to the encoder module and the PC.
 
-<BlockImage src="tutorial/data-collection-ker/encoder_connection.jpg" alt="encoder connection" width="90%" />
+<BlockImage src="tutorial/data-collection-ker/ker-encoder-write.JPG" alt="encoder connection" width="90%" />
 
 Then run the following command to flash the firmware.
 
