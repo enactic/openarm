@@ -172,6 +172,13 @@ const config: Config = {
         },
         {
           type: 'docSidebar',
+          sidebarId: 'setupSidebar',
+          position: 'left',
+          label: 'Setup',
+          docsVersions: ['current'],
+        },
+        {
+          type: 'docSidebar',
           sidebarId: 'softwareSidebar',
           position: 'left',
           label: 'Software',
