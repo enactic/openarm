@@ -60,7 +60,7 @@ uv pip install platformio
 Put M5Stack into boot mode (hold RST 3 seconds until green LED lights up), then:
 
 ```bash
-pio run --target upload
+pio run -e usb --target upload
 ```
 
 Press RST once to reboot.
@@ -129,11 +129,11 @@ Ensure that the USB-serial UPDI programmer is connected to the encoder module an
 
 Then run the following command to flash the firmware.
 
+Following command is the example  flashes ID=3. Change DEVICE_ID to flash a different ID.
+
 ```bash
 PLATFORMIO_BUILD_FLAGS="-DDEVICE_ID=3" pio run -t upload --upload-port /dev/ttyUSB0
 ```
-
-The example above flashes ID=3. Change DEVICE_ID to flash a different ID.
 
 IDs are assigned as follows.
 
