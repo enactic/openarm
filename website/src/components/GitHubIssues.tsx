@@ -1,4 +1,4 @@
-// Copyright 2025 Enactic, Inc.
+// Copyright 2025-2026 Enactic, Inc.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -13,6 +13,7 @@
 // limitations under the License.
 
 import React, { ReactNode } from 'react';
+import useDocusaurusContext from '@docusaurus/useDocusaurusContext';
 
 interface ReactionGroup {
   content: string;
@@ -105,12 +106,8 @@ const styles = {
 };
 
 function loadPopularIssues(): GitHubIssue[] {
-  try {
-    return require('@site/static/data/popular-issues.json');
-  } catch (_) {
-    // If you need popular issues, please run: npm run fetch-popular-issues
-    return [];
-  }
+  const siteConfig = useDocusaurusContext().siteConfig;
+  return (siteConfig.customFields?.popularIssues ?? []) as GitHubIssue[];
 }
 
 function formatDate(dateString: string): string {

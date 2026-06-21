@@ -1,4 +1,4 @@
-// Copyright 2025 Enactic, Inc.
+// Copyright 2025-2026 Enactic, Inc.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -15,8 +15,19 @@
 import {themes as prismThemes} from 'prism-react-renderer';
 import type {Config} from '@docusaurus/types';
 import type * as Preset from '@docusaurus/preset-classic';
+import fs from 'fs';
 
 // This runs in Node.js - Don't use client-side code here (browser APIs, JSX...)
+
+function loadPopularIssues() {
+  const popularIssuesPath = 'static/data/popular-issues.json';
+  if (fs.existsSync(popularIssuesPath)) {
+    return JSON.parse(fs.readFileSync(popularIssuesPath).toString());
+  } else {
+    // If you need popular issues, please run: npm run fetch-popular-issues
+    return [];
+  }
+}
 
 const config: Config = {
   title: 'OpenArm',
@@ -270,6 +281,10 @@ const config: Config = {
       indexName: 'OpenArm documents',
     },
   } satisfies Preset.ThemeConfig,
+
+  customFields: {
+    popularIssues: loadPopularIssues(),
+  },
 };
 
 export default config;
