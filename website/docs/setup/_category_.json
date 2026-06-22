@@ -2,5 +2,7 @@
   "label": "Setup",
   "position": 4,
   "link": {
+    "type": "generated-index",
+    "slug": "/setup"
   }
 }

@@ -50,6 +50,7 @@ output_path/
 │   │   |  └── ...
 ```
 
+You can also convert to the LeRobot Dataset v3 by '--format lerobot_v3.0'. Please see the README.md in the [repository](https://github.com/enactic/openarm_dataset) for further details.
 
 ## Training the policy
 
@@ -59,14 +60,14 @@ You can train any model you want, but in this tutorial, we will show how to trai
 
 ### Dataset
 
-We assume you already have the dataset in the LeRobot dataset format. 
+We assume you already have the dataset in the LeRobot dataset format.
 
-However, in order to make it easier for you to follow the inference tutorial later, we will use the dataset that we collected and converted in the data collection tutorial. 
+However, in order to make it easier for you to follow the inference tutorial later, we will use the dataset that we collected and converted in the data collection tutorial.
 
 * Dataset : [enactic/openarm-2-cell-pick_up_cube_mujoco-lerobot](https://huggingface.co/datasets/enactic/openarm-2-cell-pick_up_cube_mujoco-lerobot)
 
 
-You can use this dataset to train the policy. In order to make training faster, we filtered out ceiling and head_right. 
+You can use this dataset to train the policy. In order to make training faster, we filtered out ceiling and head_right.
 
 ### Training setup
 
@@ -79,7 +80,7 @@ You can use this dataset to train the policy. In order to make training faster, 
 In the previous section we converted the data to the LeRobot Dataset v2.1 format, so we will use LeRobot 0.3.3 for training the ACT policy.
 
 ```bash
-uv venv 
+uv venv
 source .venv/bin/activate
 uv pip install lerobot==0.3.3
 ```

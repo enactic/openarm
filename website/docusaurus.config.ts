@@ -122,6 +122,16 @@ const config: Config = {
           { from: '/getting-started/project-overview', to: '/' },
           { from: '/getting-started/safety-guide', to: '/overview/safety-guide' },
           { from: '/1.0/purchase', to: '/purchase' },
+          // Setup pages moved under /setup/openarm-setup/ when KER Setup was added
+          { from: '/setup/motor-id', to: '/setup/openarm-setup/motor-id' },
+          { from: '/setup/can-setup', to: '/setup/openarm-setup/can-setup' },
+          { from: '/setup/configure-test', to: '/setup/openarm-setup/configure-test' },
+          { from: '/setup/motor-config', to: '/setup/openarm-setup/motor-config' },
+          { from: '/setup/run-demo', to: '/setup/openarm-setup/run-demo' },
+          {
+            from: '/setup/motor-firmware-update',
+            to: '/setup/openarm-setup/motor-firmware-update',
+          },
         ],
         createRedirects(existingPath: string) {
           const removedInV2 = [
