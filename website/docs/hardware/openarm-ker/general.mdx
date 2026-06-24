@@ -9,7 +9,42 @@ import BlockImage from '@site/src/components/BlockImage';
 
 # General
 
-OpenArm KER (Kinematic Equivalent Replica) is a motorless leader arm that enables intuitive operation of OpenArm 2.0.
-Detailed information, including 3D CAD data and a bill of materials (BOM), will be released soon.
+## Key features
 
-<BlockImage src="hardware/openarm-ker/general/ker.gif" alt="OpenArm KER" width="90%" />
+OpenArm KER (Kinematic Equivalent Replica) is a motorless leader arm designed to enable intuitive operation of OpenArm 2.0.
+Its joints incorporate magnetic encoders and bearings, reducing operational resistance and helping to alleviate the physical load on the operator.
+
+<BlockImage src="hardware/openarm-ker/general/openarm-ker.png" alt="OpenArm KER" />
+
+OpenArm KER adopts a joint structure that exactly matches OpenArm 2.0, together with link lengths scaled to 70%.
+This enables high-precision 1:1 motion mapping without requiring any coordinate transformation or retargeting.
+
+<BlockImage src="hardware/openarm-ker/general/ker-mapping.png" alt="OpenArm KER mapping" />
+
+## Manufacturing Information
+
+<div style={{padding: '20px', border: '2px solid #e1e8ed', borderRadius: '8px', textAlign: 'center'}}>
+  <h3>📁 3DCAD and BOM</h3>
+  <div>
+    3D CAD data required for manufacturing and customization,
+    along with a bill of materials (BOM) containing purchasing information for each component.
+  </div>
+  <a href="https://drive.google.com/drive/u/0/folders/1ya1w0N8usQiRMLWSzRoTiGAqs4c1-ddp" style={{
+    display: 'inline-block',
+    padding: '10px 20px',
+    backgroundColor: '#007acc',
+    color: 'white',
+    textDecoration: 'none',
+    borderRadius: '5px',
+    fontWeight: 'bold'
+  }}>View Drive</a>
+</div>
+
+## General Dimensions
+
+OpenArm KER achieves a lightweight body of 1.7 kg by combining lightweight CFRP pipes, machined aluminum parts, and resin components.
+Its shoulder-mounted backpack-style design allows smooth attachment within 30 seconds without assistance, while also fitting a wide range of body types.
+
+The backpack section can be folded, making it possible to store and transport OpenArm KER in a standard travel case.
+
+<BlockImage src="hardware/openarm-ker/general/general-dimensions.png" alt="OpenArm KER General Dimensions" />
