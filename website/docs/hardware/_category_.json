@@ -3,6 +3,7 @@
   "position": 3,
   "link": {
     "type": "generated-index",
+    "slug": "/hardware",
     "description": "Complete hardware documentation for OpenArm, including bill of materials, assembly guides, and troubleshooting."
   }
 }
