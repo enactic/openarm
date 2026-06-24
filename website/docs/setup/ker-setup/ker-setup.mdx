@@ -9,12 +9,15 @@ import BlockImage from '@site/src/components/BlockImage';
 
 ## For makers
 
+Both the M5 stack firmware and encoder module firmware are in the same repository. You can find them here:
+
+* [Openarm KER Firmware](https://github.com/enactic/openarm_ker_firmware)
+
 ### How to write M5Stack firmware
 
-#### Repository
+#### Link to the repository
 
-KER M5 link:
-{/* TODO: add the link to the KER M5Stack firmware repository */}
+[KER M5 Stack firmware](https://github.com/enactic/openarm_ker_firmware/tree/main/M5)
 
 #### Setup
 1. Connect the USB cable to the M5Stack and your PC.
@@ -48,8 +51,8 @@ lsusb | grep 303a
 3. PlatformIO project setup
 
 ```bash
-git clone https://github.com/reazon-research/KER_M5_RS485
-cd KER_M5_RS485
+git clone https://github.com/enactic/openarm_ker_firmware
+cd openarm_ker_firmware/M5
 uv venv --seed 
 source .venv/bin/activate
 uv pip install platformio
@@ -85,12 +88,9 @@ For example,
 
 The standard version is enough for normal use; the HV version is handy if you ever need to recover a bricked chip.
 
-#### Repository
+#### Link to the repository
 
-encoder module link : 
-{/*
-TODO: add the link to the encoder module firmware repository
-*/}
+[Encoder module firmware](https://github.com/enactic/openarm_ker_firmware/tree/main/encoder)
 
 #### Connection
 
@@ -101,8 +101,8 @@ PC → (USB) → USB-serial UPDI programmer → (UPDI) → encoder module
 Set up the platformio project same as the m5 firmware section above.
 
 ```bash
-git clone git@github.com:reazon-research/ker_encoder_module.git
-cd ker_encoder_module
+https://github.com/enactic/openarm_ker_firmware
+cd openarm_ker_firmware/encoder
 uv venv 
 source .venv/bin/activate
 uv pip install platformio
