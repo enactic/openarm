@@ -13,6 +13,13 @@ Both the M5 stack firmware and encoder module firmware are in the same repositor
 
 * [Openarm KER Firmware](https://github.com/enactic/openarm_ker_firmware)
 
+Before you start, please clone the repository.
+
+```bash
+git clone https://github.com/enactic/openarm_ker_firmware
+cd openarm_ker_firmware
+```
+
 ### How to write M5Stack firmware
 
 #### Link to the repository
@@ -51,8 +58,7 @@ lsusb | grep 303a
 3. PlatformIO project setup
 
 ```bash
-git clone https://github.com/enactic/openarm_ker_firmware
-cd openarm_ker_firmware/M5
+cd M5
 uv venv --seed 
 source .venv/bin/activate
 uv pip install platformio
@@ -71,8 +77,10 @@ Press RST once to reboot.
 #### Zero position calibration
 
 If the zero position has not been written to the KER, please refer to the following guide:  
+
+[Calibration workflow](../../hardware/openarm-ker/calibration-workflow)
 {/*
-TODO: add the link to the zero position calibration guide in the hardware section
+TODO: check the link above is correct
 */}
 
 
@@ -101,8 +109,7 @@ PC → (USB) → USB-serial UPDI programmer → (UPDI) → encoder module
 Set up the platformio project same as the m5 firmware section above.
 
 ```bash
-git clone https://github.com/enactic/openarm_ker_firmware
-cd openarm_ker_firmware/encoder
+cd encoder
 uv venv 
 source .venv/bin/activate
 uv pip install platformio
