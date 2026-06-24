@@ -9,9 +9,9 @@ import BlockImage from '@site/src/components/BlockImage';
 
 ## For makers
 
-Both the M5 stack firmware and encoder module firmware are in the same repository. You can find them here:
+Both the M5Stack firmware and encoder module firmware are in the same repository. You can find them here:
 
-* [Openarm KER Firmware](https://github.com/enactic/openarm_ker_firmware)
+* [OpenArm KER Firmware](https://github.com/enactic/openarm_ker_firmware)
 
 Before you start, please clone the repository.
 
@@ -24,21 +24,21 @@ cd openarm_ker_firmware
 
 #### Link to the repository
 
-[KER M5 Stack firmware](https://github.com/enactic/openarm_ker_firmware/tree/main/M5)
+[KER M5Stack firmware](https://github.com/enactic/openarm_ker_firmware/tree/main/M5)
 
 #### Setup
 1. Connect the USB cable to the M5Stack and your PC.
 
 2. Set up udev rules for flashing the firmware. Please run the following command in your terminal.
 
-set up for normal use (you can skip this if you already set up the udev rules for ker cli)
+Set up for normal use (you can skip this if you already set up the udev rules for the KER CLI)
 
 ```bash
 echo 'SUBSYSTEM=="usb", ATTRS{idVendor}=="303a", MODE="0666"' | sudo tee /etc/udev/rules.d/99-m5stack.rules
 sudo udevadm control --reload-rules && sudo udevadm trigger
 ```
 
-setup for flash firmware to M5Stack
+Set up for flashing the firmware to the M5Stack
 ```bash
 SERIAL=$(udevadm info -q property -n /dev/ttyACM0 | grep ID_SERIAL_SHORT | cut -d= -f2)
 sudo tee -a /etc/udev/rules.d/99-m5stack.rules << EOF
@@ -106,7 +106,7 @@ PC → (USB) → USB-serial UPDI programmer → (UPDI) → encoder module
 
 #### Setup
 
-Set up the platformio project same as the m5 firmware section above.
+Set up the PlatformIO project the same way as the M5 firmware section above.
 
 ```bash
 cd encoder
@@ -136,7 +136,7 @@ Ensure that the USB-serial UPDI programmer is connected to the encoder module an
 
 Then run the following command to flash the firmware.
 
-Following command is the example  flashes ID=3. Change DEVICE_ID to flash a different ID.
+The following command is an example that flashes ID=3. Change DEVICE_ID to flash a different ID.
 
 ```bash
 PLATFORMIO_BUILD_FLAGS="-DDEVICE_ID=3" pio run -t upload --upload-port /dev/ttyUSB0
