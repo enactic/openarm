@@ -78,11 +78,7 @@ Press RST once to reboot.
 
 If the zero position has not been written to the KER, please refer to the following guide:  
 
-{/*
 [Calibration workflow](../../hardware/openarm-ker/calibration-workflow)
-TODO: check the link above is correct
-*/}
-
 
 ### How to write to encoder module
 For this part, you need a USB-serial UPDI programmer (Adafruit UPDI Friend, serialUPDI). It appears as e.g. `/dev/ttyUSB0` (CH340E).
@@ -147,6 +143,7 @@ IDs are assigned as follows.
 - Right arm: 1–8 (from shoulder to gripper)
 - Left arm: 9–16 (from shoulder to gripper)
 
+<BlockImage src="apiref/setup_ker/ker_id.png" alt="encoder connection" width="90%" />
 ### Optional
 While the foot pedal is currently the officially supported interface for controlling data collection states, you may encounter cases where you need an interface directly on the hand/gripper section of the leader arm. 
 
