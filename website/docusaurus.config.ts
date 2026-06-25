@@ -12,8 +12,8 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import {themes as prismThemes} from 'prism-react-renderer';
-import type {Config} from '@docusaurus/types';
+import { themes as prismThemes } from 'prism-react-renderer';
+import type { Config } from '@docusaurus/types';
 import type * as Preset from '@docusaurus/preset-classic';
 import fs from 'fs';
 
@@ -105,7 +105,7 @@ const config: Config = {
 
   markdown: {
     mermaid: true,
-    preprocessor: ({filePath: _filePath, fileContent}) => {
+    preprocessor: ({ filePath: _filePath, fileContent }) => {
       return fileContent.replaceAll('{{OPENARM_CAN_VERSION}}', '1.2.2');
     },
   },
@@ -128,10 +128,14 @@ const config: Config = {
           { from: '/setup/configure-test', to: '/setup/openarm-setup/configure-test' },
           { from: '/setup/motor-config', to: '/setup/openarm-setup/motor-config' },
           { from: '/setup/run-demo', to: '/setup/openarm-setup/run-demo' },
-          {
-            from: '/setup/motor-firmware-update',
-            to: '/setup/openarm-setup/motor-firmware-update',
-          },
+          { from: '/api-reference/setup', to: '/setup/openarm-setup' },
+          { from: '/api-reference/setup/motor-id', to: '/setup/openarm-setup/motor-id' },
+          { from: '/api-reference/setup/can-setup', to: '/setup/openarm-setup/can-setup' },
+          { from: '/api-reference/setup/configure-test', to: '/setup/openarm-setup/configure-test' },
+          { from: '/api-reference/setup/motor-config', to: '/setup/openarm-setup/motor-config' },
+          { from: '/api-reference/setup/run-demo', to: '/setup/openarm-setup/run-demo' },
+          { from: '/api-reference/setup/motor-firmware-update', to: '/setup/openarm-setup/motor-firmware-update' },
+          { from: '/tutorial/data-collection', to: '/tutorial/data-collection-vr' }
         ],
         createRedirects(existingPath: string) {
           const removedInV2 = [
