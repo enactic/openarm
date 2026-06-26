@@ -1,17 +1,17 @@
 ---
-title: KER Setup 
+title: OpenArm KER Setup
 sidebar_position: 2
 ---
 
 import BlockImage from '@site/src/components/BlockImage';
 
-# KER Setup
+# OpenArm KER Setup
 
 ## For makers
 
 Both the M5Stack firmware and encoder module firmware are in the same repository. You can find them here:
 
-* [OpenArm KER Firmware](https://github.com/enactic/openarm_ker_firmware)
+* [OpenArm KER firmware](https://github.com/enactic/openarm_ker_firmware)
 
 Before you start, please clone the repository.
 
@@ -24,12 +24,13 @@ cd openarm_ker_firmware
 
 #### Link to the repository
 
-[KER M5Stack firmware](https://github.com/enactic/openarm_ker_firmware/tree/main/M5)
+[OpenArm KER M5Stack firmware](https://github.com/enactic/openarm_ker_firmware/tree/main/M5)
 
 #### Setup
-1. Connect the USB cable to the M5Stack and your PC.
 
-2. Set up udev rules for flashing the firmware. Please run the following command in your terminal.
+##### 1. Connect the USB cable to the M5Stack and your PC.
+
+##### 2. Set up udev rules for flashing the firmware. Please run the following command in your terminal.
 
 Set up for normal use (you can skip this if you already set up the udev rules for the KER CLI)
 
@@ -55,16 +56,16 @@ lsusb | grep 303a
 
 `303a:4002` should appear in the output.
 
-3. PlatformIO project setup
+##### 3. PlatformIO project setup
 
 ```bash
 cd M5
-uv venv --seed 
+uv venv --seed
 source .venv/bin/activate
 uv pip install platformio
 ```
 
-4. Flash firmware
+##### 4. Flash firmware
 
 Put M5Stack into boot mode (hold RST 3 seconds until green LED lights up), then:
 
@@ -76,14 +77,14 @@ Press RST once to reboot.
 
 #### Zero position calibration
 
-If the zero position has not been written to the KER, please refer to the following guide:  
+If the zero position has not been written to the KER, please refer to the following guide:
 
 [Calibration workflow](/hardware/openarm-ker/calibration-workflow)
 
 ### How to write to encoder module
 For this part, you need a USB-serial UPDI programmer (Adafruit UPDI Friend, serialUPDI). It appears as e.g. `/dev/ttyUSB0` (CH340E).
 
-For example, 
+For example,
 
 * Standard — [Switch Science 9535](https://www.switch-science.com/products/9535)  /  [Adafruit 5879](https://www.adafruit.com/product/5879)
 
@@ -106,7 +107,7 @@ Set up the PlatformIO project the same way as the M5 firmware section above.
 
 ```bash
 cd encoder
-uv venv 
+uv venv
 source .venv/bin/activate
 uv pip install platformio
 ```
@@ -128,7 +129,7 @@ After that you can write the firmware to the encoder module with the following c
 
 Ensure that the USB-serial UPDI programmer is connected to the encoder module and the PC.
 
-<BlockImage src="apiref/setup_ker/ker-encoder-write.JPG" alt="encoder connection" width="90%" />
+<BlockImage src="setup/ker-setup/encoder-write.jpg" alt="Ensure that the USB-serial UPDI programmer is connected" width="90%" />
 
 Then run the following command to flash the firmware.
 
@@ -143,9 +144,10 @@ IDs are assigned as follows.
 - Right arm: 1–8 (from shoulder to gripper)
 - Left arm: 9–16 (from shoulder to gripper)
 
-<BlockImage src="apiref/setup_ker/ker_id.png" alt="encoder connection" width="90%" />
+<BlockImage src="setup/ker-setup/encoder-id.png" alt="Encoder IDs" width="90%" />
+
 ### Optional
-While the foot pedal is currently the officially supported interface for controlling data collection states, you may encounter cases where you need an interface directly on the hand/gripper section of the leader arm. 
+While the foot pedal is currently the officially supported interface for controlling data collection states, you may encounter cases where you need an interface directly on the hand/gripper section of the leader arm.
 
 For instance, if your workflow requires complex menu navigation.
 
@@ -156,7 +158,7 @@ The following M5Stack units are verified options that you might find necessary d
 
 We have verified that communicating with these external devices via the controller ports is fully functional.
 
-:::warning 
+:::warning
 **Signal Noise & Cable Length Constraints**
 
 Due to the physical characteristics of communication protocols like I2C, longer Grove cable runs are highly susceptible to signal noise and voltage drops. This can easily lead to communication instabilities or packet loss during data collection.

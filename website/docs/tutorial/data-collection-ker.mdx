@@ -11,7 +11,7 @@ import BlockImage from '@site/src/components/BlockImage';
 
 OpenArm KER is a motorless leader arm that enables intuitive operation of OpenArm 2.0.
 
-<BlockImage src="tutorial/data-collection-ker/ker_how_to_wear.JPG" alt="OpenArm KER" width="90%" />
+<BlockImage src="tutorial/data-collection-ker/ker-how-to-wear.jpg" alt="OpenArm KER" width="90%" />
 
 ## Prerequisites
 - Foot pedal (required for data collection)
@@ -27,13 +27,13 @@ The Foot pedal is used to control the data collection. OpenArm KER is used to co
 
 ### Software setup
 
-1. Install system dependencies
+#### 1. Install system dependencies
 
 ```bash
 sudo apt install libusb-1.0-0-dev
 ```
 
-2. Set up udev rules
+#### 2. Set up udev rules
 
 ```bash
 echo 'SUBSYSTEM=="usb", ATTRS{idVendor}=="303a", MODE="0666"' | sudo tee /etc/udev/rules.d/99-m5stack.rules
@@ -48,7 +48,7 @@ lsusb | grep 303a
 
 `303a:4002` should appear in the output.
 
-3. Ping KER with the CLI
+#### 3. Ping KER with the CLI
 
 Install openarm_ker cli
 
@@ -65,7 +65,7 @@ openarm-ker-cli ping
 ```
 If you get a response like below, the connection is successful.
 
-```
+```json
 {
   "fw": "v1.0.0",
   "hw": "KER-v1.0.0",
@@ -108,14 +108,14 @@ dora build dataflow-ker.yaml --uv
 1. Connect the device to your PC using a USB Type-C cable.
 2. The KER M5Stack display should turn on.
 
-<BlockImage src="tutorial/data-collection-ker/m5_turn_on.JPG" alt="attachment" width="60%" />
+   <BlockImage src="tutorial/data-collection-ker/m5-turn-on.jpg" alt="Turn on M5Stack" width="60%" />
 
 3. Attach the holderto the mounting plate. Make sure the holder is securely attached.
 
-<div style={{ display: 'flex', justifyContent: 'center', gap: '1rem', flexWrap: 'wrap' }}>
-  <BlockImage src="tutorial/data-collection-ker/kermount.JPG" alt="Front view" width="49%" />
-  <BlockImage src="tutorial/data-collection-ker/ker_attach.JPG" alt="Back view" width="49%" />
-</div>
+   <div style={{ display: 'flex', justifyContent: 'center', gap: '1rem', flexWrap: 'wrap' }}>
+     <BlockImage src="tutorial/data-collection-ker/ker-mount.jpg" alt="Front view" width="49%" />
+     <BlockImage src="tutorial/data-collection-ker/ker-attach.jpg" alt="Back view" width="49%" />
+   </div>
 
 ### Run the dataflow
 
@@ -125,7 +125,7 @@ dora run dataflow-ker.yaml --uv
 
 You can access the web UI at http://localhost:8000 to monitor the data collection process same as VR teleoperation.
 
-<BlockImage src="tutorial/data-collection-vr/data_collection_start_quit.png" alt="web ui" width="90%" />
+<BlockImage src="tutorial/data-collection-vr/data-collection-start-quit.png" alt="Web ui" width="90%" />
 
 After you start the dataflow, you can align the KER with the OpenArm by pulling the KER trigger. After the alignment, OpenArm will follow the movement of KER, and you can do teleoperation smoothly with KER.
 
@@ -133,7 +133,7 @@ During the data collection, you can use the foot pedal to control the start / st
 
 We recommend using a [3-button foot pedal from SANWA Supply](https://direct.sanwa.co.jp/ItemPage/400-MA179).
 
-<BlockImage src="tutorial/data-collection-ker/footpedal.jpg" alt="foot pedal" width="90%" />
+<BlockImage src="tutorial/data-collection-ker/footpedal.jpg" alt="Foot pedal" width="90%" />
 
 Button mapping:
 
@@ -147,13 +147,13 @@ If you use a different foot pedal, please check the button mapping and map the b
 
 After you start the data collection, you can see the start or skip panel on the web UI. You can start the data collection by pressing the **right(c)** button.
 
-<BlockImage src="tutorial/data-collection-ker/data-collect-start.jpg" alt="data collection start quit" width="80%" />
+<BlockImage src="tutorial/data-collection-ker/data-collection-start.jpg" alt="Data collection start quit" width="80%" />
 
 After the data collection is started, you can see the success or fail panel on the web UI.
 
 Press the **left(a)** button to mark the data collection as fail, or press the **right(c)** button to mark it as success.
 
-<BlockImage src="tutorial/data-collection-ker/data-collection-success-fail.jpg" alt="data collection fail success" width="80%" />
+<BlockImage src="tutorial/data-collection-ker/data-collection-success-fail.jpg" alt="Data collection fail success" width="80%" />
 
 Also, you can press the **middle(b)** button to quit the data collection at any time.
 
@@ -168,13 +168,13 @@ Possible causes:
 * Make sure the IC is properly seated and not loose.
 * Inspect the connectors and PCB for poor contact or damaged pins.
 
-<BlockImage src="tutorial/data-collection-ker/cable-connection.JPG" alt="error display" width="90%" />
+<BlockImage src="tutorial/data-collection-ker/cable-connection.jpg" alt="Cable connection" width="90%" />
 
 #### 2. If Jump Detect is displayed
 
 <div style={{ display: 'flex', justifyContent: 'center', gap: '1rem', flexWrap: 'wrap' }}>
-  <BlockImage src="tutorial/data-collection-ker/jumpdetect.JPG" alt="error display" width="49%" />
-  <BlockImage src="tutorial/data-collection-ker/jumpdetect_2.JPG" alt="error display" width="49%" />
+  <BlockImage src="tutorial/data-collection-ker/jump-detect-zero-position.jpg" alt="Error display for zero position" width="49%" />
+  <BlockImage src="tutorial/data-collection-ker/jump-detect-streaming-stop.jpg" alt="Error display for streaming stop by jump detected" width="49%" />
 </div>
 
 Please write the zero position again. See the [Calibration workflow](/hardware/openarm-ker/calibration-workflow) for details.
@@ -182,12 +182,12 @@ Please write the zero position again. See the [Calibration workflow](/hardware/o
 
 First, put the KER in the Box and fix the position of the KER with screws.
 
-<BlockImage src="tutorial/data-collection-ker/ker-zero-pose.JPG" alt="error display" width="90%" />
+<BlockImage src="tutorial/data-collection-ker/ker-zero-pose.jpg" alt="Zero position" width="90%" />
 
 Then, turn on the KER by connecting the USB cable, and press the gray button(Zero Reset All) on the KER display.
 
-<BlockImage src="tutorial/data-collection-ker/ker-display.JPG" alt="popup" width="90%" />
+<BlockImage src="tutorial/data-collection-ker/ker-display.jpg" alt="Zero reset" width="90%" />
 
 Pop up window will appear on the display. Please select `Yes` and press the button to write the zero position.
 
-<BlockImage src="tutorial/data-collection-ker/ker-calib.JPG" alt="popup" width="90%" />
+<BlockImage src="tutorial/data-collection-ker/ker-calib.jpg" alt="Zero reset popup" width="90%" />
