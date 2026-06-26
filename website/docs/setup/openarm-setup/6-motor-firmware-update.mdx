@@ -1,0 +1,71 @@
+---
+title: '6. Motor Firmware Update'
+sidebar_position: 7
+---
+
+import BlockImage from '@site/src/components/BlockImage';
+
+# Step 6: Motor Firmware Update
+
+:::note
+This step is optional. You only need to update the firmware if you are experiencing issues with the motors or if you are asked to do so.
+:::
+
+This guide explains how to update the firmware of Damiao motors using the Damiao Debugging Tool.
+
+---
+
+## Prerequisites
+
+- Windows PC with the [Damiao Debugging Tool](https://files.seeedstudio.com/wiki/robotics/Actuator/damiao/Debugging_Tools_v.1.6.8.8.exe) installed
+- Motor connected via serial (UART) at 921600 bps
+- Hardware version 3 motors (verify the hardware version before proceeding)
+
+---
+
+## Download Firmware
+
+Download the latest firmware from the [Damiao motor firmware repository](https://github.com/dmBots/motor-firmware/tree/77a7c91cd5263cde42d931fe7f84619c7fc9e1f0/V3).
+
+:::warning
+Make sure to select the correct firmware file for your motor model. These are **V3 hardware** firmware files. Do not flash firmware for a different hardware version.
+:::
+
+:::info
+The following firmware versions are used and tested with OpenArm:
+
+| Motor | Firmware file |
+|-------|--------------|
+| DM-J3507 | `APP_DM3507(V3)_V5717_04.bin` |
+| DM-J4310 | `APP_DM4310(V3)_V5017_04.bin` |
+| DM-J4340 | `APP_DM4340(V3)_V5117_04.bin` |
+| DM-J8009 | `APP_DM8009(V3)_V6417_04.bin` |
+:::
+
+<BlockImage src="software/setup/update_firm_3.png" alt="Firmware files" width="80%" />
+
+---
+
+## Check Current Firmware Version
+
+Connect the motor and open the Damiao Debugging Tool. Click **ReadVesion** to read the current firmware and bootloader version.
+
+<BlockImage src="software/setup/update_firm_1.png" alt="Firmware upgrade panel showing current version" width="90%" />
+
+The current firmware and bootloader versions will be displayed:
+
+<BlockImage src="software/setup/update_firm_2.png" alt="Firmware version displayed after ReadVesion" width="40%" />
+
+---
+
+## Flash Firmware
+
+1. Click **OpenFile** and select the `.bin` firmware file for your motor model
+2. Verify the version number shown in the **Version number** field
+3. Click **Upgrade** to start flashing
+4. Wait for the **Progress** bar to reach 100%
+5. Power cycle the motor after flashing is complete
+
+:::danger
+Do not disconnect the motor or close the tool while flashing is in progress. This may permanently damage the motor.
+:::

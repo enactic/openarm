@@ -17,7 +17,7 @@ Please consider integrating it with another project, for more information, refer
 
 ## The motor is not working.
 
-See the [troubleshooting section](../api-reference/setup/1-motor-id.mdx#trouble-shooting).
+See the [troubleshooting section](../setup/openarm-setup/1-motor-id.mdx#trouble-shooting).
 
 ## Do you have any recommended CAN devices?
 
