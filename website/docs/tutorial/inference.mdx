@@ -161,9 +161,9 @@ If you want to skip inference this tick (e.g. rate-limiting), return an empty po
 
 ## Running Example
 
-In order to understand the inference loop, let's run a simple example with LeRobot ACT policy with MuJoCo sim. 
+In order to understand the inference loop, let's run a simple example with LeRobot ACT policy with MuJoCo sim.
 
-For simplicity, we will use the trained model from Hugging Face Hub in this tutorial. 
+For simplicity, we will use the trained model from Hugging Face Hub in this tutorial.
 This is the model trained for 40k steps on data collected in a MuJoCo simulation.
 
 * Model : [enactic/act-openarm-2-cell-pick_up_cube_mujoco](https://huggingface.co/enactic/act-openarm-2-cell-pick_up_cube_mujoco)
@@ -187,8 +187,8 @@ You need to prepare the following dora nodes for running the inference dataflow:
 We offer the inference example repository for you to quickly get started. Please follow the instruction below!
 
 ```bash
-git clone https://github.com/enactic/dora-openarm-inference.git --recurse-submodules
-cd dora-openarm-inference
+git clone https://github.com/enactic/dora-openarm-evaluation.git --recurse-submodules
+cd dora-openarm-evaluation
 ```
 
 There are two ways to run the inference dataflow: A. local policy server (for debugging) and B. policy server in Docker.
@@ -200,9 +200,9 @@ You need to have two things ready for running the local policy server version:
 1. the policy server script that loads the trained model and serves inference requests
 2. the dataflow YAML that defines the Dora dataflow for inference
 
-In the `dora-openarm-inference` repository, we have prepared both of them for you. 
-The policy server script is located at [src/local_policy_server.py](https://github.com/enactic/dora-openarm-inference/blob/main/src/local_policy_server.py), 
-and the dataflow YAML is located at [dataflow-local-inference.yaml](https://github.com/enactic/dora-openarm-inference/blob/main/dataflow-local-inference.yaml).
+In the `dora-openarm-evaluation` repository, we have prepared both of them for you.
+The policy server script is located at [src/local_policy_server.py](https://github.com/enactic/dora-openarm-evaluation/blob/main/src/local_policy_server.py),
+and the dataflow YAML is located at [dataflow-local-inference.yaml](https://github.com/enactic/dora-openarm-evaluation/blob/main/dataflow-local-inference.yaml).
 
 
 #### 1. Run the local policy server
@@ -213,7 +213,7 @@ source .venv_server/bin/activate
 uv pip install lerobot==0.3.3 pyarrow
 # uv pip install torch torchvision torchaudio --torch-backend=cu128 --upgrade  # for CUDA 12.8
 python src/local_policy_server.py /dev/shm/policy-server.socket
-``` 
+```
 
 #### 2. In another terminal, run the dora dataflow:
 
@@ -223,12 +223,12 @@ uv pip install dora-rs-cli
 source .venv/bin/activate
 dora build dataflow-local-inference.yaml --uv
 SOCKET=/dev/shm/policy-server.socket dora run dataflow-local-inference.yaml --uv
-``` 
+```
 
 You should see the MuJoCo sim window open, and the robot should start moving according to the policy's actions.
 
 
-### B. policy server in Docker 
+### B. policy server in Docker
 
 In order to run the policy server in Docker, you need to have Docker installed on your machine.
 After that, you need to do the following steps:
@@ -247,7 +247,7 @@ docker build -t openarm-inference-image-lerobot:latest .
 Set the `IMAGE` environment variable in the dataflow YAML to the name of your Docker image.
 
 
-Now you can run the dataflow with the Docker-based policy server. 
+Now you can run the dataflow with the Docker-based policy server.
 
 ```bash
 dora build dataflow-docker-inference.yaml --uv
