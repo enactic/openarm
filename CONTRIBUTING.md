@@ -6,7 +6,7 @@ Please report it to [GitHub Issues](https://github.com/enactic/openarm/issues/ne
 
 ## Did you have a feature request?
 
-Please share it to [GitHub Issues](https://github.com/enactic/openarm/issues/new?template=2-feature-request.yml)!
+Please share it on [GitHub Issues](https://github.com/enactic/openarm/issues/new?template=2-feature-request.yml)!
 
 ## Did you write a patch?
 
