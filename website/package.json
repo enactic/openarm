@@ -39,7 +39,7 @@
     "@docusaurus/types": "3.10.2",
     "@eslint/js": "^10.0.1",
     "eslint": "^10.7.0",
-    "typescript": "~6.0.3",
+    "typescript": "~7.0.2",
     "typescript-eslint": "^8.64.0"
   },
   "browserslist": {
