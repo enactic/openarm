@@ -25,7 +25,7 @@
     "@docusaurus/theme-mermaid": "3.10.2",
     "@mdx-js/react": "^3.1.1",
     "clsx": "^2.0.0",
-    "katex": "^0.17.0",
+    "katex": "^0.18.1",
     "prism-react-renderer": "^2.3.0",
     "react": "^19.2.7",
     "react-dom": "^19.2.7",
