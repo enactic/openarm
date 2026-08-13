@@ -31,6 +31,9 @@ interface GitHubIssue {
     login: string;
     name: string;
   };
+  repository: {
+    nameWithOwner: string;
+  };
   reactionGroups: ReactionGroup[];
 }
 
@@ -140,7 +143,7 @@ function GitHubIssuesEmpty(): ReactNode {
           </a>{' '}
           or{' '}
           <a
-            href="https://github.com/enactic/openarm/issues"
+            href="https://github.com/search?q=org%3Aenactic+is%3Aissue+state%3Aopen&type=issues"
             target="_blank"
             rel="noopener noreferrer"
           >
@@ -173,7 +176,7 @@ export default function GitHubIssues(): ReactNode {
 
           return (
             <div
-              key={issue.number}
+              key={issue.url}
               style={styles.issueItem}
             >
               <div style={styles.issueHeader}>
@@ -195,7 +198,7 @@ export default function GitHubIssues(): ReactNode {
               </div>
               <div style={styles.issueMeta}>
                 <span style={styles.issueNumber}>
-                  #{issue.number}
+                  {issue.repository.nameWithOwner}#{issue.number}
                 </span>
                 <span>
                   Updated {formatDate(issue.updatedAt)}
@@ -217,12 +220,12 @@ export default function GitHubIssues(): ReactNode {
       </div>
       <div style={styles.footer}>
         <a
-          href="https://github.com/enactic/openarm/issues?q=is%3Aissue%20state%3Aopen%20sort%3Areactions-%2B1-desc%20type%3AFeature"
+          href="https://github.com/search?q=org%3Aenactic+is%3Aissue+state%3Aopen+sort%3Areactions-%2B1-desc&type=issues"
           target="_blank"
           rel="noopener noreferrer"
           style={styles.viewAllLink}
         >
-          View all feature requests →
+          View all feature requests and bug reports →
         </a>
       </div>
     </div>
