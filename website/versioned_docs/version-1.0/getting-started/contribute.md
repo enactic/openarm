@@ -11,13 +11,13 @@ We welcome contributions from researchers, developers, makers, and enthusiasts a
 
 ## 💡 GitHub Issues - Our Idea Pool
 
-Use our [**OpenArm GitHub Repository**](https://github.com/enactic/openarm) as a central hub for new project ideas, feature requests, and bugs:
+Report feature requests and bugs to the appropriate repository in the [enactic organization](https://github.com/enactic). If you have new project ideas or you're not sure which repository is the right place, [enactic/openarm](https://github.com/enactic/openarm) is a good default:
 
 <GitHubIssues />
 
 <div style={{padding: '20px', backgroundColor: '#e8f5e8', borderRadius: '10px', border: '1px solid #c3e6c3', margin: '20px 0'}}>
   <h3>🎯 How It Works</h3>
-  
+
   <p><strong>👍 Upvote issues</strong> that resonate with you, this helps us prioritize what the community wants most.</p>
   <p><strong>💡 Share your own ideas</strong> by creating new issues - no idea is too small or too ambitious!</p>
   <p><strong>🔧 Unassigned issues = Open for pickup!</strong> Browse our issues and self-assign anything that interests you. No need to ask for permission, just start working and share your progress along the way in the comments!</p>
@@ -25,7 +25,7 @@ Use our [**OpenArm GitHub Repository**](https://github.com/enactic/openarm) as a
 
 ### Submit Issues For:
 - 💡 Project ideas and feature requests
-- 🐛 Bug reports and technical issues  
+- 🐛 Bug reports and technical issues
 - 🗣️ Community discussions and feedback
 - 🚀 Roadmap suggestions and priorities
 
