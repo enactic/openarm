@@ -4,6 +4,7 @@ sidebar_position: 2
 ---
 
 ```mdx-code-block
+import BlockVideo from '@site/src/components/BlockVideo';
 import BlockImage from '@site/src/components/BlockImage';
 ```
 
@@ -126,7 +127,11 @@ After finishing the data collection, you can check the collected data in the spe
 
 If you don't have the real robot, skip the next section and move to the dataset format conversion section to convert the collected data to the LeRobot dataset format for training the policy.
 
-## Data collection on the real robot
+## Data collection on the real robot (CELL)
+
+:::info
+If you want to teleoperate **OpenArm 2.0 alone without the cell**, please move on to the next section.
+:::
 
 First, make sure that the CAN interface is up and running and the cameras are set up properly, VR teleoperation is working. Then, run the following command to start the data collection.
 
@@ -143,6 +148,23 @@ If the command runs successfully, the arm will move to the initial position. You
 
 Once the alignment completes, you can fully control the arm with the VR controllers.
 
-{/*
-add photo of the real robot data collection.
-*/}
+## Data collection on the real robot (pedestal)
+
+If you have the OpenArm 2.0 alone without the cell, you can still collect data with VR teleoperation.
+
+### Start data collection
+
+```bash
+dora build dataflow-pedestal.yaml --uv
+dora run dataflow-pedestal.yaml --uv
+```
+If the command runs successfully, the arm will move to the initial position. You need to align your VR controllers to the arm first by holding the trigger button.
+
+AOnce the alignment completes, you can fully control the arm with the VR controllers.
+
+Also, you can see the MuJoCo environment with the OpenArm 2.0 alone without the cell, and you can control the arm with the VR controllers.
+
+<BlockVideo src="tutorial/pedestal_mujoco.mp4" width="80%"/>
+
+Now, this dataflow only collect action and state data, and does not collect camera images. If you want to collect camera images, please refer to the dataflow 'dataflow-vr.yaml' for the OpenArm 2.0 with the cell.
+

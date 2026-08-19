@@ -67,9 +67,11 @@ lerobot-train \
   --policy.type=act \
   --output_dir=outputs/train \
   --policy.device=cuda \
-  --wandb.enable=false \
   --policy.repo_id=$HF_USER/act-openarm-2-cell-pick_up_cube_mujoco \
-  --policy.push_to_hub True
+  --policy.push_to_hub True \
+  --wandb.enable=false \
+  --num_workers=8 \
+  --steps=10000
 ```
 
 For more details on training the ACT policy, please check the [LeRobot Documentation](https://huggingface.co/docs/lerobot/index).
