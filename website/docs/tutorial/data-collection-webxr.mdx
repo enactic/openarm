@@ -5,6 +5,7 @@ sidebar_position: 3
 
 ```mdx-code-block
 import BlockImage from '@site/src/components/BlockImage';
+import BlockVideo from '@site/src/components/BlockVideo';
 ```
 
 # Data collection with VR teleoperation via WebXR
@@ -101,6 +102,35 @@ After finishing the data collection, you can check the collected data in the spe
 
 If you don't have the real robot, skip the next section and move to the dataset format conversion section to convert the collected data to the LeRobot dataset format for training the policy.
 
-If you have the real robot, please check the dataflow-vr.yaml and dataflow-ker.yaml for the data collection on the real robot.
+## Data collection on the real robot (pedestal)
 
-You can create a dataflow-webxr.yaml for the data collection on the real robot by referring to the dataflow-vr.yaml and dataflow-ker.yaml.
+If you have the OpenArm 2.0 alone without the cell, you can collect data with WebXR teleoperation.
+
+### Start data collection
+
+```bash
+dora build dataflow-pedestal.yaml --uv
+dora run dataflow-pedestal.yaml --uv
+```
+
+This dataflow serves the WebXR page as well, so the TLS certificate generated in [preparation for WebXR teleoperation](#preparation-for-webxr-teleoperation) is required here too.
+
+Open `http://localhost:8000/` on the local machine for the data collection UI, and open `https://<YOUR_HOST_NAME>:8443/` in the Web browser on your VR device, then press the "start" button to start teleoperation.
+
+If the command runs successfully, the arm will move to the initial position. You need to align your VR controllers to the arm first by holding the trigger button.
+
+Once the alignment completes, you can fully control the arm with the VR controllers.
+
+Also, you can see the MuJoCo environment with the OpenArm 2.0 alone without the cell, and you can control the arm with the VR controllers.
+
+<BlockVideo src="tutorial/pedestal_mujoco.mp4" width="80%"/>
+
+The collected data is stored in `pedestal_data` by default, which is set as `DIRECTORY` of the `recorder` node in `dataflow-pedestal.yaml`.
+
+Now, this dataflow only collect action and state data, and does not collect camera images. If you want to collect camera images, please refer to the dataflow 'dataflow-vr.yaml' for the OpenArm 2.0 with the cell.
+
+## Data collection on the real robot (CELL)
+
+For the OpenArm 2.0 with the cell, please check the `dataflow-vr.yaml` and `dataflow-ker.yaml` for the data collection on the real robot.
+
+You can create a `dataflow-webxr.yaml` for the data collection on the real robot by referring to the `dataflow-vr.yaml` and `dataflow-ker.yaml`.
