@@ -1,6 +1,6 @@
 ---
 title: Inference
-sidebar_position: 5
+sidebar_position: 6
 ---
 import BlockVideo from '@site/src/components/BlockVideo';
 
@@ -208,9 +208,9 @@ and the dataflow YAML is located at [dataflow-local-inference.yaml](https://gith
 #### 1. Run the local policy server
 
 ```bash
-uv venv .venv_server
+uv venv .venv_server -p 3.12
 source .venv_server/bin/activate
-uv pip install lerobot==0.3.3 pyarrow
+uv pip install lerobot==0.6.1 pyarrow
 # uv pip install torch torchvision torchaudio --torch-backend=cu128 --upgrade  # for CUDA 12.8
 python src/local_policy_server.py /dev/shm/policy-server.socket
 ```
@@ -256,4 +256,4 @@ dora run dataflow-docker-inference.yaml --uv
 
 Here is the expected MuJoCo sim window when you run the dataflow (with either local or Docker policy server):
 
-<BlockVideo src="tutorial/inference_mujoco.mp4" width="75%"/>
+<BlockVideo src="tutorial/inference-mujoco.mp4" width="75%"/>

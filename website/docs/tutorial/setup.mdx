@@ -26,6 +26,8 @@ See the [uv installation guide](https://docs.astral.sh/uv/getting-started/instal
 
 ## CAN setup
 
+Connect right arm to can0 and left arm to can1.
+
 Install the CAN utilities: https://github.com/enactic/openarm_can
 
 ```bash
@@ -43,6 +45,8 @@ Configure the CAN interfaces with the following command.
 ```bash
 openarm-can-cli can_configure
 ```
+
+If you just buy the OpenArm 2.0 only and already zero position calibrated, you can skip the next step and move to the [WebXR setup](../tutorial/data-collection-webxr.mdx#data-collection-on-the-real-robot-pedestal) section.
 
 ## Zero position setup
 
