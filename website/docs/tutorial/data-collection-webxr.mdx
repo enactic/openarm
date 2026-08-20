@@ -27,7 +27,8 @@ uv pip install dora-rs-cli
 dora build dataflow-webxr-mujoco.yaml --uv
 ```
 
-### preparation for WebXR teleoperation
+### Preparation for WebXR teleoperation
+
 WebXR requires HTTPS, so a TLS certificate is needed. A self-signed certificate is enough; see the [dora-openarm-webxr](https://github.com/enactic/dora-openarm-webxr#setup) setup instructions for how to generate one.
 
 If you just want to test the WebXR teleoperation, follow the instructions below to generate a self-signed certificate and use it for the WebXR teleoperation.
@@ -129,7 +130,7 @@ The collected data is stored in `pedestal_data` by default, which is set as `DIR
 
 Now, this dataflow only collect action and state data, and does not collect camera images. If you want to collect camera images, please refer to the dataflow 'dataflow-vr.yaml' for the OpenArm 2.0 with the cell.
 
-## Data collection on the real robot (CELL)
+## Data collection on the real robot (Cell)
 
 For the OpenArm 2.0 with the cell, please check the `dataflow-vr.yaml` and `dataflow-ker.yaml` for the data collection on the real robot.
 
