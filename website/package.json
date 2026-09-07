@@ -40,7 +40,7 @@
     "@eslint/js": "^10.0.1",
     "eslint": "^10.9.1",
     "typescript": "~6.0.3",
-    "typescript-eslint": "^8.68.0"
+    "typescript-eslint": "^8.69.0"
   },
   "browserslist": {
     "production": [
