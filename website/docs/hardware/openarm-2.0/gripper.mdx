@@ -20,3 +20,30 @@ The finger geometry is designed not only to provide stable grasping performance,
 The finger components are also designed to be easily replaceable, providing a flexible development platform where users can customize and improve the finger design for their specific tasks, or evaluate specialized geometries optimized for particular objects and applications.
 
 <BlockImage src="hardware/openarm-2.0/gripper/gripper.png" alt="OpenArm 2.0 Gripper" />
+
+## Camera
+
+The in-hand camera is an Arducam B0495, one per arm.
+It is a USB camera that works as a standard UVC device, so no additional driver is required.
+See [Camera setup](../../tutorial/setup.mdx#camera-setup) for how to set up the cameras on Linux.
+
+| Parameter | **Arducam B0495** |
+|---------------------------|----------------|
+| **Datasheet** | [Datasheet of B0495](https://www.arducam.com/downloads/datasheet/B0495_AR0234_Global_Shutter_USB3.0_Camera_Module_Datasheet.pdf) |
+| **Sensor** | AR0234 (color, global shutter) |
+| **Optical Format** | 1/2.6" |
+| **Resolution** | 1920×1200 (2.3MP) |
+| **Frame Rate (USB 3.0)** | 1920×1200 @ 50 fps, 960×600 @ 80 fps |
+| **Frame Rate (USB 2.0)** | 960×600 @ 10 fps |
+| **Output Format** | YUY2 |
+| **FOV** | 95° (D) × 82° (H) × 66° (V) |
+| **Lens** | M12 mount, EFL 3.6 mm, F3.0 |
+| **Focus Type** | Manual focus |
+| **Default Focus Range** | 2 m – ∞ |
+| **Interface** | USB 3.2 Gen 1 (backward compatible with USB 2.0), Type-C, UVC |
+| **Power** | 5 V, 1.45 W max |
+
+:::info
+These are the specifications of the camera module in the Arducam datasheet.
+The effective field of view inside the gripper, including occlusion by the fingers, is not documented yet.
+:::
