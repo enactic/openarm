@@ -76,6 +76,7 @@ Each request arrives as a JSON line over the socket:
 {
   "name": "inference",
   "data_path": "/dev/shm/obs_12345.arrow",
+  "reset": false,
   "metadata": {
     "timestamp": 1716000000123456789,
     "camera_head_left.height": 600,
@@ -91,6 +92,9 @@ Each request arrives as a JSON line over the socket:
   }
 }
 ```
+
+`reset` is `true` for the first request of a new episode.
+If your policy keeps internal state such as an action queue, reset it when `reset` is `true`.
 
 Open the Arrow IPC file and parse it:
 
@@ -191,6 +195,11 @@ git clone https://github.com/enactic/dora-openarm-evaluation.git --recurse-submo
 cd dora-openarm-evaluation
 ```
 
+:::tip
+The LeRobot policy servers used in this example are also available as a standalone package, [openarm_lerobot_policy_server](https://github.com/enactic/openarm_lerobot_policy_server).
+It provides the `openarm-lerobot-policy-server-local` and `openarm-lerobot-policy-server-docker` commands, and you can choose the policy with `--policy` or the `OPENARM_LEROBOT_POLICY` environment variable.
+:::
+
 There are two ways to run the inference dataflow: A. local policy server (for debugging) and B. policy server in Docker.
 Here you can follow both of them to understand the whole inference pipeline.
 
@@ -233,9 +242,9 @@ You should see the MuJoCo sim window open, and the robot should start moving acc
 In order to run the policy server in Docker, you need to have Docker installed on your machine.
 After that, you need to do the following steps:
 
-1. Write the server script that loads the trained model and serves inference requests (we have prepared an example for you at [src/docker_policy_server.py](https://github.com/enactic/dora-openarm-inference/blob/main/src/docker_policy_server.py))
+1. Write the server script that loads the trained model and serves inference requests (we have prepared an example for you at [src/docker_policy_server.py](https://github.com/enactic/dora-openarm-evaluation/blob/main/src/docker_policy_server.py))
 
-2. Write the Dockerfile that defines the Docker image for the policy server (we have prepared an example for you at [Dockerfile](https://github.com/enactic/dora-openarm-inference/blob/main/Dockerfile))
+2. Write the Dockerfile that defines the Docker image for the policy server (we have prepared an example for you at [Dockerfile](https://github.com/enactic/dora-openarm-evaluation/blob/main/Dockerfile))
 
 3. Build the Docker image.
 
@@ -243,7 +252,7 @@ After that, you need to do the following steps:
 docker build -t openarm-inference-image-lerobot:latest .
 ```
 
-4. Write the dataflow YAML that defines the Dora dataflow for inference with Docker-based policy server (we have prepared an example for you at [dataflow-docker-inference.yaml](https://github.com/enactic/dora-openarm-inference/blob/main/dataflow-docker-inference.yaml)).
+4. Write the dataflow YAML that defines the Dora dataflow for inference with Docker-based policy server (we have prepared an example for you at [dataflow-docker-inference.yaml](https://github.com/enactic/dora-openarm-evaluation/blob/main/dataflow-docker-inference.yaml)).
 Set the `IMAGE` environment variable in the dataflow YAML to the name of your Docker image.
 
 
