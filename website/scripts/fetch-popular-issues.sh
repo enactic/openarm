@@ -17,8 +17,6 @@
 set -euo pipefail
 
 mkdir -p static/data
-temp_dir=$(mktemp -d static/data/.popular-issues.XXXXXX)
-trap 'rm -rf "$temp_dir"' EXIT
 # "gh issue list" only works with a single repository, so we use the
 # GraphQL search API to collect issues across all enactic/* repositories.
 gh api graphql \
@@ -52,6 +50,5 @@ query($search: String!) {
   }
 }' | \
     jq '[.data.search.nodes[] | select(.reactionGroups[] | select(.content == "THUMBS_UP" and .users.totalCount > 0))] | .[0:5]' \
-      > "$temp_dir/popular-issues.json"
-
-mv "$temp_dir/popular-issues.json" static/data/popular-issues.json
+      > static/data/popular-issues.json.tmp
+mv static/data/popular-issues.json{.tmp,}
