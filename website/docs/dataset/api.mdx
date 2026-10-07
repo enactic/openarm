@@ -4,6 +4,8 @@ title: OpenArm Dataset API
 
 ## API Reference for OpenArm Dataset.
 
+The examples on this page use `tests/fixture/dataset_0.4.0_qpos` in the [openarm_dataset](https://github.com/enactic/openarm_dataset) repository.
+
 ### Table of Contents
 - [`Dataset`](#dataset)
 - [`Camera` (camera frames)](#camera-camera-frames)
@@ -11,10 +13,11 @@ title: OpenArm Dataset API
 - [`Sample`](#sample)
 - [`Sampler`](#sampler)
 - [`Metadata`](#metadata)
-- [`Equipment` / `Embodiments` / `Perceptions`](#equipment--embodiments--perceptions)
+- [`Episode`](#episode)
+- [`Equipment` / `Embodiments` / `Perceptions` / `Leader`](#equipment--embodiments--perceptions--leader)
 - [`Embodiment`, `OpenArm`, `OpenArmCellLifter`](#embodiment-openarm-openarmcelllifter)
 - [`Frequencies`](#frequencies)
-- [LeRobot v2.1 conversion (`lerobot_v21`)](#lerobot-v21-conversion-lerobot_v21)
+- [LeRobot and GR00T conversion](#lerobot-and-gr00t-conversion)
 - [Command-line tools](#command-line-tools)
 ---
 
@@ -30,6 +33,7 @@ Dataset(
     path: str | os.PathLike,
     meta: Metadata | None = None,
     camera_names: list[str] | None = None,
+    kinematics: dict | None = None,
 )
 ```
 
@@ -38,10 +42,12 @@ Dataset(
 | `path`         | Dataset root (the directory containing `metadata.yaml` and `episodes/`).    |
 | `meta`         | Optional pre-loaded `Metadata`. Defaults to `Metadata(path/"metadata.yaml")`.|
 | `camera_names` | Optional whitelist of cameras to expose. Defaults to *all* in metadata.     |
+| `kinematics`   | Optional mapping of arm component (`"right"`/`"left"`) to a kinematics engine used for the `state` conversion. Built lazily if `None`. |
 
 ```python
 >>> import openarm_dataset
->>> ds = openarm_dataset.Dataset("tests/fixture/dataset_0.3.0")
+>>> ds = openarm_dataset.Dataset("tests/fixture/dataset_0.4.0_qpos")
+>>> episode = ds.meta.episodes[0]
 ```
 
 
@@ -61,7 +67,17 @@ override passed to `__init__` or `list(meta.equipment.perceptions.cameras)`.
 
 ```python
 >>> ds.camera_names
-['wrist_left', 'wrist_right', 'ceiling', 'head']
+['ceiling', 'head_left', 'head_right', 'wrist_left', 'wrist_right']
+```
+
+#### `Dataset.camera_format`
+
+Property. The camera storage format shared by all cameras: `"dir"` (a directory of JPEG files per camera) or `"tar"` (a tar archive per camera).
+Raises `ValueError` if the cameras use a mix of both.
+
+```python
+>>> ds.camera_format
+'dir'
 ```
 
 #### `Dataset.meta`
@@ -70,22 +86,31 @@ Attribute. The [`Metadata`](#metadata) instance backing this dataset.
 
 ```python
 >>> ds.meta.version
-'0.3.0'
+'0.4.0'
 >>> ds.meta.tasks
-[{'prompt': 'Run test.', 'description': 'Longer task description if need.'}]
+[{'description': 'Longer task description if need.', 'prompt': 'Run test.'}]
 ```
 
 #### `Dataset.root_path`
 
 Attribute. `pathlib.Path` of the dataset root.
 
+#### `Dataset.episode_path`
+
+```python
+Dataset.episode_path(episode: Episode | None = None) -> pathlib.Path
+```
+
+Returns `root_path / "episodes" / episode["id"]`, or `root_path` if `episode` is `None`.
+
 #### `Dataset.load_obs`
 
 ```python
 Dataset.load_obs(
-    episode_index: int,
+    episode: Episode,
     use_unixtime: bool = False,
     cutoff: float | None = None,
+    state: str | None = None,
 ) -> dict[str, pandas.DataFrame]
 ```
 
@@ -93,24 +118,27 @@ Loads all observation signals for one episode. Returns a dict keyed by
 `{embodiment}/{component}/{attribute}` (or `{embodiment}/{attribute}` for
 component-less embodiments such as the cell lifter).
 
-For 0.3.0 datasets the arm `state.parquet` file is exploded into three DataFrames
-per arm side (`qpos`, `qvel`, `qtorque`); older layouts expose only `qpos`.
+The keys reflect the attributes actually recorded. For arms, `state.parquet` may contain any of `qpos`, `qvel`, `qtorque` and `pose`.
+Embodiments that were not recorded are absent.
 
 | Parameter       | Description                                                                                                        |
 |-----------------|--------------------------------------------------------------------------------------------------------------------|
-| `episode_index` | Zero-based index into `meta.episodes`.                                                                             |
+| `episode`       | An [`Episode`](#episode) from `meta.episodes`.                                                                     |
 | `use_unixtime`  | If `True`, DataFrame index is `float64` Unix seconds; otherwise `datetime64[ns]`.                                  |
-| `cutoff`        | Low-pass cutoff (Hz) for a 4th-order Butterworth filter. If `None`, falls back to the value set by `set_smoothing`.|
+| `cutoff`        | Low-pass cutoff (Hz) for a 4th-order Butterworth filter. If `None`, falls back to the value set by `set_smoothing`. If `0`, smoothing is disabled.|
+| `state`         | If set to `"qpos"`, `"pose"` or `"rot6d"`, arm states are returned in this representation. The recorded data is converted on the fly when needed (`qpos` to `pose` via FK, `pose` to `qpos` via IK). |
 
-Each DataFrame's columns are the embodiment's joint names. For `OpenArm` that
-is `('joint1', …, 'joint7', 'gripper')`; for `OpenArmCellLifter` it is
-`('elevation',)`.
+Each DataFrame's columns are the embodiment's joint names. For `OpenArm`
+`qpos`/`qvel`/`qtorque` that is `('joint1', …, 'joint7', 'gripper')`; for `pose`
+it is `('x', 'y', 'z', 'qw', 'qx', 'qy', 'qz', 'gripper')`; for `rot6d` it is
+`('x', 'y', 'z', 'r11', 'r21', 'r31', 'r12', 'r22', 'r32', 'gripper')`; for
+`OpenArmCellLifter` it is `('elevation',)`.
 
 ```python
->>> obs = ds.load_obs(0)
->>> sorted(obs.keys())
-['arms/left/qpos', 'arms/left/qtorque', 'arms/left/qvel',
- 'arms/right/qpos', 'arms/right/qtorque', 'arms/right/qvel',
+>>> obs = ds.load_obs(episode)
+>>> list(obs.keys())
+['arms/right/qpos', 'arms/right/qvel', 'arms/right/qtorque',
+ 'arms/left/qpos', 'arms/left/qvel', 'arms/left/qtorque',
  'lifter/elevation']
 >>> df = obs["arms/right/qpos"]
 >>> df.shape
@@ -120,61 +148,73 @@ is `('joint1', …, 'joint7', 'gripper')`; for `OpenArmCellLifter` it is
 >>> df.index.dtype
 dtype('<M8[ns]')        # datetime64[ns]
 
->>> ds.load_action(0, use_unixtime=True)["arms/right/qpos"].index.dtype
+>>> ds.load_action(episode, use_unixtime=True)["arms/right/qpos"].index.dtype
 dtype('float64')
 
 >>> obs["lifter/elevation"].columns.tolist()
 ['elevation']
+
+>>> ds.load_obs(episode, state="pose")["arms/right/pose"].columns.tolist()
+['x', 'y', 'z', 'qw', 'qx', 'qy', 'qz', 'gripper']
 ```
 
 #### `Dataset.load_action`
 
 Same signature and return type as `load_obs`, but reads from the `action/`
-subtree. In 0.3.0 the only arm attribute persisted as action is `qpos`.
+subtree. Arm actions are `qpos` for joint-space teleoperation or `pose` for
+Cartesian teleoperation.
 
 ```python
->>> sorted(ds.load_action(0).keys())
-['arms/left/qpos', 'arms/right/qpos', 'lifter/elevation']
+>>> list(ds.load_action(episode).keys())
+['arms/right/qpos', 'arms/left/qpos', 'lifter/elevation']
+>>> pose_ds = openarm_dataset.Dataset("tests/fixture/dataset_0.4.0_pose")
+>>> list(pose_ds.load_action(pose_ds.meta.episodes[0]).keys())
+['arms/right/pose', 'arms/left/pose', 'lifter/elevation']
 ```
 
 #### `Dataset.load_cameras`
 
 ```python
-Dataset.load_cameras(episode_index: int) -> dict[str, Camera]
+Dataset.load_cameras(episode: Episode) -> dict[str, Camera]
 ```
 
 Returns one [`Camera`](#camera-camera-frames) per stream in
 `Dataset.camera_names`.
 
 ```python
->>> cams = ds.load_cameras(0)
->>> sorted(cams)
-['ceiling', 'head', 'wrist_left', 'wrist_right']
+>>> cams = ds.load_cameras(episode)
+>>> list(cams)
+['ceiling', 'head_left', 'head_right', 'wrist_left', 'wrist_right']
 ```
 
 #### `Dataset.load_camera`
 
 ```python
-Dataset.load_camera(name: str, episode_index: int) -> Camera
+Dataset.load_camera(name: str, episode: Episode) -> Camera
 ```
 
 Raises `KeyError` if `name` is not in `Dataset.camera_names`.
 
 ```python
->>> head = ds.load_camera("head", 0)
->>> head.num_frames
+>>> ceiling = ds.load_camera("ceiling", episode)
+>>> ceiling.num_frames
 3
 ```
 
 #### `Dataset.sample`
 
 ```python
-Dataset.sample(hz: float, episode_index: int) -> list[Sample]
+Dataset.sample(
+    hz: float,
+    episode: Episode,
+    state: str | None = None,
+) -> list[Sample]
 ```
 
 Resamples obs/action/cameras onto a uniform grid at `hz` Hz, clipped to the
 intersection of all streams' time spans, and returns a list of
-[`Sample`](#sample) objects (one per timestep).
+[`Sample`](#sample) objects (one per timestep). `state` is passed to
+`load_obs` and `load_action`.
 
 For each modality the *previous-or-equal* element by timestamp is selected
 via `np.searchsorted` (which actually returns the right-insertion index, so a
@@ -182,28 +222,46 @@ sample taken at `t` may align with the first frame whose timestamp is just
 above `t`).
 
 ```python
->>> samples = ds.sample(hz=30, episode_index=0)
+>>> samples = ds.sample(hz=30, episode=episode)
 >>> len(samples)
 2
 >>> samples[0]
 Sample(timestamp=1772010251.6202147)
 >>> samples[0].obs["arms/right/qpos"].dtype, samples[0].obs["arms/right/qpos"].shape
 (dtype('float32'), (8,))
->>> samples[0].cameras["head"]               # cameras are Frame objects, not arrays
+>>> samples[0].cameras["ceiling"]            # cameras are Frame objects, not arrays
 <openarm_dataset.camera.Frame object at 0x...>
->>> samples[0].cameras["head"].load().shape  # decode on demand
+>>> samples[0].cameras["ceiling"].load().shape  # decode on demand
 (600, 960, 3)
+```
+
+#### `Dataset.get_embodiment_attributes` / `Dataset.load_embodiment_value`
+
+```python
+Dataset.get_embodiment_attributes(type_: str, episode: Episode) -> list[dict]
+Dataset.load_embodiment_value(attribute: dict, use_unixtime: bool = False) -> pandas.DataFrame
+```
+
+Lower-level access to the recorded files. `get_embodiment_attributes("obs" | "action", episode)` lists the recorded attributes, each as a dict with `key`, `embodiment`, `component`, `name` and `path`.
+`load_embodiment_value` loads one of them as recorded, without smoothing or state conversion.
+
+```python
+>>> attrs = ds.get_embodiment_attributes("obs", episode)
+>>> [(a["key"], a["name"]) for a in attrs][:3]
+[('arms/right/qpos', 'qpos'), ('arms/right/qvel', 'qvel'), ('arms/right/qtorque', 'qtorque')]
+>>> ds.load_embodiment_value(attrs[0]).shape
+(746, 8)
 ```
 
 #### `Dataset.set_smoothing`
 
 ```python
-Dataset.set_smoothing(cutoff: float) -> None
+Dataset.set_smoothing(cutoff: float | None) -> None
 ```
 
 Sets a default low-pass cutoff used by subsequent `load_obs` / `load_action`
-calls when no explicit `cutoff` argument is passed. Also picked up by
-`Dataset.write(format="lerobot_v2.1")`.
+calls when no explicit `cutoff` argument is passed. `None` or `0` disables
+smoothing. Also used by the LeRobot and GR00T conversions.
 
 ```python
 >>> ds.set_smoothing(1.0)
@@ -212,24 +270,34 @@ calls when no explicit `cutoff` argument is passed. Also picked up by
 #### `Dataset.validate`
 
 ```python
-Dataset.validate(on_error: Callable[[str], None] | None = None) -> bool
+Dataset.validate(
+    on_error: Callable[[str], None] | None = None,
+    update_metadata: bool = False,
+    qpos_jump_threshold: float | None = None,
+    qpos_absmax: float | None = None,
+    min_duration: float | None = None,
+) -> bool
 ```
 
-Walks every per-episode parquet file (obs and action) and reports any null
-values via Parquet column statistics. The current implementation only checks
-for nulls; it does not check schemas, monotonicity, or file presence.
+Validates every episode. It always checks for null and NaN values in the obs
+and action parquet files and for invalid pose quaternions (non-finite or
+zero-norm). The other checks are enabled by their parameters.
 
-| Parameter  | Description                                                                                  |
-|------------|----------------------------------------------------------------------------------------------|
-| `on_error` | Callback invoked with one human-readable error string per violation.                         |
-| **returns**| `True` if no errors were reported, `False` otherwise.                                        |
+| Parameter             | Description                                                                                  |
+|-----------------------|----------------------------------------------------------------------------------------------|
+| `on_error`            | Callback invoked with one human-readable error string per violation.                         |
+| `update_metadata`     | If `True`, record the result as a `valid` flag per episode in the metadata. Ignored for unversioned datasets. Call `meta.write()` to save it. |
+| `qpos_jump_threshold` | If set, flag qpos frame-to-frame deltas above this value (radians).                          |
+| `qpos_absmax`         | If set, flag qpos values whose absolute value exceeds this value (radians).                  |
+| `min_duration`        | If set, flag episodes shorter than this value (seconds).                                     |
+| **returns**           | `True` if no errors were reported, `False` otherwise.                                        |
 
 ```python
 >>> errors = []
->>> ds.validate(on_error=errors.append)
-True
+>>> ds.validate(on_error=errors.append, min_duration=2.0)
+False
 >>> errors
-[]
+['episodes/3: duration=0.81s < 2.0s']
 ```
 
 #### `Dataset.write`
@@ -246,27 +314,33 @@ Persists the dataset to `output`. `format` is one of:
 
 | `format`        | Behavior                                                                                                            |
 |-----------------|---------------------------------------------------------------------------------------------------------------------|
-| `None` or `"openarm"` | Write as the current OpenArm format (currently 0.3.0). Upgrades legacy layouts in place. No extra options.   |
-| `"lerobot_v2.1"`      | Convert and write LeRobot v2.1 layout (parquet + MP4 videos + meta). See [LeRobot section](#lerobot-v21-conversion-lerobot_v21) for `**options`. |
+| `None` or `"openarm"` | Write as the latest OpenArm format (0.4.0). Older layouts are upgraded. Options: `camera_format` (`"dir"` or `"tar"`, default `"dir"`) and `valid_only` (default `False`). |
+| `"lerobot_v2.1"`      | Convert to the LeRobot v2.1 layout. See [LeRobot and GR00T conversion](#lerobot-and-gr00t-conversion) for `**options`. |
+| `"lerobot_v3.0"`      | Convert to the LeRobot v3.0 layout. Same options as `"lerobot_v2.1"`. |
+| `"gr00t"`             | Convert to the GR00T LeRobot layout (LeRobot v2.1 plus `meta/modality.json`). |
+| `"robot_eval_logger"` | Convert to the robot_eval_logger format. Requires the `robot-eval-logger` extra. |
+| `"rrd"`               | Export to the Rerun `.rrd` format. Requires the `rerun` extra. |
 
 Any other value raises `ValueError("Unsupported format: …")`.
 
 ```python
 >>> import tempfile, os
 >>> out = tempfile.mkdtemp()
->>> ds.write(out)                       # native openarm format
+>>> ds.write(out, camera_format="tar")      # native openarm format
 >>> sorted(os.listdir(out))
 ['episodes', 'metadata.yaml']
+>>> sorted(os.listdir(os.path.join(out, "episodes", "0", "cameras")))
+['ceiling.tar', 'head_left.tar', 'head_right.tar', 'wrist_left.tar', 'wrist_right.tar']
 ```
 
 ### `Camera` (camera frames)
 
 `openarm_dataset.camera.Camera`
 
-A `Camera` is a lazy view of one camera stream's JPEG directory. It indexes
-files at construction time by listing the directory and sorting filenames
-lexicographically (filenames are nanosecond timestamps, so lexicographic
-order matches chronological order).
+A `Camera` is a lazy view of one camera stream. The frames are stored either
+as a directory of JPEG files (`cameras/<name>/`) or as a single tar archive
+(`cameras/<name>.tar`). Filenames are nanosecond timestamps, so lexicographic
+order matches chronological order.
 
 #### Constructor
 
@@ -274,29 +348,36 @@ order matches chronological order).
 Camera(name: str, base_path: str | os.PathLike)
 ```
 
+`base_path` is the directory-style path (e.g. `.../cameras/ceiling`). If that
+directory does not exist but `.../cameras/ceiling.tar` does, the camera is read
+from the archive.
 You almost never construct this directly; use `Dataset.load_camera` /
 `Dataset.load_cameras`.
 
-### Attributes
+#### Attributes
 
 | Attribute        | Type                                | Description                                  |
 |------------------|-------------------------------------|----------------------------------------------|
-| `name`           | `str`                               | Stream name (e.g. `"head"`).                 |
+| `name`           | `str`                               | Stream name (e.g. `"ceiling"`).              |
 | `base_path`      | `pathlib.Path`                      | Directory holding the JPEGs.                 |
-| `all_files`      | `list[pathlib.Path]`                | All JPEG paths, sorted.                      |
+| `tar_path`       | `pathlib.Path` or `None`            | Path of the tar archive for tar-backed cameras. |
+| `format`         | `str`                               | `"dir"` or `"tar"`.                          |
+| `all_files`      | `list[pathlib.Path]`                | All JPEG paths, sorted. Empty for tar-backed cameras; use `frames()` instead. |
 
 #### `Camera.num_frames`
 
-Property; equivalent to `len(self.all_files)`.
+Property; the number of frames.
 
 ```python
->>> head = ds.load_camera("head", 0)
->>> head.num_frames
+>>> ceiling = ds.load_camera("ceiling", episode)
+>>> ceiling.num_frames
 3
->>> head.base_path
-PosixPath('tests/fixture/dataset_0.3.0/episodes/0/cameras/head')
->>> head.all_files[0].name
-'1772010251618790832.jpeg'
+>>> ceiling.format
+'dir'
+>>> ceiling.base_path
+PosixPath('tests/fixture/dataset_0.4.0_qpos/episodes/0/cameras/ceiling')
+>>> ceiling.all_files[0].name
+'1772010251619682157.jpeg'
 ```
 
 #### `Camera.get_frame`
@@ -305,14 +386,13 @@ PosixPath('tests/fixture/dataset_0.3.0/episodes/0/cameras/head')
 Camera.get_frame(index: int) -> Frame
 ```
 
-Returns a `Frame` wrapping `self.all_files[index]`. Raises `IndexError` for
-out-of-range indices.
+Returns the `Frame` at `index`. Raises `IndexError` for out-of-range indices.
 
 ```python
->>> head.get_frame(0)
+>>> ceiling.get_frame(0)
 <openarm_dataset.camera.Frame object at 0x...>
->>> head.get_frame(0).timestamp
-1772010251.6187909
+>>> ceiling.get_frame(0).timestamp
+1772010251.619682
 ```
 
 #### `Camera.frames`
@@ -321,11 +401,11 @@ out-of-range indices.
 Camera.frames() -> Iterator[Frame]
 ```
 
-Generator yielding one `Frame` per file in order.
+Generator yielding one `Frame` per image in order.
 
 ```python
->>> [f.timestamp for f in head.frames()]
-[1772010251.6187909, 1772010251.629775, 1772010251.6634612]
+>>> [f.timestamp for f in ceiling.frames()]
+[1772010251.619682, 1772010251.6290832, 1772010251.6632507]
 ```
 
 #### `Camera.load_timestamps`
@@ -334,12 +414,12 @@ Generator yielding one `Frame` per file in order.
 Camera.load_timestamps() -> list[float]
 ```
 
-Returns the Unix-second timestamp for every frame, in the same order as
-`all_files`. Timestamps are decoded from the filenames (`{ns}.jpeg`).
+Returns the Unix-second timestamp for every frame, in order. Timestamps are
+decoded from the filenames (`{ns}.jpeg`).
 
 ```python
->>> head.load_timestamps()
-[1772010251.6187909, 1772010251.629775, 1772010251.6634612]
+>>> ceiling.load_timestamps()
+[1772010251.619682, 1772010251.6290832, 1772010251.6632507]
 ```
 
 ---
@@ -348,23 +428,26 @@ Returns the Unix-second timestamp for every frame, in the same order as
 
 `openarm_dataset.camera.Frame`
 
-A lightweight handle to a single image file. Decoding only happens on
-`.load()` or `.show()`.
+A lightweight handle to a single image. Decoding only happens on `.load()`,
+`.open_image()` or `.show()`.
 
 | Attribute / method | Type / signature                  | Description                                              |
 |--------------------|-----------------------------------|----------------------------------------------------------|
-| `path`             | `os.PathLike`                     | JPEG path.                                               |
+| `path`             | `pathlib.Path`                    | JPEG path. For tar-backed frames, this is a synthetic `<archive>/<member>` path, not a real file. |
 | `timestamp`        | `float`                           | Unix seconds derived from the filename stem (`ns / 1e9`).|
+| `size`             | `int`                             | Size of the JPEG data in bytes.                          |
 | `load()`           | `() -> numpy.ndarray`             | Decode to an `(H, W, 3)` `uint8` ndarray (RGB).          |
+| `open_image()`     | `() -> PIL.Image.Image`           | Open the image with PIL.                                 |
 | `show()`           | `() -> None`                      | Open the image with PIL's default viewer.                |
+| `materialize(temp_dir)` | `(os.PathLike) -> pathlib.Path` | Return a real JPEG path on disk. Tar-backed frames are extracted into `temp_dir`. |
 | `__eq__`           | `(other) -> bool`                 | Equal iff `other.path == self.path`.                     |
 
 ```python
->>> f = head.get_frame(0)
+>>> f = ceiling.get_frame(0)
 >>> f.path.name
-'1772010251618790832.jpeg'
+'1772010251619682157.jpeg'
 >>> f.timestamp
-1772010251.6187909
+1772010251.619682
 >>> img = f.load()
 >>> img.shape, img.dtype
 ((600, 960, 3), dtype('uint8'))
@@ -401,13 +484,13 @@ You normally get these from `Dataset.sample`.
 | `action`    | `dict[str, numpy.ndarray]`      | Same shape/dtype as `obs`, keyed like `load_action`.        |
 | `cameras`   | `dict[str, Frame]`              | One `Frame` per camera stream — *not* decoded.              |
 
-Per-modality vectors carry the embodiment's joint values in the same order
-as `embodiment.joints` (e.g. `joint1…joint7, gripper` for OpenArm). For each
-camera, the selected `Frame` is the one with the smallest timestamp
-`>=` the sample's timestamp (via `np.searchsorted`).
+Per-modality vectors carry the values in the same order as the DataFrame
+columns of `load_obs` / `load_action` (e.g. `joint1…joint7, gripper` for
+OpenArm `qpos`). For each camera, the selected `Frame` is the one with the
+smallest timestamp `>=` the sample's timestamp (via `np.searchsorted`).
 
 ```python
->>> s = ds.sample(hz=30, episode_index=0)[0]
+>>> s = ds.sample(hz=30, episode=episode)[0]
 >>> s
 Sample(timestamp=1772010251.6202147)
 >>> list(s.keys())                    # Mapping interface
@@ -416,8 +499,6 @@ Sample(timestamp=1772010251.6202147)
 True
 >>> s.obs["arms/right/qpos"].shape, s.obs["arms/right/qpos"].dtype
 ((8,), dtype('float32'))
->>> s.cameras["head"].path.name
-'1772010251629774985.jpeg'
 ```
 
 ---
@@ -432,19 +513,20 @@ to instantiate it directly.
 ```python
 Sampler().sample(
     dataset: Dataset,
-    episode_index: int,
+    episode: Episode,
     hz: float,
+    state: str | None = None,
 ) -> Iterator[Sample]
 ```
 
 `Dataset.sample` materializes the iterator into a list. Note the *argument
-order* differs between `Sampler.sample(dataset, episode_index, hz)` and
-`Dataset.sample(hz, episode_index)`.
+order* differs between `Sampler.sample(dataset, episode, hz)` and
+`Dataset.sample(hz, episode)`.
 
 ```python
 >>> from openarm_dataset.sampler import Sampler
->>> list(Sampler().sample(ds, episode_index=0, hz=30))[0].timestamp
-1772010251.6202147
+>>> next(Sampler().sample(ds, episode=episode, hz=30)).timestamp
+np.float64(1772010251.6202147)
 ```
 
 ---
@@ -475,17 +557,17 @@ For legacy ("unversioned") datasets, the constructor merges the contents of
 | `operation_type` | `str`               | Defaults to `"teleop"`.                                 |
 | `location`       | `str`               |                                                         |
 | `tasks`          | `list[dict]`        | Each task has `prompt` and `description`.               |
-| `episodes`       | `list[dict]`        | Each episode has `id`, `success`, `task_index`.         |
+| `episodes`       | `list[Episode]`     | See [`Episode`](#episode).                              |
 | `num_episodes`   | `int`               | `len(self.episodes)`.                                   |
-| `equipment`      | [`Equipment`](#equipment--embodiments--perceptions) | Rebuilt on each access. |
+| `equipment`      | [`Equipment`](#equipment--embodiments--perceptions--leader) | Rebuilt on each access. |
 | `frequencies`    | [`Frequencies`](#frequencies) |                                                |
 
 ```python
 >>> ds.meta.version, ds.meta.operator, ds.meta.location
-('0.3.0', 'Tester', 'Test')
+('0.4.0', 'Tester', 'Test')
 >>> ds.meta.tasks
-[{'prompt': 'Run test.', 'description': 'Longer task description if need.'}]
->>> ds.meta.episodes
+[{'description': 'Longer task description if need.', 'prompt': 'Run test.'}]
+>>> [dict(e) for e in ds.meta.episodes]
 [{'id': '0', 'success': False, 'task_index': 0},
  {'id': '3', 'success': True, 'task_index': 0}]
 >>> ds.meta.num_episodes
@@ -497,13 +579,14 @@ For legacy ("unversioned") datasets, the constructor merges the contents of
 ##### `Metadata.write`
 
 ```python
-Metadata.write(output: str | os.PathLike) -> None
+Metadata.write(output: str | os.PathLike, valid_only: bool = False) -> None
 ```
 
-Writes a normalized 0.3.0 `metadata.yaml` to the directory `output`,
+Writes a normalized 0.4.0 `metadata.yaml` to the directory `output`,
 upgrading legacy field names (`equipment_id`/`equipment_version` →
 `id`/`version`; `left_wrist`/`right_wrist` → `wrist_left`/`wrist_right`).
-Creates the directory if needed.
+Creates the directory if needed. If `valid_only` is `True`, episodes marked
+invalid are omitted.
 
 ```python
 >>> import tempfile
@@ -515,7 +598,30 @@ Creates the directory if needed.
 
 ---
 
-### `Equipment` / `Embodiments` / `Perceptions`
+### `Episode`
+
+`openarm_dataset.metadata.Episode`
+
+A `MutableMapping` view of one episode entry in the metadata. Changes are
+written through to the metadata. Pass it to the `Dataset` loading methods.
+
+| Key / method | Description |
+|---|---|
+| `id`         | Episode ID, which is also the directory name under `episodes/`. |
+| `success`    | Whether the task succeeded. |
+| `task_index` | Index into `Metadata.tasks`. |
+| `valid`      | Optional validity flag written by `openarm-dataset-validate`. |
+| `valid()`    | Returns `False` only if the episode is marked invalid. Episodes without a `valid` flag are valid. |
+
+```python
+>>> episode = ds.meta.episodes[0]
+>>> episode["id"], episode["success"], episode.valid()
+('0', False, True)
+```
+
+---
+
+### `Equipment` / `Embodiments` / `Perceptions` / `Leader`
 
 #### `Equipment`
 
@@ -529,6 +635,7 @@ Equipment(data: dict)
 | `version`     | `str`          | `equipment.version`       |
 | `embodiments` | `Embodiments`  | `equipment.embodiments`   |
 | `perceptions` | `Perceptions`  | `equipment.perceptions`   |
+| `leader`      | `Leader`       | `equipment.leader`        |
 
 ```python
 >>> eq = ds.meta.equipment
@@ -558,7 +665,19 @@ is *not* the same class as `camera.Camera` used for frames.
 
 ```python
 >>> list(ds.meta.equipment.perceptions.cameras)
-['wrist_left', 'wrist_right', 'ceiling', 'head']
+['ceiling', 'head_left', 'head_right', 'wrist_left', 'wrist_right']
+```
+
+#### `Leader`
+
+A `Mapping[str, LeaderDevice]` of the leader devices used for teleoperation
+(e.g. KER), keyed by the name declared in YAML. Each `LeaderDevice` has `id`,
+`firmware_version` and `hardware_version` (each `None` if not recorded).
+
+```python
+>>> ker = ds.meta.equipment.leader["ker"]
+>>> ker.id, ker.firmware_version, ker.hardware_version
+('OpenArmKER', '1.2.3', '1.0')
 ```
 
 ---
@@ -568,19 +687,17 @@ is *not* the same class as `camera.Camera` used for frames.
 `Embodiment` is the base class; concrete subclasses are returned by
 `Embodiments` based on the `id` field in YAML.
 
-| Subclass             | `id`               | `components`     | `attributes`               | `joints`                                  |
-|----------------------|--------------------|------------------|----------------------------|-------------------------------------------|
-| `OpenArm`            | `"OpenArm"`        | `("right", "left")` | `("qpos",)`             | `("joint1", … "joint7", "gripper")`       |
-| `OpenArmCellLifter`  | `"OpenArmCellLifter"` | `()`          | `("elevation",)`           | `("elevation",)`                          |
+| Subclass             | `id`               | `components`     | `joints`                                  |
+|----------------------|--------------------|------------------|-------------------------------------------|
+| `OpenArm`            | `"OpenArm"`        | `("right", "left")` | `("joint1", … "joint7", "gripper")`    |
+| `OpenArmCellLifter`  | `"OpenArmCellLifter"` | `()`          | `("elevation",)`                          |
 
 All subclasses also expose `.name` (the YAML key), `.id`, `.version`.
 
-Note: `attributes` describes the *action* layout. For 0.3.0 obs, arm
-`state.parquet` is exploded into `qpos`/`qvel`/`qtorque` regardless of the
-declared `attributes` tuple — this is hard-coded in `Dataset._load_embodiment_value`.
+The recorded attributes (`qpos`, `qvel`, `qtorque`, `pose`) are not declared
+in the metadata. They are read from the columns of each `state.parquet`.
 
-Unknown ids raise `ValueError`:
-
+Unknown ids raise `ValueError`.
 
 ---
 
@@ -601,21 +718,22 @@ attribute is just the corresponding nested dict (or `{}` if absent).
 
 ```python
 >>> ds.meta.frequencies.cameras
-{'ceiling': 30.303030303030305, 'head': 30.303030303030305,
- 'wrist_left': 30.303030303030305, 'wrist_right': 30.303030303030305}
+{'ceiling': 30.303030303030305, 'head_left': 30.303030303030305,
+ 'head_right': 30.303030303030305, 'wrist_left': 30.303030303030305,
+ 'wrist_right': 30.303030303030305}
 >>> ds.meta.frequencies.action
 {'arms': {'left': 250.0, 'right': 250.0}, 'lifter': 250.0}
 ```
 
 ---
 
-### LeRobot v2.1 conversion (`lerobot_v21`)
+### LeRobot and GR00T conversion
 
-`openarm_dataset.lerobot_v21.to_lerobotv21`
+`openarm_dataset.lerobot_v21.to_lerobotv21`, `openarm_dataset.lerobot_v30.to_lerobotv30` and `openarm_dataset.lerobot_v21.to_gr00t`
 
-Conversion entry point used by `Dataset.write(format="lerobot_v2.1", **opts)`
-and the `openarm-dataset-convert` CLI. Requires **ffmpeg** on `PATH` for
-video encoding; raises `RuntimeError` if not found.
+Conversion entry points used by `Dataset.write(format=..., **opts)` and the
+`openarm-dataset-convert` CLI. They require **ffmpeg** on `PATH` for video
+encoding and raise `RuntimeError` if it is not found.
 
 ```python
 to_lerobotv21(
@@ -625,19 +743,29 @@ to_lerobotv21(
     train_split: float = 0.8,
     smoothing_cutoff: float = 1.0,
     success_only: bool = False,
+    state: str = "qpos",
+    valid_only: bool = False,
+    arm_dynamics: bool = False,
 ) -> None
 ```
 
-| Parameter         | Default | Description                                                                                          |
-|-------------------|---------|------------------------------------------------------------------------------------------------------|
-| `fps`             | `30`    | Resampling rate for both states and video. Must be `> 0`; otherwise `ValueError`.                    |
-| `train_split`     | `0.8`   | Fraction of episodes assigned to `train`; remainder to `val`. Must be in `[0, 1]` or `ValueError`.   |
-| `smoothing_cutoff`| `1.0`   | Low-pass cutoff (Hz) applied to obs/action before sampling; calls `dataset.set_smoothing` internally.|
-| `success_only`    | `False` | If `True`, drop episodes where `meta.episodes[i]["success"]` is falsy. Re-indexes episodes/tasks.    |
+`to_lerobotv30` has the same signature. `to_gr00t` has the same signature
+without `arm_dynamics`, and also writes `meta/modality.json` describing the
+state/action layout.
+
+| Parameter         | Default  | Description                                                                                          |
+|-------------------|----------|------------------------------------------------------------------------------------------------------|
+| `fps`             | `30`     | Resampling rate for both states and video. Must be `> 0`; otherwise `ValueError`.                    |
+| `train_split`     | `0.8`    | Fraction of episodes assigned to `train`; remainder to `val`. Must be in `[0, 1]` or `ValueError`.   |
+| `smoothing_cutoff`| `1.0`    | Low-pass cutoff (Hz) applied to obs/action before sampling. `0` or `None` disables smoothing.        |
+| `success_only`    | `False`  | If `True`, drop episodes whose `success` is falsy. Re-indexes episodes/tasks.                        |
+| `state`           | `"qpos"` | Arm state representation of the output: `"qpos"`, `"pose"` or `"rot6d"`. Converted on the fly when the dataset recorded another representation. |
+| `valid_only`      | `False`  | If `True`, drop episodes marked invalid by `openarm-dataset-validate`.                               |
+| `arm_dynamics`    | `False`  | If `True`, also export the recorded arm joint velocity and torque as `observation.velocity` and `observation.torque` (16 values each: right arm 7 joints + gripper, left arm 7 joints + gripper). Each is exported only when every episode recorded it. |
 
 If, after filtering, no episodes remain, raises `ValueError("No episodes to write.")`.
 
-The output layout produced under `output_dir/`:
+The output layout of `to_lerobotv21` under `output_dir/`:
 
 - `data/chunk-XXX/episode_XXXXXX.parquet`
 - `videos/chunk-XXX/observation.images.<cam>/episode_XXXXXX.mp4`
@@ -653,22 +781,72 @@ Installed via `pyproject.toml`'s `[project.scripts]`:
 
 ```text
 openarm-dataset-validate <input>
+                         [--no-update-metadata]
+                         [--qpos-jump-threshold RADIAN]  # default 1.0
+                         [--qpos-absmax RADIAN]          # default 6.28
+                         [--min-duration SECOND]         # default 2.0
 ```
 
-Calls `Dataset(input).validate(on_error=lambda e: print(e, file=sys.stderr))`
-and exits with status `1` if any errors are reported.
+Validates the dataset with `Dataset.validate`, prints the errors to stderr and
+exits with status `1` if any errors are reported. Pass `none` to
+`--qpos-jump-threshold`, `--qpos-absmax` or `--min-duration` to disable the check.
+
+By default, the result is recorded as a `valid` flag per episode in
+`metadata.yaml`. Pass `--no-update-metadata` to keep `metadata.yaml` unchanged.
 
 #### `openarm-dataset-convert`
 
 ```text
 openarm-dataset-convert <input> <output>
-                        [--format {openarm,lerobot_v2.1}]
-                        [--fps INT]                # default 30 (lerobot only)
-                        [--smoothing-cutoff FLOAT] # default 1.0 (lerobot only)
-                        [--train-split FLOAT]      # default 0.8 (lerobot only)
-                        [--success-only]           # default False (lerobot only)
+                        [--format {openarm,lerobot_v2.1,lerobot_v3.0,gr00t,robot_eval_logger}]
+                        [--fps INT]                  # default 30
+                        [--smoothing-cutoff FLOAT]   # default 1.0, 0 disables smoothing
+                        [--train-split FLOAT]        # default 0.8
+                        [--success-only]
+                        [--valid-only]
+                        [--state {qpos,pose,rot6d}]  # default qpos
+                        [--arm-dynamics]
+                        [--camera-format {dir,tar}]  # default dir
+                        [--gripper-component COMPONENT]
+                        [--eval-id ID] [--eval-name NAME]
+                        [--location LOCATION] [--evaluator-name NAME]
 ```
 
+| Option | Applies to |
+|---|---|
+| `--fps`, `--success-only` | `lerobot_v2.1`, `lerobot_v3.0`, `gr00t`, `robot_eval_logger` |
+| `--smoothing-cutoff`, `--train-split`, `--state` | `lerobot_v2.1`, `lerobot_v3.0`, `gr00t` |
+| `--arm-dynamics` | `lerobot_v2.1`, `lerobot_v3.0` |
+| `--valid-only` | All formats |
+| `--camera-format` | `openarm`. `tar` stores each camera as a single tar archive, which is recommended for the Hugging Face Hub file-count limits. |
+| `--gripper-component`, `--eval-id`, `--eval-name`, `--location`, `--evaluator-name` | `robot_eval_logger` |
 
- Implementation: `openarm_dataset.convert.main`. `--format` is always passed to `Dataset.write`; `--fps` / `--smoothing-cutoff` / `--train-split` / `--success-only` are forwarded as `**options` only when `--format lerobot_v2.1`.
+Implementation: `openarm_dataset.convert.main`.
 
+#### `openarm-dataset-merge`
+
+```text
+openarm-dataset-merge -o OUTPUT [--symlink] <inputs>...
+```
+
+Merges multiple OpenArm datasets into one. With `--symlink`, episode data is
+symlinked instead of copied.
+
+#### `openarm-dataset-repair`
+
+```text
+openarm-dataset-repair [-o OUTPUT] <input>
+```
+
+Repairs a dataset by filling isolated single-frame gaps with the average of the
+neighboring frames. Repairs in place if `-o` is omitted.
+
+#### `openarm-dataset-upload`
+
+```text
+openarm-dataset-upload --repo-id REPO_ID [--private] [--licence LICENCE] [--large-folder] <input>
+```
+
+Uploads an OpenArm dataset to the Hugging Face Hub. `--large-folder` uses a
+resumable, multi-threaded upload, which is recommended for datasets larger than
+1 GB. Consider converting the dataset with `--camera-format tar` before uploading.
