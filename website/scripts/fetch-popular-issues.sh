@@ -14,6 +14,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+set -euo pipefail
+
 mkdir -p static/data
 # "gh issue list" only works with a single repository, so we use the
 # GraphQL search API to collect issues across all enactic/* repositories.
@@ -48,4 +50,5 @@ query($search: String!) {
   }
 }' | \
     jq '[.data.search.nodes[] | select(.reactionGroups[] | select(.content == "THUMBS_UP" and .users.totalCount > 0))] | .[0:5]' \
-      > static/data/popular-issues.json
+      > static/data/popular-issues.json.tmp
+mv static/data/popular-issues.json{.tmp,}
