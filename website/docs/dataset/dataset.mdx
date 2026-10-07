@@ -10,6 +10,9 @@ repository: https://github.com/enactic/openarm_dataset
 
 ### Dataset Structure
 
+The current format version is 0.4.0.
+[dora-openarm-dataset-recorder](https://github.com/enactic/dora-openarm-dataset-recorder) and `Dataset.write()` write datasets in this format.
+
 ```
 dataset
 ├── episodes
@@ -17,26 +20,26 @@ dataset
 │   │   ├── action
 │   │   │   ├── arms
 │   │   │   │   ├── left
-│   │   │   │   │   └── qpos.parquet
+│   │   │   │   │   └── state.parquet
 │   │   │   │   └── right
-│   │   │   │       └── qpos.parquet
+│   │   │   │       └── state.parquet
 │   │   │   └── lifter
 │   │   │       └── elevation.parquet
 │   │   ├── cameras
 │   │   │   ├── ceiling
-│   │   │   │   ├── 1778841171518984960.jpeg
-│   │   │   │   |    ...
+│   │   │   │   ├── 1772010251619682157.jpeg
+│   │   │   │   │   ...
 │   │   │   ├── head_left
-│   │   │   │   ├── 1778841171520606976.jpeg
+│   │   │   │   ├── 1772010251618790832.jpeg
 │   │   │   │   │   ...
 │   │   │   ├── head_right
-│   │   │   │   ├── 1778841171520606976.jpeg
+│   │   │   │   ├── 1772010251618790832.jpeg
 │   │   │   │   │   ...
 │   │   │   ├── wrist_left
-│   │   │   │   ├── 1778841171528291840.jpeg
+│   │   │   │   ├── 1772010251620214727.jpeg
 │   │   │   │   │   ...
 │   │   │   └── wrist_right
-│   │   │       ├── 1778841171519556096.jpeg
+│   │   │       ├── 1772010251619949539.jpeg
 │   │   │       │   ...
 │   │   └── obs
 │   │       ├── arms
@@ -54,7 +57,150 @@ dataset
 └── metadata.yaml
 ```
 
+Each episode directory has three subdirectories:
 
+| Directory | Content |
+|---|---|
+| `obs/` | Observations: the measured state of the robot (e.g. the joint positions read from the motors). |
+| `action/` | Actions: the commands sent to the robot (e.g. the target joint positions from the leader arm or VR controllers). |
+| `cameras/` | Camera images. |
+
+Episode IDs are assigned sequentially when recording, so the IDs may have gaps when an episode is cancelled (cancelled episodes are deleted).
+When you record into an existing dataset directory, new episodes are appended to it.
+
+#### Arm data (`state.parquet`)
+
+`obs/arms/<side>/state.parquet` and `action/arms/<side>/state.parquet` (`<side>` is `right` or `left`) have one row per sample.
+The `timestamp` column is the Unix time in nanoseconds (`timestamp[ns]`), and each of the other columns is a list of `float32` values for one attribute:
+
+| Column | Length | Content | Unit |
+|---|---|---|---|
+| `qpos` | 8 | Joint positions: `joint1` … `joint7`, `gripper` | rad |
+| `qvel` | 8 | Joint velocities | rad/s |
+| `qtorque` | 8 | Joint torques | Nm |
+| `pose` | 8 | End-effector pose: `x, y, z, qw, qx, qy, qz, gripper` | m (position), quaternion (orientation) |
+
+* `obs` usually has `qpos`, `qvel` and `qtorque`.
+* `action` has `qpos` for joint-space teleoperation (e.g. KER) or `pose` for Cartesian teleoperation.
+* `gripper` is the position of the gripper motor.
+* `pose` is the end-effector pose in the MuJoCo model's world frame.
+
+Here is the first row of `obs/arms/right/state.parquet`:
+
+```python
+>>> import pandas as pd
+>>> df = pd.read_parquet("episodes/0/obs/arms/right/state.parquet")
+>>> df.columns.tolist()
+['timestamp', 'qpos', 'qvel', 'qtorque']
+>>> df.iloc[0]["qpos"]
+array([-0.0393523 ,  0.9891182 , -0.05177076,  0.7356907 ,  0.07774002,
+       -0.07072392,  0.07948788, -0.1246737 ], dtype=float32)
+```
+
+#### Lifter data (`elevation.parquet`)
+
+`obs/lifter/elevation.parquet` and `action/lifter/elevation.parquet` have a `timestamp` column and a `value` column, which is a list with one value: the elevation of the OpenArm Cell lifter.
+The unit is set by `unit` of the lifter in `metadata.yaml` (`mm`).
+These files exist only when the lifter is recorded.
+
+#### Cameras
+
+Each camera is stored either as a directory of JPEG files (`cameras/<name>/<timestamp>.jpeg`) or as a single uncompressed tar archive (`cameras/<name>.tar`) that contains the same JPEG files.
+The file name is the Unix time in nanoseconds when the image was captured.
+The tar format keeps the number of files small, which is recommended for uploading to the Hugging Face Hub.
+
+The OpenArm Cell has five cameras:
+
+| Name | Camera |
+|---|---|
+| `head_left`, `head_right` | Left and right images of the head stereo camera |
+| `ceiling` | Camera mounted on the ceiling |
+| `wrist_left`, `wrist_right` | Cameras mounted on the left and right wrists |
+
+#### Metadata (`metadata.yaml`)
+
+`metadata.yaml` describes the whole dataset. Here is an example recorded with the OpenArm Cell and KER:
+
+```yaml
+version: 0.4.0
+location: Lab
+operator: Tester
+operation_type: teleop
+tasks:
+- prompt: Pick a spoon.
+  description: Pick a spoon on a table.
+episodes:
+- id: '0'
+  success: false
+  task_index: 0
+  valid: true
+- id: '3'
+  success: true
+  task_index: 0
+  valid: true
+equipment:
+  id: Test
+  version: '1.0'
+  embodiments:
+    arms:
+      id: OpenArm
+      version: '2.0'
+    lifter:
+      id: OpenArmCellLifter
+      version: '1.0'
+      mechanism: lead_screw
+      lead_length: 5.0
+      stroke: 300
+      home: bottom
+      unit: mm
+  leader:
+    ker:
+      id: OpenArmKER
+      firmware_version: '1.2.3'
+      hardware_version: '1.0'
+  perceptions:
+    cameras:
+      ceiling: {}
+      head_left: {}
+      head_right: {}
+      wrist_left: {}
+      wrist_right: {}
+frequencies:
+  action:
+    arms:
+      left: 250.0
+      right: 250.0
+  obs:
+    arms:
+      left: 250.0
+      right: 250.0
+  cameras:
+    ceiling: 30.303030303030305
+    head_left: 30.303030303030305
+    head_right: 30.303030303030305
+    wrist_left: 30.303030303030305
+    wrist_right: 30.303030303030305
+```
+
+| Key | Description |
+|---|---|
+| `version` | Dataset format version. |
+| `location`, `operator` | Where and by whom the data was collected. |
+| `operation_type` | `teleop` for teleoperation, or `rollout` for data recorded while running a policy. Rollout datasets also have `model.docker_image`. |
+| `tasks` | List of tasks. `prompt` is the instruction for the task (used as the task text when converting to LeRobot), and `description` is a longer description. |
+| `episodes` | List of episodes. `id` is the directory name under `episodes/`, `success` is whether the task succeeded, and `task_index` is the index into `tasks`. `valid` is added by `openarm-dataset-validate`. |
+| `equipment.embodiments` | The robots that were recorded: `arms` (OpenArm) and optionally `lifter` (OpenArm Cell lifter). |
+| `equipment.leader` | The leader device used for teleoperation. For KER, the firmware and hardware versions are recorded automatically. |
+| `equipment.perceptions.cameras` | The cameras that were recorded. |
+| `frequencies` | Nominal recording rates in Hz, detected from the timers of the dataflow. |
+
+When you collect data with [dora-openarm-data-collection](https://github.com/enactic/dora-openarm-data-collection), `location`, `operator`, `tasks` and `equipment` come from the metadata file of the dataflow (e.g. `metadata.yaml`), and the recorder adds the other keys.
+Edit this file before recording to set your location, operator and tasks.
+
+#### Older formats
+
+Older formats (0.1.0 – 0.3.0 and unversioned) can still be read, and `Dataset.write()` (or `openarm-dataset-convert --format openarm`) always writes the latest format.
+In 0.3.0, arm actions were stored as `action/arms/<side>/qpos.parquet` and only joint-space data was supported.
 
 ### Install
 
@@ -71,6 +217,16 @@ uv sync
 
 Requires Python 3.10+.
 
+Some features need optional dependencies:
+
+| Extra | Needed for |
+|---|---|
+| `openarm_dataset[lerobot-dataset-v2.1]` | Reading the converted LeRobot v2.1 dataset with LeRobot (`lerobot==0.3.3`) |
+| `openarm_dataset[lerobot-dataset-v3.0]` | Reading the converted LeRobot v3.0 dataset with LeRobot (requires Python 3.12+) |
+| `openarm_dataset[rerun]` | Exporting to the Rerun `.rrd` format |
+| `openarm_dataset[robot-eval-logger]` | Converting to the robot_eval_logger format |
+
+Conversion to the LeRobot and GR00T formats requires [FFmpeg](https://ffmpeg.org/) on `PATH` for video encoding.
 
 ### Open a dataset
 
@@ -78,15 +234,22 @@ Point `Dataset` at the root directory of a recording:
 
 ```python
 >>> import openarm_dataset
->>> dataset = openarm_dataset.Dataset("tests/fixture/dataset_0.3.0")
+>>> dataset = openarm_dataset.Dataset("tests/fixture/dataset_0.4.0_qpos")
 >>> dataset.num_episodes
 2
->>> dataset.meta.e
-dataset.meta.episodes  dataset.meta.equipment
->>> dataset.meta.episodes
-[{'id': '0', 'success': False, 'task_index': 0}, {'id': '3', 'success': True, 'task_index': 0}]
+>>> dataset.meta.version
+'0.4.0'
 >>> dataset.meta.tasks
-[{'prompt': 'Run test.', 'description': 'Longer task description if need.'}]
+[{'description': 'Longer task description if need.', 'prompt': 'Run test.'}]
+```
+
+`dataset.meta.episodes` is a list of `Episode` objects.
+Pass an `Episode` (not an integer index) to the loading methods below.
+
+```python
+>>> episode = dataset.meta.episodes[0]
+>>> dict(episode)
+{'id': '0', 'success': False, 'task_index': 0}
 ```
 
 ### Load observations and actions
@@ -96,23 +259,37 @@ signal name, indexed by timestamp. Pass `use_unixtime=True` for a float index
 instead of a datetime index.
 
 ```python
->>> obs = dataset.load_obs(0)
->>> obs.keys()
-dict_keys(['arms/right/qpos', 'arms/right/qvel', 'arms/right/qtorque', 'arms/left/qpos', 'arms/left/qvel', 'arms/left/qtorque', 'lifter/elevation'])
+>>> obs = dataset.load_obs(episode)
+>>> list(obs.keys())
+['arms/right/qpos', 'arms/right/qvel', 'arms/right/qtorque', 'arms/left/qpos', 'arms/left/qvel', 'arms/left/qtorque', 'lifter/elevation']
 >>> obs["arms/right/qpos"].shape
 (746, 8)
 
->>> action = dataset.load_action(0)
+>>> action = dataset.load_action(episode)
 >>> action["arms/right/qpos"].columns.tolist()
 ['joint1', 'joint2', 'joint3', 'joint4', 'joint5', 'joint6', 'joint7', 'gripper']
+```
+
+The keys reflect what was actually recorded.
+A dataset recorded with Cartesian teleoperation has `pose` actions instead of `qpos`.
+To get a specific representation, pass `state="qpos"`, `state="pose"` or `state="rot6d"`.
+The recorded data is converted on the fly when needed (`qpos` to `pose` via forward kinematics, `pose` to `qpos` via inverse kinematics).
+
+```python
+>>> pose = dataset.load_obs(episode, state="pose")
+>>> pose["arms/right/pose"].columns.tolist()
+['x', 'y', 'z', 'qw', 'qx', 'qy', 'qz', 'gripper']
+>>> rot6d = dataset.load_action(episode, state="rot6d")
+>>> rot6d["arms/right/rot6d"].columns.tolist()
+['x', 'y', 'z', 'r11', 'r21', 'r31', 'r12', 'r22', 'r32', 'gripper']
 ```
 
 ### Load camera frames
 
 ```python
->>> cameras = dataset.load_cameras(0)
+>>> cameras = dataset.load_cameras(episode)
 >>> cameras.keys()
-dict_keys(['left_wrist', 'right_wrist', 'ceiling', 'head'])
+dict_keys(['ceiling', 'head_left', 'head_right', 'wrist_left', 'wrist_right'])
 >>> ceiling = cameras["ceiling"]
 >>> ceiling.num_frames
 3
@@ -120,9 +297,7 @@ dict_keys(['left_wrist', 'right_wrist', 'ceiling', 'head'])
 >>> frame.shape  # (H, W, 3) uint8
 (600, 960, 3)
 >>> for f in ceiling.frames():
-...     frame=f.load() # iterate frames 
->>> for path in ceiling.all_files:
-...     print(path) # iterate frame file paths
+...     frame = f.load()  # iterate frames
 ```
 
 ### Sample synchronized timesteps
@@ -131,20 +306,43 @@ dict_keys(['left_wrist', 'right_wrist', 'ceiling', 'head'])
 rate so a policy can consume them as one timestep:
 
 ```python
->>> samples = dataset.sample(hz=30, episode_index=0)
+>>> samples = dataset.sample(hz=30, episode=episode)
 >>> samples[0].timestamp
 np.float64(1772010251.6202147)
 >>> samples[0].obs.keys()
 dict_keys(['arms/right/qpos', 'arms/right/qvel', 'arms/right/qtorque', 'arms/left/qpos', 'arms/left/qvel', 'arms/left/qtorque', 'lifter/elevation'])
 >>> [(name, img.load().shape) for name, img in samples[0].cameras.items()]
-[('wrist_left', (600, 960, 3)), ('wrist_right', (600, 960, 3)), ('ceiling', (600, 960, 3)), ('head', (600, 960, 3))]
+[('ceiling', (600, 960, 3)), ('head_left', (600, 960, 3)), ('head_right', (600, 960, 3)), ('wrist_left', (600, 960, 3)), ('wrist_right', (600, 960, 3))]
 ```
+
+### Validate a dataset
+
+```bash
+openarm-dataset-validate /path/to/OpenArmDataset
+```
+
+This checks null and NaN values, abrupt qpos jumps, out-of-range qpos values, invalid pose quaternions and too short episodes.
+By default, the result is recorded as a `valid` flag per episode in `metadata.yaml`, and `--valid-only` of `openarm-dataset-convert` skips the invalid episodes.
+See [Command-line tools](./api.mdx#command-line-tools) for the options.
 
 ### Conversion to other formats
 
-#### Conversion to Lerobot Dataset (v2.1)
+#### Conversion to LeRobot Dataset (v2.1 / v3.0)
 
 ```bash
 openarm-dataset-convert /path/to/OpenArmDataset /path/to/lerobot_dataset --format lerobot_v2.1
+openarm-dataset-convert /path/to/OpenArmDataset /path/to/lerobot_dataset --format lerobot_v3.0
 ```
 
+Useful options:
+
+* `--state {qpos,pose,rot6d}`: arm state representation of the output (default: `qpos`).
+* `--arm-dynamics`: also export the recorded joint velocity and torque as `observation.velocity` and `observation.torque`.
+* `--success-only` / `--valid-only`: include only successful / valid episodes.
+
+#### Other formats
+
+`--format` also supports `gr00t` (GR00T LeRobot), `robot_eval_logger` and `openarm` (the latest OpenArm Dataset format).
+With `--format openarm --camera-format tar`, each camera is stored as a single tar archive, which is recommended for uploading to the Hugging Face Hub.
+
+See [Command-line tools](./api.mdx#command-line-tools) for all options and the other tools (`openarm-dataset-merge`, `openarm-dataset-repair` and `openarm-dataset-upload`).
