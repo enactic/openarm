@@ -18,14 +18,9 @@ Also, this section is useful for testing your WebXR teleoperation setup and to m
 
 ### Setup for MuJoCo environment
 
-```bash
-git clone --recurse-submodules https://github.com/enactic/dora-openarm-data-collection.git
-cd dora-openarm-data-collection
-uv venv .venv
-source .venv/bin/activate
-uv pip install dora-rs-cli
-dora build dataflow-webxr-mujoco.yaml --uv
-```
+Install the data collection software as described in [Installing the data collection software](./setup.mdx#installing-the-data-collection-software).
+
+If you have already cloned `dora-openarm-data-collection` without `--recurse-submodules`, run `git submodule update --init --recursive` in the repository to fetch the nodes.
 
 ### Preparation for WebXR teleoperation
 
@@ -38,6 +33,8 @@ If you just want to test the WebXR teleoperation, follow the instructions below 
 ```
 
 ### Teleoperation in MuJoCo environment
+
+Run the following command in the `dora-openarm-data-collection` directory with the virtual environment activated.
 
 ```bash
 dora run dataflow-webxr-mujoco.yaml --uv
@@ -67,8 +64,7 @@ You can use button A and B on the right VR controller to control the data collec
 
 <BlockImage src="tutorial/data-collection-vr/quest-controller-right.jpg" alt="Controller button" width="40%" />
 
-After the program starts, web UI will open.
-Please access `http://localhost:8000` to check the data collection status and control the data collection.
+After the program starts, open `http://localhost:8000` to check the data collection status and control the data collection.
 
 <BlockImage src="tutorial/data-collection-vr/data-collection-start-quit.png" alt="UI top" width="80%" />
 When the web UI looks like the image above, you can start the data collection by pressing the A button on the right VR controller. This will start recording the data.
@@ -92,7 +88,6 @@ If you want to change the data path, you can change the value of `DIRECTORY` in 
 
 ```yaml
 - id: recorder
-  build: pip install -e nodes/dora-openarm-dataset-recorder
   path: dora-openarm-dataset-recorder
   env:
     METADATA_FILE: "metadata_mujoco.yaml"
@@ -110,7 +105,6 @@ If you have the OpenArm 2.0 alone without the cell, you can collect data with We
 ### Start data collection
 
 ```bash
-dora build dataflow-pedestal.yaml --uv
 dora run dataflow-pedestal.yaml --uv
 ```
 
@@ -118,9 +112,10 @@ This dataflow serves the WebXR page as well, so the TLS certificate generated in
 
 Open `http://localhost:8000/` on the local machine for the data collection UI, and open `https://<YOUR_HOST_NAME>:8443/` in the Web browser on your VR device, then press the "start" button to start teleoperation.
 
-If the command runs successfully, the arm will move to the initial position. You need to align your VR controllers to the arm first by holding the trigger button.
+If the command runs successfully, the arms will start. You need to align your VR controllers to the arm first by holding the trigger button.
 
 Once the alignment completes, you can fully control the arm with the VR controllers.
+If you want to stop the arms temporarily, press the **Pause Arm** button on the data collection web UI, and press the **Start Arm** button to start them again.
 
 Also, you can see the MuJoCo environment with the OpenArm 2.0 alone without the cell, and you can control the arm with the VR controllers.
 
@@ -128,10 +123,25 @@ Also, you can see the MuJoCo environment with the OpenArm 2.0 alone without the 
 
 The collected data is stored in `pedestal_data` by default, which is set as `DIRECTORY` of the `recorder` node in `dataflow-pedestal.yaml`.
 
-Now, this dataflow only collect action and state data, and does not collect camera images. If you want to collect camera images, please refer to the dataflow 'dataflow-vr.yaml' for the OpenArm 2.0 with the cell.
+Now, this dataflow only collect action and state data, and does not collect camera images. If you want to collect camera images, please refer to `dataflow-webxr.yaml` for the OpenArm 2.0 with the cell.
 
 ## Data collection on the real robot (Cell)
 
-For the OpenArm 2.0 with the cell, please check the `dataflow-vr.yaml` and `dataflow-ker.yaml` for the data collection on the real robot.
+For the OpenArm 2.0 with the cell, use `dataflow-webxr.yaml`.
+First, make sure that the CAN interfaces are up and running and the cameras are set up properly as described in [Setup](./setup.mdx).
 
-You can create a `dataflow-webxr.yaml` for the data collection on the real robot by referring to the `dataflow-vr.yaml` and `dataflow-ker.yaml`.
+### Start data collection
+
+```bash
+dora run dataflow-webxr.yaml --uv
+```
+
+This dataflow also requires the TLS certificate generated in [preparation for WebXR teleoperation](#preparation-for-webxr-teleoperation).
+
+Open `http://localhost:8000/` on the local machine for the data collection UI, and open `https://<YOUR_HOST_NAME>:8443/` in the Web browser on your VR device, then press the "start" button to start teleoperation.
+The image from the head camera is shown in the VR device. You can change the view settings in `view-webxr.yaml`.
+
+If the command runs successfully, the arms will start. Align your VR controllers to the arm by holding the trigger button.
+You can move the lifter of the Cell up and down with the joystick on the left VR controller.
+
+The collected data is stored in `webxr_data` by default, which is set as `DIRECTORY` of the `recorder` node in `dataflow-webxr.yaml`.
