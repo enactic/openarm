@@ -19,6 +19,32 @@ Please consider integrating it with another project, for more information, refer
 
 See the [troubleshooting section](../setup/openarm-setup/1-motor-id.mdx#trouble-shooting).
 
+## The arm stops moving or doesn't communicate.
+
+Turn off the power, then check the following.
+See also the [safety guide](../overview/safety-guide.mdx).
+
+- Loose connectors and broken wires: a loose connector or a broken wire can stop a motor from moving or block communication.
+  Check the connectors and wiring first.
+  The wiring around the elbow (J4) comes off easily, so check it carefully.
+- CAN bus-off: long wires or some cable routings can cause signal reflections that put the CAN bus into bus-off.
+  This is rare, but it stops the arm.
+  Bring the CAN interface down and up again to restore communication. See [Setup CAN Interface](../setup/openarm-setup/2-can-setup.mdx).
+- Termination resistors: the arm can stop working if a termination resistor is removed.
+  Make sure the termination resistors are connected. See also [OpenArm CAN CLI troubleshooting](../api-reference/can/cli.mdx#troubleshooting).
+
+## A connector comes off during operation.
+
+Wrap the L-shaped connector with cable ties or tape so that it doesn't come off.
+Turn off the power before working on it.
+
+## The arm wobbles or its motion is unstable.
+
+Turn off the power, then check the screws.
+
+- Vibration during operation tends to loosen the screws around the wrist.
+- Loose screws around the elbow can cause play in the joint and make the arm's motion unstable.
+
 ## Do you have any recommended CAN devices?
 
 Please use the CAN-FD devices listed in the [OpenArm 1.0 Bill of Materials > Electronics](/1.0/hardware/bill-of-materials/electrical).
