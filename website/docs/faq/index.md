@@ -64,7 +64,7 @@ You can also reach out to our community for tips and help.
 
 - **Discord**
     Connect with other builders, researchers, and the OpenArm team for real-time support and discussions:
-    [Join Now](https://discord.gg/GmYa262ETH)
+    [Join Now](https://discord.gg/FsZaZ4z3We)
 
 - **GitHub Issues**
     Report bugs or request features directly in our repository:
