@@ -70,7 +70,7 @@ Control guides and algorithms for OpenArm systems. This is an active area of dev
 
 ## 🤝 Join the Community
 
-- 💬 Connect with us on [Discord](https://discord.com/invite/FsZaZ4z3We)
+- 💬 Connect with us on [Discord](https://discord.gg/FsZaZ4z3We)
 - 🐞 Report bugs or request features via GitHub issues in each repository
 - 🔥 Contribute by submitting pull requests
 - 📧 Reach out at [openarm@enactic.ai](mailto:openarm@enactic.ai)
