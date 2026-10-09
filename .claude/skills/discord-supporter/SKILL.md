@@ -31,7 +31,8 @@ guidelines).
    ```
 
    It prints every message in public channels and their active threads
-   since the last committed check. Use `--since 7d` on a first run or after
+   (plus threads held at the last commit, even if archived) since the last
+   committed check. Use `--since 7d` on a first run or after
    a long gap; the default window is 24h when there is no marker.
 
 2. **Triage.** Go through the messages in order. For each one decide:
@@ -89,6 +90,20 @@ guidelines).
    This advances the markers so the next run starts after these messages.
    Do not commit if the session is interrupted midway; the unfinished
    messages will reappear next time.
+
+   If the maintainer defers a message (for example, to discuss it with the
+   team first), commit the rest and hold that one back:
+
+   ```sh
+   python3 .claude/skills/discord-supporter/scripts/discord_fetch.py \
+     --commit --hold <channel_id>:<message_id>
+   ```
+
+   The marker of that channel or thread stops just before the held
+   message, so it and any later messages there reappear next time, even
+   if the thread is archived meanwhile. Repeat `--hold` for several
+   deferred messages. A message that is not held again in the next commit
+   is marked as seen.
 
 7. **Report gaps.** If a question could not be answered because the docs
    are missing information, say so at the end so it can be added to the
