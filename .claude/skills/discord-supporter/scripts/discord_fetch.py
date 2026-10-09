@@ -19,8 +19,11 @@ Usage:
   discord_fetch.py [--since 24h|7d|...] [--include-bots]
       List new messages. Does not advance the "last seen" markers; it only
       records them as pending.
-  discord_fetch.py --commit
+  discord_fetch.py --commit [--hold CHANNEL_ID:MESSAGE_ID ...]
       Advance the "last seen" markers to what the previous fetch saw.
+      With --hold, the marker of that channel/thread stops just before the
+      held message, so it and everything after it reappear next time.
+      Held threads are scanned even after they are archived.
   discord_fetch.py --channels
       List the public channels that would be scanned.
 
@@ -32,6 +35,7 @@ window (default 24h) are shown so the whole history is not dumped.
 import argparse
 import datetime
 import re
+import sys
 import time
 
 import discord_api as api
@@ -84,6 +88,15 @@ def active_threads(parent_ids):
     return [t for t in data.get("threads", []) if t.get("parent_id") in parent_ids]
 
 
+def held_thread(thread_id):
+    # A held thread may have been deleted since; skip it instead of failing.
+    try:
+        return api.request("GET", f"/channels/{thread_id}")
+    except SystemExit as e:
+        print(f"Skipping held thread {thread_id}: {e}", file=sys.stderr)
+        return None
+
+
 def fetch_messages(channel_id, after):
     messages = []
     cursor = after
@@ -101,6 +114,13 @@ def fetch_messages(channel_id, after):
         if len(batch) < 100:
             break
     return messages
+
+
+def parse_hold(text):
+    m = re.fullmatch(r"(\d+):(\d+)", text)
+    if not m:
+        raise argparse.ArgumentTypeError("use CHANNEL_ID:MESSAGE_ID")
+    return m.group(1), m.group(2)
 
 
 def fmt_time(message):
@@ -140,18 +160,39 @@ def main():
                    help="include messages written by bots (default: skip)")
     p.add_argument("--commit", action="store_true",
                    help="mark everything from the previous fetch as seen")
+    p.add_argument("--hold", type=parse_hold, action="append", default=[],
+                   metavar="CHANNEL_ID:MESSAGE_ID",
+                   help="with --commit, keep this message and later ones "
+                        "in the channel/thread unseen (repeatable)")
     p.add_argument("--channels", action="store_true",
                    help="only list the public channels to be scanned")
     args = p.parse_args()
 
     state = api.load_state()
 
+    if args.hold and not args.commit:
+        p.error("--hold requires --commit")
+
     if args.commit:
         pending = state.get("pending", {})
         if not pending:
             print("Nothing pending.")
             return
+        last_seen = state.get("last_seen", {})
+        fetched = dict(pending)
+        for channel_id, message_id in args.hold:
+            if channel_id not in fetched:
+                p.error(f"--hold: channel {channel_id} has nothing pending")
+            # Snowflake IDs are ordered, so ID - 1 is just before the message.
+            marker = int(message_id) - 1
+            if marker < int(last_seen.get(channel_id, 0)):
+                p.error(f"--hold: message {message_id} is already seen")
+            if marker >= int(fetched[channel_id]):
+                p.error(f"--hold: message {message_id} is not in the previous fetch")
+            pending[channel_id] = str(min(marker, int(pending[channel_id])))
         state["last_seen"].update(pending)
+        # Remember held IDs so that archived threads are still scanned.
+        state["held"] = sorted({channel_id for channel_id, _ in args.hold})
         state["pending"] = {}
         api.save_state(state)
         print(f"Marked {len(pending)} channel(s)/thread(s) as seen.")
@@ -167,11 +208,13 @@ def main():
     cutoff = api.snowflake_from_time(time.time() - args.since)
     last_seen = state.get("last_seen", {})
     pending = {}
+    scanned = set()
     sections = []
     total = 0
 
     def scan(container, heading):
         nonlocal total
+        scanned.add(container["id"])
         after = last_seen.get(container["id"], str(cutoff))
         messages = fetch_messages(container["id"], after)
         if messages:
@@ -189,6 +232,14 @@ def main():
     for t in active_threads(set(thread_parents)):
         parent = thread_parents[t["parent_id"]]
         scan(t, f"#{parent['name']} › {t['name']}")
+    for thread_id in state.get("held", []):
+        if thread_id in scanned:
+            continue
+        t = held_thread(thread_id)
+        if not t or t.get("parent_id") not in thread_parents:
+            continue
+        parent = thread_parents[t["parent_id"]]
+        scan(t, f"#{parent['name']} › {t['name']} (archived)")
 
     state["pending"] = pending
     api.save_state(state)
