@@ -125,7 +125,7 @@ Embodiments that were not recorded are absent.
 |-----------------|--------------------------------------------------------------------------------------------------------------------|
 | `episode`       | An [`Episode`](#episode) from `meta.episodes`.                                                                     |
 | `use_unixtime`  | If `True`, DataFrame index is `float64` Unix seconds; otherwise `datetime64[ns]`.                                  |
-| `cutoff`        | Low-pass cutoff (Hz) for a 4th-order Butterworth filter. If `None`, falls back to the value set by `set_smoothing`. If `0`, smoothing is disabled.|
+| `cutoff`        | Cutoff frequency (Hz) of the smoothing filter. If `None`, falls back to the value set by `set_smoothing`. If `0`, smoothing is disabled.|
 | `state`         | If set to `"qpos"`, `"pose"` or `"rot6d"`, arm states are returned in this representation. The recorded data is converted on the fly when needed (`qpos` to `pose` via FK, `pose` to `qpos` via IK). |
 
 Each DataFrame's columns are the embodiment's joint names. For `OpenArm`
@@ -146,7 +146,7 @@ it is `('x', 'y', 'z', 'qw', 'qx', 'qy', 'qz', 'gripper')`; for `rot6d` it is
 >>> list(df.columns)
 ['joint1', 'joint2', 'joint3', 'joint4', 'joint5', 'joint6', 'joint7', 'gripper']
 >>> df.index.dtype
-dtype('<M8[ns]')        # datetime64[ns]
+dtype('<M8[ns]')
 
 >>> ds.load_action(episode, use_unixtime=True)["arms/right/qpos"].index.dtype
 dtype('float64')
@@ -161,8 +161,8 @@ dtype('float64')
 #### `Dataset.load_action`
 
 Same signature and return type as `load_obs`, but reads from the `action/`
-subtree. Arm actions are `qpos` for joint-space teleoperation or `pose` for
-Cartesian teleoperation.
+subtree. Arm actions are `qpos`, or `pose` if the dataflow recorded
+end-effector targets directly.
 
 ```python
 >>> list(ds.load_action(episode).keys())
@@ -216,10 +216,8 @@ intersection of all streams' time spans, and returns a list of
 [`Sample`](#sample) objects (one per timestep). `state` is passed to
 `load_obs` and `load_action`.
 
-For each modality the *previous-or-equal* element by timestamp is selected
-via `np.searchsorted` (which actually returns the right-insertion index, so a
-sample taken at `t` may align with the first frame whose timestamp is just
-above `t`).
+For each modality, the first element whose timestamp is `>=` the sample's
+timestamp is selected (via `np.searchsorted`).
 
 ```python
 >>> samples = ds.sample(hz=30, episode=episode)
@@ -259,12 +257,19 @@ Lower-level access to the recorded files. `get_embodiment_attributes("obs" | "ac
 Dataset.set_smoothing(cutoff: float | None) -> None
 ```
 
-Sets a default low-pass cutoff used by subsequent `load_obs` / `load_action`
+Sets a default cutoff frequency used by subsequent `load_obs` / `load_action`
 calls when no explicit `cutoff` argument is passed. `None` or `0` disables
-smoothing. Also used by the LeRobot and GR00T conversions.
+smoothing.
+
+The smoothing is a zero-phase low-pass filter: a 4th-order Butterworth filter
+applied forward and backward (`scipy.signal.filtfilt`), so it does not delay the
+signal. It uses the whole episode, so it is for offline processing only. The
+filter assumes 250 Hz data, and signals with 15 or fewer samples are not smoothed. With smoothing, the values are `float64` instead of `float32`.
+The LeRobot and GR00T conversions also call this with their `smoothing_cutoff`.
 
 ```python
 >>> ds.set_smoothing(1.0)
+>>> ds.set_smoothing(None)  # disable again
 ```
 
 #### `Dataset.validate`
@@ -286,7 +291,7 @@ zero-norm). The other checks are enabled by their parameters.
 | Parameter             | Description                                                                                  |
 |-----------------------|----------------------------------------------------------------------------------------------|
 | `on_error`            | Callback invoked with one human-readable error string per violation.                         |
-| `update_metadata`     | If `True`, record the result as a `valid` flag per episode in the metadata. Ignored for unversioned datasets. Call `meta.write()` to save it. |
+| `update_metadata`     | If `True`, record the result as a `valid` flag per episode in the metadata. `metadata.yaml` is rewritten in place. Ignored for unversioned datasets. |
 | `qpos_jump_threshold` | If set, flag qpos frame-to-frame deltas above this value (radians).                          |
 | `qpos_absmax`         | If set, flag qpos values whose absolute value exceeds this value (radians).                  |
 | `min_duration`        | If set, flag episodes shorter than this value (seconds).                                     |
@@ -480,7 +485,7 @@ You normally get these from `Dataset.sample`.
 | Property    | Type                            | Description                                                 |
 |-------------|---------------------------------|-------------------------------------------------------------|
 | `timestamp` | `float`                         | Unix seconds of this sample on the resampling grid.         |
-| `obs`       | `dict[str, numpy.ndarray]`      | 1-D `float32` arrays of joint values, keyed like `load_obs`.|
+| `obs`       | `dict[str, numpy.ndarray]`      | 1-D arrays of joint values (`float32`, or `float64` with smoothing), keyed like `load_obs`.|
 | `action`    | `dict[str, numpy.ndarray]`      | Same shape/dtype as `obs`, keyed like `load_action`.        |
 | `cameras`   | `dict[str, Frame]`              | One `Frame` per camera stream — *not* decoded.              |
 
@@ -496,7 +501,7 @@ Sample(timestamp=1772010251.6202147)
 >>> list(s.keys())                    # Mapping interface
 ['timestamp', 'obs', 'action', 'cameras']
 >>> s["timestamp"] == s.timestamp
-True
+np.True_
 >>> s.obs["arms/right/qpos"].shape, s.obs["arms/right/qpos"].dtype
 ((8,), dtype('float32'))
 ```
@@ -757,7 +762,7 @@ state/action layout.
 |-------------------|----------|------------------------------------------------------------------------------------------------------|
 | `fps`             | `30`     | Resampling rate for both states and video. Must be `> 0`; otherwise `ValueError`.                    |
 | `train_split`     | `0.8`    | Fraction of episodes assigned to `train`; remainder to `val`. Must be in `[0, 1]` or `ValueError`.   |
-| `smoothing_cutoff`| `1.0`    | Low-pass cutoff (Hz) applied to obs/action before sampling. `0` or `None` disables smoothing.        |
+| `smoothing_cutoff`| `1.0`    | Cutoff frequency (Hz) of the zero-phase smoothing applied to obs/action before sampling (see `set_smoothing`). `0` or `None` disables smoothing. |
 | `success_only`    | `False`  | If `True`, drop episodes whose `success` is falsy. Re-indexes episodes/tasks.                        |
 | `state`           | `"qpos"` | Arm state representation of the output: `"qpos"`, `"pose"` or `"rot6d"`. Converted on the fly when the dataset recorded another representation. |
 | `valid_only`      | `False`  | If `True`, drop episodes marked invalid by `openarm-dataset-validate`.                               |
@@ -792,7 +797,9 @@ exits with status `1` if any errors are reported. Pass `none` to
 `--qpos-jump-threshold`, `--qpos-absmax` or `--min-duration` to disable the check.
 
 By default, the result is recorded as a `valid` flag per episode in
-`metadata.yaml`. Pass `--no-update-metadata` to keep `metadata.yaml` unchanged.
+`metadata.yaml`. The file is rewritten in the latest format (0.4.0), so convert
+older datasets with `openarm-dataset-convert` first. Pass `--no-update-metadata`
+to keep `metadata.yaml` unchanged.
 
 #### `openarm-dataset-convert`
 
@@ -849,4 +856,5 @@ openarm-dataset-upload --repo-id REPO_ID [--private] [--licence LICENCE] [--larg
 
 Uploads an OpenArm dataset to the Hugging Face Hub. `--large-folder` uses a
 resumable, multi-threaded upload, which is recommended for datasets larger than
-1 GB. Consider converting the dataset with `--camera-format tar` before uploading.
+1 GB. Cameras stored as JPEG directories are repacked in place into `.tar`
+archives before uploading.
