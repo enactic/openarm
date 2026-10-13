@@ -66,7 +66,7 @@ Each episode directory has three subdirectories:
 | `cameras/` | Camera images. |
 
 Episode IDs are assigned sequentially when recording, so the IDs may have gaps when an episode is cancelled (cancelled episodes are deleted).
-When you record into an existing dataset directory, new episodes are appended to it.
+Record each session into a new dataset directory, and combine them with `openarm-dataset-merge` if needed.
 
 #### Arm data (`state.parquet`)
 
@@ -81,9 +81,9 @@ The `timestamp` column is the Unix time in nanoseconds (`timestamp[ns]`), and ea
 | `pose` | 8 | End-effector pose: `x, y, z, qw, qx, qy, qz, gripper` | m (position), quaternion (orientation) |
 
 * `obs` usually has `qpos`, `qvel` and `qtorque`.
-* `action` has `qpos` for joint-space teleoperation (e.g. KER) or `pose` for Cartesian teleoperation.
+* `action` has `qpos` in the dataflows of [dora-openarm-data-collection](https://github.com/enactic/dora-openarm-data-collection) (VR and WebXR record the output of the inverse kinematics), or `pose` if a dataflow records end-effector targets directly.
 * `gripper` is the position of the gripper motor.
-* `pose` is the end-effector pose in the MuJoCo model's world frame.
+* `pose` is the end-effector pose in the same convention as [openarm_control](https://github.com/enactic/openarm_control).
 
 Here is the first row of `obs/arms/right/state.parquet`:
 
@@ -100,13 +100,13 @@ array([-0.0393523 ,  0.9891182 , -0.05177076,  0.7356907 ,  0.07774002,
 #### Lifter data (`elevation.parquet`)
 
 `obs/lifter/elevation.parquet` and `action/lifter/elevation.parquet` have a `timestamp` column and a `value` column, which is a list with one value: the elevation of the OpenArm Cell lifter.
-The unit is set by `unit` of the lifter in `metadata.yaml` (`mm`).
+The value is the elevation in millimeters from the bottom (declared as `unit: mm` in `metadata.yaml`).
 These files exist only when the lifter is recorded.
 
 #### Cameras
 
 Each camera is stored either as a directory of JPEG files (`cameras/<name>/<timestamp>.jpeg`) or as a single uncompressed tar archive (`cameras/<name>.tar`) that contains the same JPEG files.
-The file name is the Unix time in nanoseconds when the image was captured.
+The file name is the Unix time in nanoseconds of the camera message (approximately the capture time).
 The tar format keeps the number of files small, which is recommended for uploading to the Hugging Face Hub.
 
 The OpenArm Cell has five cameras:
@@ -186,15 +186,20 @@ frequencies:
 |---|---|
 | `version` | Dataset format version. |
 | `location`, `operator` | Where and by whom the data was collected. |
-| `operation_type` | `teleop` for teleoperation, or `rollout` for data recorded while running a policy. Rollout datasets also have `model.docker_image`. |
-| `tasks` | List of tasks. `prompt` is the instruction for the task (used as the task text when converting to LeRobot), and `description` is a longer description. |
+| `operation_type` | `teleop` for teleoperation, or `rollout` for data recorded while running a policy. Rollout datasets also have `model` (with `docker_image` if the Docker image is given). |
+| `tasks` | List of tasks. Each task has `prompt` and `description` (see below). |
 | `episodes` | List of episodes. `id` is the directory name under `episodes/`, `success` is whether the task succeeded, and `task_index` is the index into `tasks`. `valid` is added by `openarm-dataset-validate`. |
 | `equipment.embodiments` | The robots that were recorded: `arms` (OpenArm) and optionally `lifter` (OpenArm Cell lifter). |
 | `equipment.leader` | The leader device used for teleoperation. For KER, the firmware and hardware versions are recorded automatically. |
 | `equipment.perceptions.cameras` | The cameras that were recorded. |
 | `frequencies` | Nominal recording rates in Hz, detected from the timers of the dataflow. |
 
-When you collect data with [dora-openarm-data-collection](https://github.com/enactic/dora-openarm-data-collection), `location`, `operator`, `tasks` and `equipment` come from the metadata file of the dataflow (e.g. `metadata.yaml`), and the recorder adds the other keys.
+`prompt` and `description` of a task are used differently:
+
+* `prompt` is the short instruction of the task, such as `Pick a spoon.`. It is shown on the data collection web UI, and it is used as the language instruction for the policy when the dataset is converted to the LeRobot, GR00T and robot_eval_logger formats. Use the same `prompt` for the same task: `openarm-dataset-merge` treats tasks with the same `prompt` as the same task.
+* `description` is a longer explanation for humans, such as the initial placement of the objects and the success criteria. It is not used for training or in the converted datasets, but it is shown on the Hugging Face dataset card by `openarm-dataset-upload`.
+
+When you collect data with [dora-openarm-data-collection](https://github.com/enactic/dora-openarm-data-collection), `location`, `operator`, `tasks` and `equipment` come from the metadata file of the dataflow (e.g. `metadata.yaml`), and the recorder adds `version`, `operation_type`, `episodes`, `frequencies`, `equipment.leader` (KER) and `model` (rollout).
 Edit this file before recording to set your location, operator and tasks.
 
 #### Older formats
@@ -226,7 +231,7 @@ Some features need optional dependencies:
 | `openarm_dataset[rerun]` | Exporting to the Rerun `.rrd` format |
 | `openarm_dataset[robot-eval-logger]` | Converting to the robot_eval_logger format |
 
-Conversion to the LeRobot and GR00T formats requires [FFmpeg](https://ffmpeg.org/) on `PATH` for video encoding.
+Conversion to the LeRobot, GR00T and Rerun `.rrd` formats requires [FFmpeg](https://ffmpeg.org/) on `PATH` for video encoding.
 
 ### Open a dataset
 
@@ -271,17 +276,29 @@ instead of a datetime index.
 ```
 
 The keys reflect what was actually recorded.
-A dataset recorded with Cartesian teleoperation has `pose` actions instead of `qpos`.
+A dataset whose dataflow records end-effector targets has `pose` actions instead of `qpos`.
 To get a specific representation, pass `state="qpos"`, `state="pose"` or `state="rot6d"`.
 The recorded data is converted on the fly when needed (`qpos` to `pose` via forward kinematics, `pose` to `qpos` via inverse kinematics).
+The kinematics are computed with [openarm_control](https://github.com/enactic/openarm_control). The inverse kinematics starts from the recorded `qpos` of the episode, and a warning is shown for samples that it could not solve.
+The `gripper` value is passed through without conversion, and the files of the dataset are not modified.
 
 ```python
+>>> # qpos to pose
 >>> pose = dataset.load_obs(episode, state="pose")
 >>> pose["arms/right/pose"].columns.tolist()
 ['x', 'y', 'z', 'qw', 'qx', 'qy', 'qz', 'gripper']
 >>> rot6d = dataset.load_action(episode, state="rot6d")
 >>> rot6d["arms/right/rot6d"].columns.tolist()
 ['x', 'y', 'z', 'r11', 'r21', 'r31', 'r12', 'r22', 'r32', 'gripper']
+
+>>> # pose to qpos
+>>> pose_dataset = openarm_dataset.Dataset("tests/fixture/dataset_0.4.0_pose")
+>>> pose_episode = pose_dataset.meta.episodes[0]
+>>> list(pose_dataset.load_action(pose_episode).keys())
+['arms/right/pose', 'arms/left/pose', 'lifter/elevation']
+>>> qpos = pose_dataset.load_action(pose_episode, state="qpos")
+>>> qpos["arms/right/qpos"].columns.tolist()
+['joint1', 'joint2', 'joint3', 'joint4', 'joint5', 'joint6', 'joint7', 'gripper']
 ```
 
 ### Load camera frames
