@@ -64,9 +64,9 @@ This is what one needs to implement when adapting to a new model.
 
 ### Transport
 
-The node connects to a UNIX socket (path set via `$SOCKET`). The Dora node
-`dora-openarm-local-policy-server` handles the socket I/O for you; your
-model code lives in the process it launches.
+The policy server and the Dora node communicate over a UNIX socket.
+With `dora-openarm-local-policy-server`, your policy server listens on the socket (path set via `$SOCKET`) and the node connects to it.
+With `dora-openarm-docker-policy-server`, the node starts your Docker image and your policy server connects to the socket passed by the node.
 
 ### Observation Input
 
