@@ -50,27 +50,20 @@ lsusb | grep 303a
 
 #### 3. Ping KER with the CLI
 
-Install openarm_ker cli
-
-```bash
-uv venv
-source .venv/bin/activate
-uv pip install openarm_ker
-```
-
-then, you can ping KER with the following command.
+`openarm-ker-cli` is installed with the data collection software (see [Installing the data collection software](./setup.mdx#installing-the-data-collection-software)).
+Run the following command with the virtual environment of `dora-openarm-data-collection` activated.
 
 ```bash
 openarm-ker-cli ping
 ```
 If you get a response like below, the connection is successful.
 
-```json
-{
-  "fw": "v1.0.0",
-  "hw": "KER-v1.0.0",
-  "updated": "2026-05-25"
-}
+```
+OpenArm KER   USB 303a:4002
+
+  Firmware   v1.0.0
+  Hardware   KER-v1.0.0
+  Updated    2026-05-25
 ```
 
 Also, you can check the data from the encoder with the following command.
@@ -79,13 +72,7 @@ Also, you can check the data from the encoder with the following command.
 openarm-ker-cli stream
 ```
 
-Please push the green button on the KER display to start streaming the data. You will see the data from the encoder in the terminal.
-
-Example output
-
-```
-[Stream Data] {'timestamp': 1397863671, 'angles': [-14.282562255859375, 4.4276580810546875, 32.53425598144531, 55.142913818359375, -5.38348388671875, 44.62041091918945, 14.425567626953125, -30.7186279296875, 3.4595165252685547, -7.481842041015625, -32.2158203125, 40.9552001953125, -3.518857955932617, -43.488616943359375, -8.14105224609375, 39.925689697265625], 'errors': [False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False], 'encoder_value': 0, 'encoder_button': 0}
-```
+Please push the green button on the KER display to start streaming the data. The encoder angles and the stream rate are shown in the terminal. Press `Ctrl+C` to stop.
 
 
 ## Teleoperation and Data Collection
@@ -120,7 +107,7 @@ Run the following command in the `dora-openarm-data-collection` directory with t
 dora run dataflow-ker.yaml --uv
 ```
 
-You can access the web UI at http://localhost:8000 to monitor the data collection process same as VR teleoperation.
+Open the web UI at http://localhost:8000 same as VR teleoperation. The foot pedal works as a keyboard, so keep the web UI tab focused while you use the pedal.
 The collected data is stored in `ker_data` by default, which is set as `DIRECTORY` of the `recorder` node in `dataflow-ker.yaml`.
 
 <BlockImage src="tutorial/data-collection-vr/data-collection-start-quit.png" alt="Web ui" width="90%" />
@@ -153,11 +140,11 @@ After the data collection is started, you can see the success or fail panel on t
 
 Press the **left(a)** button to mark the data collection as fail, or press the **right(c)** button to mark it as success.
 To discard the current episode without saving it, long-press the **left(a)** button.
-Success and fail are ignored for the first second after recording starts to prevent accidental double presses.
+If you press success or fail within 1 second after starting with the pedal, it is ignored to prevent accidental double presses.
 
 <BlockImage src="tutorial/data-collection-ker/data-collection-success-fail.jpg" alt="Data collection fail success" width="80%" />
 
-Also, you can press the **middle(b)** button to quit the data collection at any time.
+Also, you can press the **middle(b)** button to quit the data collection at any time. The episode being recorded is saved as a failure.
 
 ### Troubleshooting
 If you see the following screen, check the possible causes below.
