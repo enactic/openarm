@@ -27,18 +27,39 @@ OpenArm features **human-scale** proportions, safety and compliance, and practic
 
 ## 📁 Repositories
 
-| Repository | Documentation | License | Description |
-|------------|---------------|---------|-------------|
-| **[openarm_hardware](https://github.com/enactic/openarm_hardware)** | [Hardware Docs](https://docs.openarm.dev/hardware) | [CERN-OHL-S-2.0](https://github.com/enactic/openarm_hardware/blob/main/LICENSE.txt) | Complete CAD data: STL files, STEP files, Fusion 360 assemblies |
-| **[openarm_description](https://github.com/enactic/openarm_description)** | [Description Docs](https://docs.openarm.dev/api-reference/description/) | [Apache-2.0](https://github.com/enactic/openarm_description/blob/main/LICENSE.txt) | Robot description files with URDF/xacro for simulation |
-| **[openarm_can](https://github.com/enactic/openarm_can)** | [CAN Docs](https://docs.openarm.dev/api-reference/can/) | [Apache-2.0](https://github.com/enactic/openarm_can/blob/main/LICENSE.txt) | CAN control library for low-level motor communication |
-| **[openarm_ros2](https://github.com/enactic/openarm_ros2)** | [ROS2 Docs](https://docs.openarm.dev/api-reference/ros2/install) | [Apache-2.0](https://github.com/enactic/openarm_ros2/blob/main/LICENSE) | ROS2 integration packages and nodes |
-| **[openarm_teleop](https://github.com/enactic/openarm_teleop)** | [Teleop Docs](https://docs.openarm.dev/teleop/) | [Apache-2.0](https://github.com/enactic/openarm_teleop/blob/main/LICENSE.txt) | Teleoperation packages with unilateral and bilateral control |
-| **[openarm_isaac_lab](https://github.com/enactic/openarm_isaac_lab)** | [Isaac Docs](https://docs.openarm.dev/simulation/) | [Apache-2.0](https://github.com/enactic/openarm_isaac_lab/blob/main/LICENSE.txt) | Isaac Lab simulation environment and training tasks |
-| **[openarm_mujoco](https://github.com/enactic/openarm_mujoco)** | [MuJoCo Docs](https://docs.openarm.dev/simulation/mujoco) | [Apache-2.0](https://github.com/enactic/openarm_mujoco/blob/master/LICENSE) | MuJoCo specification files and assets for OpenArm |
-| **[openarm_dataset](https://github.com/enactic/openarm_dataset)** | [Dataset Docs](https://docs.openarm.dev/dataset/) | [Apache-2.0](https://github.com/enactic/openarm_dataset/blob/main/LICENSE.txt) | Dataset format, recording tools, and Python API |
-| **[dora-openarm](https://github.com/enactic/dora-openarm)** | [Dora Docs](https://docs.openarm.dev/api-reference/dora/) | [Apache-2.0](https://github.com/enactic/dora-openarm/blob/main/LICENSE) | Dora dataflow nodes for data collection, inference, and teleop |
+Arm support: ◯ supported · △ adaptation and test needed · ◌ work in progress - incompatible
 
+### Core
+
+| Repository | Documentation | License | 1.0 | 2.0 | Description |
+|------------|---------------|---------|:---:|:---:|-------------|
+| **[openarm_hardware](https://github.com/enactic/openarm_hardware)** | [Docs](https://docs.openarm.dev/hardware) | [CERN-OHL-S-2.0](https://github.com/enactic/openarm_hardware/blob/main/LICENSE.txt) | ◯ | ◯ | CAD, STL and BOM for OpenArm, Cell and KER |
+| **[openarm_description](https://github.com/enactic/openarm_description)** | [Docs](https://docs.openarm.dev/api-reference/description) | [Apache-2.0](https://github.com/enactic/openarm_description/blob/main/LICENSE.txt) | ◯ | ◯ | URDF/xacro robot description |
+| **[openarm_can](https://github.com/enactic/openarm_can)** | [Docs](https://docs.openarm.dev/api-reference/can/) | [Apache-2.0](https://github.com/enactic/openarm_can/blob/main/LICENSE.txt) | ◯ | ◯ | CAN motor control library and CLI |
+| **[openarm_ros2](https://github.com/enactic/openarm_ros2)** | [Docs](https://docs.openarm.dev/api-reference/ros2/install) | [Apache-2.0](https://github.com/enactic/openarm_ros2/blob/main/LICENSE) | ◯ | ◯ | ros2_control and MoveIt packages |
+| **[openarm_mujoco](https://github.com/enactic/openarm_mujoco)** | [Docs](https://docs.openarm.dev/simulation/mujoco) | [Apache-2.0](https://github.com/enactic/openarm_mujoco/blob/master/LICENSE) | ◯ | ◯ | MuJoCo models, including the Cell scene |
+| **[openarm_isaac_lab](https://github.com/enactic/openarm_isaac_lab)** | [Docs](https://docs.openarm.dev/simulation/isaac-lab) | [Apache-2.0](https://github.com/enactic/openarm_isaac_lab/blob/main/LICENSE.txt) | ◯ | ◌ | Isaac Lab environments and RL tasks |
+| **[openarm_dataset](https://github.com/enactic/openarm_dataset)** | [Docs](https://docs.openarm.dev/dataset/) | [Apache-2.0](https://github.com/enactic/openarm_dataset/blob/main/LICENSE.txt) | ◯ | ◯ | Dataset format, Python API, LeRobot conversion |
+| **[openarm_teleop](https://github.com/enactic/openarm_teleop)** | [Docs](https://docs.openarm.dev/teleop/) | [Apache-2.0](https://github.com/enactic/openarm_teleop/blob/main/LICENSE.txt) | ◯ | △ | Leader-follower teleoperation (1.0); for 2.0 see dora-rs below |
+
+### dora-rs: teleoperation, data collection, inference
+
+The [tutorial](https://docs.openarm.dev/tutorial/setup) runs on [dora-rs](https://dora-rs.ai/). Each `dora-openarm-*` repository is one node; a dataflow YAML wires nodes together and `dora run` starts the application. Swap nodes to go between real arms and MuJoCo, or between KER and VR. `openarm_ros2` is an independent stack on `openarm_can`; `dora-openarm-ros2` bridges the two.
+
+| Repository | Documentation | License | 1.0 | 2.0 | Description |
+|------------|---------------|---------|:---:|:---:|-------------|
+| **[dora-openarm-data-collection](https://github.com/enactic/dora-openarm-data-collection)** | [Tutorial](https://docs.openarm.dev/tutorial/data-collection-webxr) | [Apache-2.0](https://github.com/enactic/dora-openarm-data-collection/blob/main/LICENSE) | △ | ◯ | Dataflows: KER / VR / WebXR, real or MuJoCo |
+| **[dora-openarm-evaluation](https://github.com/enactic/dora-openarm-evaluation)** | [Tutorial](https://docs.openarm.dev/tutorial/inference) | [Apache-2.0](https://github.com/enactic/dora-openarm-evaluation/blob/main/LICENSE) | △ | ◯ | Dataflows: policy inference and evaluation |
+| **[dora-openarm-\*](https://github.com/orgs/enactic/repositories?q=dora-openarm)** | [Docs](https://docs.openarm.dev/api-reference/dora) | Apache-2.0 | △ | ◯ | Nodes: arm, KER, VR, WebXR, kinematics, MuJoCo, observer, ROS 2, ... |
+
+### OpenArm KER
+
+A motorless leader arm with the same kinematics as OpenArm 2.0, used in the [KER tutorial](https://docs.openarm.dev/tutorial/data-collection-ker). CAD is in `openarm_hardware`.
+
+| Repository | Documentation | License | 1.0 | 2.0 | Description |
+|------------|---------------|---------|:---:|:---:|-------------|
+| **[openarm_ker](https://github.com/enactic/openarm_ker)** | [Docs](https://docs.openarm.dev/hardware/openarm-ker/general) | [Apache-2.0](https://github.com/enactic/openarm_ker/blob/main/LICENSE.txt) | – | ◯ | PC-side library and CLI |
+| **[openarm_ker_firmware](https://github.com/enactic/openarm_ker_firmware)** | [Docs](https://docs.openarm.dev/hardware/openarm-ker/encoder-module) | [Apache-2.0](https://github.com/enactic/openarm_ker_firmware/blob/main/LICENSE.txt) | – | ◯ | Encoder and M5 display firmware |
 
 ## 📄 Code of Conduct
 
