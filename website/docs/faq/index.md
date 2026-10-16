@@ -68,6 +68,12 @@ Check the following in order.
 The wiring around the elbow or other joints may enter the detection area of the area sensors and trigger the [Reach-In Stop](../hardware/openarm-cell/general.mdx#reach-in-stop).
 Turn off the power, then secure the wiring along the arm so that it stays out of the detection area.
 
+## The LED panels of OpenArm Cell get very hot.
+
+The LED panels get very hot when they are left on.
+Turn them off when you are not using OpenArm Cell, and do not touch them while they are on.
+Adding a switch to the power supply of the LED panels makes it easy to turn them off.
+
 ## Do you have any recommended CAN devices?
 
 Please use the CAN-FD devices listed in the [OpenArm 1.0 Bill of Materials > Electronics](/1.0/hardware/bill-of-materials/electrical).
