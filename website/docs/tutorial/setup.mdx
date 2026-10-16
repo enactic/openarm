@@ -24,9 +24,52 @@ curl -LsSf https://astral.sh/uv/install.sh | sh
 
 See the [uv installation guide](https://docs.astral.sh/uv/getting-started/installation/) for more details.
 
+## Installing the data collection software
+
+The data collection dataflows are provided in [dora-openarm-data-collection](https://github.com/enactic/dora-openarm-data-collection).
+All OpenArm nodes are Git submodules, and `uv sync --locked` installs Python 3.12, the Dora CLI and all node dependencies into `.venv`.
+
+`openarm-can` is built from source during the installation, so install a C++ compiler first.
+On Ubuntu 24.04, uv uses the system Python 3.12, so also install its development headers (`python3.12-dev`).
+
+```bash
+sudo apt install -y build-essential
+sudo apt install -y python3.12-dev  # Ubuntu 24.04 only
+```
+
+Then clone the repository and install the dependencies:
+
+```bash
+git clone --recurse-submodules https://github.com/enactic/dora-openarm-data-collection.git
+cd dora-openarm-data-collection
+uv sync --locked
+source .venv/bin/activate
+```
+
+:::tip
+If you cloned the repository without `--recurse-submodules`, the nodes under `nodes/` are empty and the dataflows fail to start.
+Run the following command in the `dora-openarm-data-collection` directory to fetch them:
+
+```bash
+git submodule update --init --recursive
+```
+:::
+
+A separate `dora build` step is not needed.
+In each new terminal, run `source .venv/bin/activate` in this directory before running `dora` so that the pinned Dora CLI is used.
+
+To update to the latest version, run the following commands:
+
+```bash
+git pull
+git submodule update --init --recursive
+uv sync --locked
+```
+
 ## CAN setup
 
 Connect right arm to can0 and left arm to can1.
+If you use the OpenArm Cell, connect the lifter to can2. The lifter is required by the Cell dataflows (`dataflow-ker.yaml`, `dataflow-vr.yaml` and `dataflow-webxr.yaml`), and it moves for calibration after the dataflow starts.
 
 Install the CAN utilities: https://github.com/enactic/openarm_can
 
@@ -40,7 +83,7 @@ sudo apt install -y \
 ```
 
 Configure the CAN interfaces with the following command.
-`can_configure` automatically sets up all CAN interfaces with a CAN FD data-phase bitrate of 5 Mbps.
+`can_configure` sets up `can0` to `can3` with a CAN FD data-phase bitrate of 5 Mbps.
 
 ```bash
 openarm-can-cli can_configure
