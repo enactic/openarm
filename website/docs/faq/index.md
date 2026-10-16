@@ -63,6 +63,11 @@ Check the following in order.
 - If the cameras still disconnect, connect the head stereo camera directly to the PC instead of the USB hub.
   Some PCs share an internal hub among several ports, so run `lsusb -t` to make sure that it is not under the same hub as the wrist cameras.
 
+## OpenArm Cell shuts off during zero-position calibration.
+
+The wiring around the elbow or other joints may enter the detection area of the area sensors and trigger the [Reach-In Stop](../hardware/openarm-cell/general.mdx#reach-in-stop).
+Turn off the power, then secure the wiring along the arm so that it stays out of the detection area.
+
 ## Do you have any recommended CAN devices?
 
 Please use the CAN-FD devices listed in the [OpenArm 1.0 Bill of Materials > Electronics](/1.0/hardware/bill-of-materials/electrical).
