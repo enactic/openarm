@@ -45,6 +45,24 @@ Turn off the power, then check the screws.
 - Vibration during operation tends to loosen the screws around the wrist.
 - Loose screws around the elbow can cause play in the joint and make the arm's motion unstable.
 
+## The cameras disconnect.
+
+In the standard configuration in the [OpenArm 2.0 BOM](https://drive.google.com/drive/folders/14RM-fIPml0HTMnt2zcTXjNxJj9s2R_mG), the head stereo camera (ZED mini) and both wrist cameras share one USB hub and one USB repeater cable.
+
+```text
+PC ── USB repeater cable (5 Gbps) ── USB hub ─┬─ Head stereo camera (ZED mini)
+                                              ├─ Right wrist camera
+                                              └─ Left wrist camera
+```
+
+The cameras can disconnect when the hub's power or the shared link is not stable.
+Check the following in order.
+
+- Connect the auxiliary power supply (USB charger) to the USB hub.
+- Connect the USB repeater cable to a USB Type-C port of 5 Gbps or faster on the PC.
+- If the cameras still disconnect, connect the head stereo camera directly to the PC instead of the USB hub.
+  Some PCs share an internal hub among several ports, so run `lsusb -t` to make sure that it is not under the same hub as the wrist cameras.
+
 ## Do you have any recommended CAN devices?
 
 Please use the CAN-FD devices listed in the [OpenArm 1.0 Bill of Materials > Electronics](/1.0/hardware/bill-of-materials/electrical).
