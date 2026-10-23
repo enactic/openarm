@@ -67,6 +67,7 @@ Each episode directory has three subdirectories:
 
 Episode IDs are assigned sequentially when recording, so the IDs may have gaps when an episode is cancelled (cancelled episodes are deleted).
 Record each session into a new dataset directory, and combine them with `openarm-dataset-merge` if needed.
+`openarm-dataset-merge` can only merge datasets whose `version`, `equipment` and `frequencies` in `metadata.yaml` are exactly the same, so record the sessions to be merged with the same robot, leader and dataflow.
 
 #### Arm data (`state.parquet`)
 

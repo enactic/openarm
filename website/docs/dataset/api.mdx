@@ -839,6 +839,11 @@ openarm-dataset-merge -o OUTPUT [--symlink] <inputs>...
 Merges multiple OpenArm datasets into one. With `--symlink`, episode data is
 symlinked instead of copied.
 
+The inputs must have exactly the same `version`, `equipment` and `frequencies`
+in `metadata.yaml`, and unversioned datasets are not supported. Convert older
+datasets with `openarm-dataset-convert --format openarm` first. Tasks with the
+same `prompt` are merged into one task.
+
 #### `openarm-dataset-repair`
 
 ```text
