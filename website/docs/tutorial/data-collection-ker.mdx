@@ -107,6 +107,10 @@ Run the following command in the `dora-openarm-data-collection` directory with t
 LEADER=ker ROBOT=cell scripts/dora-envsubst run dataflow.yaml --uv
 ```
 
+:::warning
+`ROBOT=cell` requires the lifter connected to can2, and the lifter moves for calibration right after the dataflow starts. Make sure nothing is in the way of the lifter before you run the command. See [CAN setup](./setup.mdx#can-setup).
+:::
+
 Use `ROBOT=pedestal` instead if you have the OpenArm 2.0 alone without the cell. See [Running the data collection dataflow](./setup.mdx#running-the-data-collection-dataflow) for details.
 
 Open the web UI at http://localhost:8000 same as VR teleoperation. The foot pedal works as a keyboard, so keep the web UI tab focused while you use the pedal.

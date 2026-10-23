@@ -132,6 +132,10 @@ First, make sure that the CAN interfaces are up and running and the cameras are 
 LEADER=webxr ROBOT=cell scripts/dora-envsubst run dataflow.yaml --uv
 ```
 
+:::warning
+`ROBOT=cell` requires the lifter connected to can2, and the lifter moves for calibration right after the dataflow starts. Make sure nothing is in the way of the lifter before you run the command. See [CAN setup](./setup.mdx#can-setup).
+:::
+
 This also requires the TLS certificate generated in [preparation for WebXR teleoperation](#preparation-for-webxr-teleoperation).
 
 Open `http://localhost:8000/` on the local machine for the data collection UI, and open `https://<YOUR_HOST_NAME>:8443/` in the Web browser on your VR device, then press the "start" button to start teleoperation.

@@ -131,6 +131,10 @@ First, make sure that the CAN interface is up and running and the cameras are se
 LEADER=vr ROBOT=cell scripts/dora-envsubst run dataflow.yaml --uv
 ```
 
+:::warning
+`ROBOT=cell` requires the lifter connected to can2, and the lifter moves for calibration right after the dataflow starts. Make sure nothing is in the way of the lifter before you run the command. See [CAN setup](./setup.mdx#can-setup).
+:::
+
 The collected data is stored in `data/vr-cell` by default. Same as the MuJoCo data collection, you can specify the output directory by modifying `DIRECTORY` of the `recorder` node in `dataflow.yaml`.
 
 If the command runs successfully, the arms will start. You need to align your VR controllers to the arm first by holding the trigger button.
