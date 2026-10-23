@@ -120,7 +120,7 @@ If you don't have the real robot, skip the next section and move to the dataset 
 ## Data collection on the real robot (Cell)
 
 :::info
-If you want to teleoperate **OpenArm 2.0 alone without the cell**, please see [Data collection on the real robot (pedestal)](../tutorial/data-collection-webxr.mdx#data-collection-on-the-real-robot-pedestal).
+If you have the **OpenArm 2.0 alone without the cell**, use `ROBOT=pedestal` instead of `ROBOT=cell` in the following command. It doesn't need the lifter and the cameras, and only collects action and state data. The collected data is stored in `data/vr-pedestal` by default.
 :::
 
 First, make sure that the CAN interface is up and running and the cameras are set up properly, VR teleoperation is working. Then, run the following command to start the data collection.
