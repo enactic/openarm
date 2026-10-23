@@ -199,7 +199,7 @@ frequencies:
 * `prompt` is the short instruction of the task, such as `Pick a spoon.`. It is shown on the data collection web UI, and it is used as the language instruction for the policy when the dataset is converted to the LeRobot, GR00T and robot_eval_logger formats. Use the same `prompt` for the same task: `openarm-dataset-merge` treats tasks with the same `prompt` as the same task.
 * `description` is a longer explanation for humans, such as the initial placement of the objects and the success criteria. It is not used for training or in the converted datasets, but it is shown on the Hugging Face dataset card by `openarm-dataset-upload`.
 
-When you collect data with [dora-openarm-data-collection](https://github.com/enactic/dora-openarm-data-collection), `location`, `operator`, `tasks` and `equipment` come from the metadata file of the dataflow (e.g. `metadata.yaml`), and the recorder adds `version`, `operation_type`, `episodes`, `frequencies`, `equipment.leader` (KER) and `model` (rollout).
+When you collect data with [dora-openarm-data-collection](https://github.com/enactic/dora-openarm-data-collection), `location`, `operator`, `tasks` and `equipment` come from the metadata file of the dataflow (`metadata_$ROBOT.yaml`, e.g. `metadata_cell.yaml`), and the recorder adds `version`, `operation_type`, `episodes`, `frequencies`, `equipment.leader` (KER) and `model` (rollout).
 Edit this file before recording to set your location, operator and tasks.
 
 #### Older formats

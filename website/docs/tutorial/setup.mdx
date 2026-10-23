@@ -66,10 +66,33 @@ git submodule update --init --recursive
 uv sync --locked
 ```
 
+### Running the data collection dataflow
+
+`dataflow.yaml` is the only dataflow. The leader (the teleoperation device) and the robot are selected by the `LEADER` and `ROBOT` environment variables:
+
+| Variable | Values | Default |
+|---|---|---|
+| `LEADER` | `ker` (KER), `vr` (VR), `webxr` (WebXR), `dummy` (generated motion without any device) | `dummy` |
+| `ROBOT` | `cell` (OpenArm Cell), `pedestal` (OpenArm 2.0 without the Cell), `mujoco` (MuJoCo simulation), `dummy` (no hardware) | `dummy` |
+
+Dora doesn't expand environment variables in the module paths of a dataflow, so run it through `scripts/dora-envsubst`.
+Run the following command in the `dora-openarm-data-collection` directory with the virtual environment activated:
+
+```bash
+LEADER=dummy ROBOT=dummy scripts/dora-envsubst run dataflow.yaml --uv
+```
+
+This example doesn't need any hardware, so you can use it to check your installation.
+Open http://localhost:8000 in your Web browser for the data collection web UI.
+
+The UI and the recorder use the metadata file `metadata_$ROBOT.yaml` (e.g. `metadata_cell.yaml`). Edit it before recording to set your location, operator and tasks.
+The collected data is stored in `data/$LEADER-$ROBOT/` (e.g. `data/webxr-mujoco/`) in the [OpenArm Dataset](../dataset/dataset.mdx) format.
+To change the output directory, change `DIRECTORY` of the `recorder` node in `dataflow.yaml`.
+
 ## CAN setup
 
 Connect right arm to can0 and left arm to can1.
-If you use the OpenArm Cell, connect the lifter to can2. The lifter is required by the Cell dataflows (`dataflow-ker.yaml`, `dataflow-vr.yaml` and `dataflow-webxr.yaml`), and it moves for calibration after the dataflow starts.
+If you use the OpenArm Cell, connect the lifter to can2. The lifter is required by `ROBOT=cell`, and it moves for calibration after the dataflow starts.
 
 Install the CAN utilities: https://github.com/enactic/openarm_can
 

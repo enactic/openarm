@@ -104,11 +104,13 @@ If you have already cloned `dora-openarm-data-collection` without `--recurse-sub
 Run the following command in the `dora-openarm-data-collection` directory with the virtual environment activated.
 
 ```bash
-dora run dataflow-ker.yaml --uv
+LEADER=ker ROBOT=cell scripts/dora-envsubst run dataflow.yaml --uv
 ```
 
+Use `ROBOT=pedestal` instead if you have the OpenArm 2.0 alone without the cell. See [Running the data collection dataflow](./setup.mdx#running-the-data-collection-dataflow) for details.
+
 Open the web UI at http://localhost:8000 same as VR teleoperation. The foot pedal works as a keyboard, so keep the web UI tab focused while you use the pedal.
-The collected data is stored in `ker_data` by default, which is set as `DIRECTORY` of the `recorder` node in `dataflow-ker.yaml`.
+The collected data is stored in `data/ker-cell` by default.
 
 <BlockImage src="tutorial/data-collection-vr/data-collection-start-quit.png" alt="Web ui" width="90%" />
 
