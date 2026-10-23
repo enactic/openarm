@@ -364,7 +364,7 @@ You almost never construct this directly; use `Dataset.load_camera` /
 | Attribute        | Type                                | Description                                  |
 |------------------|-------------------------------------|----------------------------------------------|
 | `name`           | `str`                               | Stream name (e.g. `"ceiling"`).              |
-| `base_path`      | `pathlib.Path`                      | Directory holding the JPEGs.                 |
+| `base_path`      | `pathlib.Path`                      | Directory-style path of the camera. It holds the JPEGs for `"dir"` cameras, and doesn't exist for tar-backed cameras. |
 | `tar_path`       | `pathlib.Path` or `None`            | Path of the tar archive for tar-backed cameras. |
 | `format`         | `str`                               | `"dir"` or `"tar"`.                          |
 | `all_files`      | `list[pathlib.Path]`                | All JPEG paths, sorted. Empty for tar-backed cameras; use `frames()` instead. |
