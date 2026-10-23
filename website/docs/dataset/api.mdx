@@ -485,7 +485,7 @@ You normally get these from `Dataset.sample`.
 | Property    | Type                            | Description                                                 |
 |-------------|---------------------------------|-------------------------------------------------------------|
 | `timestamp` | `float`                         | Unix seconds of this sample on the resampling grid.         |
-| `obs`       | `dict[str, numpy.ndarray]`      | 1-D arrays of joint values (`float32`, or `float64` with smoothing), keyed like `load_obs`.|
+| `obs`       | `dict[str, numpy.ndarray]`      | 1-D arrays (`float32`, or `float64` with smoothing), keyed like `load_obs`. The arm positions follow `state`: joint values (`qpos`) for `"qpos"`, or a Cartesian pose and the gripper (`pose`/`rot6d`) for `"pose"` and `"rot6d"`. `qvel` and `qtorque` are always joint values. |
 | `action`    | `dict[str, numpy.ndarray]`      | Same shape/dtype as `obs`, keyed like `load_action`.        |
 | `cameras`   | `dict[str, Frame]`              | One `Frame` per camera stream — *not* decoded.              |
 
