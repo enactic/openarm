@@ -1,0 +1,75 @@
+---
+title: Upgrade from 1.0
+sidebar_position: 4
+---
+
+# Upgrade from 1.0
+
+If you already have an OpenArm 1.0, you don't need a complete 2.0 kit to upgrade.
+The arm structure, motors, and electronics are the same in 1.0 and 2.0.
+The upgrade replaces the gripper with the [2.0 gripper](./gripper.mdx) and swaps the J5 bracket.
+
+This page lists only the parts you need to order for the upgrade.
+Quantities are for a bimanual setup (right and left arm), the same as the [OpenArm 2.0 BOM](./general.mdx#manufacturing-information).
+
+## What changes
+
+| Part | 1.0 | 2.0 |
+|---|---|---|
+| Gripper | Linkage-driven parallel gripper | Compact gripper with an in-hand camera |
+| J5 bracket | `J5_A` (`MVTUP-ASN-48P-5C724-L`) | `J5_A_rotate90` (`MVTUP-ASN-4EW-3BJ7T-L`) |
+| J3-J4 cover and J4 cable holders | 1.0 version | 2.0 version (3D printed) |
+
+## Manufactured parts
+
+These parts are made to order by MiSUMi meviy.
+You can find each part by searching its model number on [meviy](https://meviy.misumi-ec.com/ja-jp/app/search-product-part-number).
+
+| Part | Model No. | Quantity |
+|---|---|---|
+| J5_A_rotate90 | MVTUP-ASN-4EW-3BJ7T-L | 2 |
+| end-efector_base_4310 | MVBLK-ASN-4L6-XGNZZ-L | 2 |
+| end-efector_shaft_A_4310 | MVBLK-ASN-4L6-3A34P-L | 2 |
+| end-efector_shaft_B_4310 | MVTUP-ASN-4L6-PNLK8-L | 2 |
+| end-efector_J7_joint_A_4310 | MVBLK-SUB-4L6-67P51-L | 1 |
+| end-efector_J7_joint_A_4310_mir | MVBLK-SUB-4L6-9SWRK-L | 1 |
+| end-efector_J7_joint_B_4310 | MVBLK-ASN-4L6-CDD6C-L | 2 |
+| end-efector_J7_joint_C_4310 | MVBLK-ASN-4L6-SB22H-L | 2 |
+| end-efector_finger_mount_adapter_A_4310 | MVBLK-ASN-4L6-9FP8U-L | 2 |
+| end-efector_finger_mount_adapter_B_4310 | MVBLK-ASN-4L6-BGB8M-L | 2 |
+| camera_mount_4310 | MVSHM-3N01548-4L6-ABKNZ-L | 1 |
+| camera_mount_4310_mir | MVSHM-3N01548-4L6-59WNR-L | 1 |
+
+## Off-the-shelf parts
+
+| Part | Model No. | Quantity | Supplier |
+|---|---|---|---|
+| M3x6 bolt | CBE3-6 | 14 | MiSUMi |
+| M3x8 bolt | CBE3-8 | 56 | MiSUMi |
+| M3x10 bolt | CBE3-10 | 12 | MiSUMi |
+| M3x20 bolt | CBE3-20 | 12 | MiSUMi |
+| Ultra low profile socket head cap screw | CBSTNR3-6 | 12 | MiSUMi |
+| M2x4 bolt | SCB2-4 | 8 | MiSUMi |
+| Spur gear, module 1.0 | SL-GEAHS1.0-36-6-A-17-QFC24-M3 | 4 | MiSUMi |
+| Ball bearing | B6802ZZ | 2 | MiSUMi |
+| General-purpose pin g6 | MSGS3-10 | 2 | MiSUMi |
+| General-purpose pin g6 | MSGS4-8 | 2 | MiSUMi |
+| In-hand camera | B0495 | 2 | Arducam |
+| Camera cable (1 m) | 20302 | 2 | UGREEN |
+
+The head camera (ZED mini) and the USB hub for the cameras are listed separately in the BOM.
+Order them too if you want the same camera setup as a complete OpenArm 2.0.
+
+## 3D printed parts
+
+The files are in the [3D CAD data](./general.mdx#manufacturing-information).
+
+| Part | Quantity |
+|---|---|
+| cable_holder_J4_A | 2 |
+| cable_holder_J4_B | 2 |
+| J3-J4_cover_v2.0 (body 2) | 2 |
+| end-effector_cover_4310 | 1 |
+| end-effector_cover_4310_mir | 1 |
+| end-efector_finger_L_v5_4310 (body 4) | 2 |
+| end-efector_finger_R_v5_4310 (body 1) | 2 |
