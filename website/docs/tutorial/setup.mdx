@@ -24,9 +24,75 @@ curl -LsSf https://astral.sh/uv/install.sh | sh
 
 See the [uv installation guide](https://docs.astral.sh/uv/getting-started/installation/) for more details.
 
+## Installing the data collection software
+
+The data collection dataflows are provided in [dora-openarm-data-collection](https://github.com/enactic/dora-openarm-data-collection).
+All OpenArm nodes are Git submodules, and `uv sync --locked` installs Python 3.12, the Dora CLI and all node dependencies into `.venv`.
+
+`openarm-can` is built from source during the installation, so install a C++ compiler first.
+On Ubuntu 24.04, uv uses the system Python 3.12, so also install its development headers (`python3.12-dev`).
+
+```bash
+sudo apt install -y build-essential
+sudo apt install -y python3.12-dev  # Ubuntu 24.04 only
+```
+
+Then clone the repository and install the dependencies:
+
+```bash
+git clone --recurse-submodules https://github.com/enactic/dora-openarm-data-collection.git
+cd dora-openarm-data-collection
+uv sync --locked
+source .venv/bin/activate
+```
+
+:::tip
+If you cloned the repository without `--recurse-submodules`, the nodes under `nodes/` are empty and the dataflows fail to start.
+Run the following command in the `dora-openarm-data-collection` directory to fetch them:
+
+```bash
+git submodule update --init --recursive
+```
+:::
+
+A separate `dora build` step is not needed.
+In each new terminal, run `source .venv/bin/activate` in this directory before running `dora` so that the pinned Dora CLI is used.
+
+To update to the latest version, run the following commands:
+
+```bash
+git pull
+git submodule update --init --recursive
+uv sync --locked
+```
+
+### Running the data collection dataflow
+
+`dataflow.yaml` is the only dataflow. The leader (the teleoperation device) and the robot are selected by the `LEADER` and `ROBOT` environment variables:
+
+| Variable | Values | Default |
+|---|---|---|
+| `LEADER` | `ker` (KER), `vr` (VR), `webxr` (WebXR), `dummy` (generated motion without any device) | `dummy` |
+| `ROBOT` | `cell` (OpenArm Cell), `pedestal` (OpenArm 2.0 without the Cell), `mujoco` (MuJoCo simulation), `dummy` (no hardware) | `dummy` |
+
+Dora doesn't expand environment variables in the module paths of a dataflow, so run it through `scripts/dora-envsubst`.
+Run the following command in the `dora-openarm-data-collection` directory with the virtual environment activated:
+
+```bash
+LEADER=dummy ROBOT=dummy scripts/dora-envsubst run dataflow.yaml --uv
+```
+
+This example doesn't need any hardware, so you can use it to check your installation.
+Open http://localhost:8000 in your Web browser for the data collection web UI.
+
+The UI and the recorder use the metadata file `metadata_$ROBOT.yaml` (e.g. `metadata_cell.yaml`). Edit it before recording to set your location, operator and tasks.
+The collected data is stored in `data/$LEADER-$ROBOT/` (e.g. `data/webxr-mujoco/`) in the [OpenArm Dataset](../dataset/dataset.mdx) format.
+To change the output directory, change `DIRECTORY` of the `recorder` node in `dataflow.yaml`.
+
 ## CAN setup
 
 Connect right arm to can0 and left arm to can1.
+If you use the OpenArm Cell, connect the lifter to can2. The lifter is required by `ROBOT=cell`, and it moves for calibration after the dataflow starts.
 
 Install the CAN utilities: https://github.com/enactic/openarm_can
 
@@ -40,7 +106,7 @@ sudo apt install -y \
 ```
 
 Configure the CAN interfaces with the following command.
-`can_configure` automatically sets up all CAN interfaces with a CAN FD data-phase bitrate of 5 Mbps.
+`can_configure` sets up `can0` to `can3` with a CAN FD data-phase bitrate of 5 Mbps.
 
 ```bash
 openarm-can-cli can_configure

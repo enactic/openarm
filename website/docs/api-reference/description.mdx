@@ -26,7 +26,7 @@ This [OpenArm description](https://github.com/enactic/openarm_description) packa
 | Version | `arm_type` values | Configuration style |
 |---|---|---|
 | OpenArm v1.0 | `v10`, `v1.0`, `v1_0`, `openarm_v10`, `openarm_v1.0` | Per-argument (`ee_type`, ...) |
-| OpenArm v2.0 | `v20`, `v2.0`, `v2_0`, `openarm_v20`, `openarm_v2.0` | Preset-based (`robot_preset`) |
+| OpenArm v2.0 | `v20`, `v2.0`, `v2_0`, `openarm_v20`, `openarm_v2.0`, `openarm_v2_0` | Preset-based (`robot_preset`) |
 
 Both versions share the same launch file and entry point. The `arm_type` argument determines which hardware and xacro files are loaded.
 
@@ -69,11 +69,41 @@ v2.0 uses a preset-based system. A single `robot_preset` argument selects the fu
 
 | Preset | Description |
 |---|---|
-| `default_bimanual` | Both left and right arms (default) |
-| `right_arm` | Right arm only |
-| `left_arm` | Left arm only |
+| `default_bimanual` | Body, both left and right arms, and a pinch gripper on each arm (default) |
+| `right_arm` | Right arm only, without a gripper |
+| `left_arm` | Left arm only, without a gripper |
 | `right_arm_with_pinch_gripper` | Right arm with pinch gripper |
 | `left_arm_with_pinch_gripper` | Left arm with pinch gripper |
+
+Each preset is a YAML file in `assets/robot/openarm_v2.0/config/robot_presets/`.
+A preset lists the components of the robot (`body`, `primary_arm`, `secondary_arm`, and an end effector for each arm), and each component has:
+
+| Key | Description |
+|---|---|
+| `enabled` | Whether the component is included in the URDF. |
+| `product` | The product of the component, such as `openarm_v2.0` or `pinch_gripper`. |
+| `prefix` | The prefix of the link and joint names, such as `openarm_left_`. |
+| `connection` | Where the component is attached, such as `attach_to: body` and `parent_reference_point: left_arm_mount_point`. |
+| `reflect` | Mirroring of the component. The left arm is the mirrored right arm. |
+
+To use your own configuration, add a new YAML file to the `robot_presets` directory based on an existing preset, and pass its file name without `.yaml` as `robot_preset`.
+
+### v2.0 Links and Joints
+
+The URDF generated with `default_bimanual` has the following links and joints. `<side>` is `left` or `right`.
+
+| Name | Type | Description |
+|---|---|---|
+| `world` | link | Root frame |
+| `openarm_body_link0` | link | Body |
+| `openarm_<side>_base_link` | link | Base of the arm |
+| `openarm_<side>_link1` … `openarm_<side>_link6` | link | Arm links |
+| `openarm_<side>_joint1` … `openarm_<side>_joint7` | revolute joint | Arm joints |
+| `openarm_<side>_ee_base_link` | link | Base of the pinch gripper. `openarm_<side>_joint7` connects `openarm_<side>_link6` to this link, because the empty `link7` is collapsed by `collapse_internal_empty_links` |
+| `openarm_<side>_ee_link1`, `openarm_<side>_ee_link2` | link | Fingers of the pinch gripper |
+| `openarm_<side>_finger_joint1` | revolute joint | Gripper joint |
+| `openarm_<side>_finger_joint2` | revolute joint | Mimics `openarm_<side>_finger_joint1` |
+| `openarm_<side>_grasp_frame` | link | Grasp frame. Only with `emit_grasp_frame:=true` |
 
 ---
 
@@ -165,7 +195,18 @@ xacro $(ros2 pkg prefix openarm_description)/share/openarm_description/assets/ro
 # Right arm with pinch gripper
 xacro $(ros2 pkg prefix openarm_description)/share/openarm_description/assets/robot/openarm_v2.0/urdf/openarm_v20.urdf.xacro \
   robot_preset:=right_arm_with_pinch_gripper > openarm_v20_right_arm_pinch.urdf
+
+# Bimanual for the real hardware
+xacro $(ros2 pkg prefix openarm_description)/share/openarm_description/assets/robot/openarm_v2.0/urdf/openarm_v20.urdf.xacro \
+  use_fake_hardware:=false right_can_interface:=can0 left_can_interface:=can1 can_fd:=true > openarm_v20_bimanual_hw.urdf
 ```
+
+:::note
+The v2.0 URDF always includes the `ros2_control` section for both arms.
+By default (`use_fake_hardware:=true`), it uses `mock_components/GenericSystem`.
+To control the real hardware, pass `use_fake_hardware:=false`, which uses `openarm_hardware/OpenArmHW` with the CAN interfaces and the control gains in `config/arm/control/control_gains.yaml`.
+`openarm_bringup` in [openarm_ros2](ros2/control) passes these arguments for you.
+:::
 
 #### OpenArm v1.0
 
@@ -202,7 +243,14 @@ Below are some configurable variables for the OpenArm robot description that all
 |---|---|---|
 | `robot_preset` | `default_bimanual` | Robot configuration preset (see preset table above) |
 | `collapse_internal_empty_links` | `true` | Collapse empty intermediate links in the URDF |
-| `emit_grasp_frame` | `false` | Add a grasp frame link to the end-effector |
+| `emit_grasp_frame` | `false` | Add a grasp frame link (`openarm_<side>_grasp_frame`) to each end-effector |
+| `use_fake_hardware` | `true` | Use `mock_components/GenericSystem` instead of the real hardware interface in the `ros2_control` section |
+| `left_can_interface` | `can1` | CAN interface for the left arm |
+| `right_can_interface` | `can0` | CAN interface for the right arm |
+| `can_fd` | `true` | Use CAN FD. Set to `false` for a classic CAN interface |
+
+`display_openarm.launch.py` passes only `arm_type`, `robot_preset`, `collapse_internal_empty_links` and `emit_grasp_frame` to the v2.0 xacro.
+Pass the other arguments to `xacro` directly.
 
 ### v1.0 Arguments
 
