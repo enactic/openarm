@@ -340,6 +340,7 @@ openarm-dataset-validate /path/to/OpenArmDataset
 
 This checks null and NaN values, abrupt qpos jumps, out-of-range qpos values, invalid pose quaternions and too short episodes.
 By default, the result is recorded as a `valid` flag per episode in `metadata.yaml`, and `--valid-only` of `openarm-dataset-convert` skips the invalid episodes.
+`metadata.yaml` is rewritten in the latest format, so convert datasets in an older format with `openarm-dataset-convert --format openarm` first, or pass `--no-update-metadata`.
 See [Command-line tools](./api.mdx#command-line-tools) for the options.
 
 ### Conversion to other formats

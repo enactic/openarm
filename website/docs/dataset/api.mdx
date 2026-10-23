@@ -291,7 +291,7 @@ zero-norm). The other checks are enabled by their parameters.
 | Parameter             | Description                                                                                  |
 |-----------------------|----------------------------------------------------------------------------------------------|
 | `on_error`            | Callback invoked with one human-readable error string per violation.                         |
-| `update_metadata`     | If `True`, record the result as a `valid` flag per episode in the metadata. `metadata.yaml` is rewritten in place. Ignored for unversioned datasets. |
+| `update_metadata`     | If `True`, record the result as a `valid` flag per episode in the metadata. `metadata.yaml` is rewritten in place in the latest format (0.4.0), so convert older datasets with `openarm-dataset-convert` first. Ignored for unversioned datasets. |
 | `qpos_jump_threshold` | If set, flag qpos frame-to-frame deltas above this value (radians).                          |
 | `qpos_absmax`         | If set, flag qpos values whose absolute value exceeds this value (radians).                  |
 | `min_duration`        | If set, flag episodes shorter than this value (seconds).                                     |
