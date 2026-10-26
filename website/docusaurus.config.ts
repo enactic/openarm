@@ -137,7 +137,7 @@ const config: Config = {
           { from: '/api-reference/setup/motor-firmware-update', to: '/setup/openarm-setup/motor-firmware-update' },
           { from: '/tutorial/data-collection', to: '/tutorial/data-collection-vr' },
           // The OpenArm Cell jig is replaced by the calibration with the mechanical limits
-          { from: '/hardware/openarm-cell/calibration-workflow', to: '/setup/openarm-setup/motor-config' }
+          { from: '/hardware/openarm-cell/calibration-workflow', to: '/setup/openarm-setup/motor-config#zero-position-calibration-in-openarm-cell' }
         ],
         createRedirects(existingPath: string) {
           const removedInV2 = [
