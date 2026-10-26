@@ -116,12 +116,8 @@ If you just buy the OpenArm 2.0 only and already zero position calibrated, you c
 
 ## Zero position setup
 
-Set up the arm with the jig as shown below.
+Set the zero position with the mechanical limits of each joint.
 This ensures the arm is in the correct position for data collection and evaluation.
-
-<BlockImage src="hardware/openarm-cell/calibration-workflow/step5.png" alt="OpenArm Cell Calibration Step5" />
-
-(See also: [Calibration Workflow](../hardware/openarm-cell/calibration-workflow.mdx))
 
 Before setting the zero position, make sure the CAN interface is up and running:
 
@@ -129,12 +125,21 @@ Before setting the zero position, make sure the CAN interface is up and running:
 ip link show
 ```
 
-`can0` and `can1` should appear in the UP state. Then run the following commands to set the zero position for the CAN motors:
+`can0` and `can1` should appear in the UP state.
+
+:::warning
+The arm moves automatically during the calibration. Clear the workspace and be ready to emergency stop.
+:::
+
+Then run the following commands to set the zero position for each arm:
 
 ```bash
-openarm-can-cli -i can0 set_zero --arm
-openarm-can-cli -i can1 set_zero --arm
+openarm-can-zero-position-calibration --canport can0 --arm-side right_arm
+openarm-can-zero-position-calibration --canport can1 --arm-side left_arm
 ```
+
+See [Zero Position Calibration](../setup/openarm-setup/4-motor-config.mdx#step-2-zero-position-calibration) for details.
+If OpenArm Cell shuts off during the calibration, see [the FAQ](../faq/index.md#openarm-cell-shuts-off-during-zero-position-calibration).
 
 ## Camera setup
 

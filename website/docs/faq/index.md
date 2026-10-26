@@ -102,6 +102,13 @@ Check the following in order.
 - If the cameras still disconnect, connect the head stereo camera directly to the PC instead of the USB hub.
   Some PCs share an internal hub among several ports, so run `lsusb -t` to make sure that it is not under the same hub as the wrist cameras.
 
+## Should I use the zero-position calibration jig with OpenArm Cell?
+
+We recommend the [zero-position calibration with the mechanical limits](../setup/openarm-setup/4-motor-config.mdx#step-2-zero-position-calibration) instead of the jig.
+The jig aligns the arm to OpenArm Cell, so assembly errors of the Cell shift the zero position.
+The calibration with the mechanical limits uses the mechanical limit of each joint, so the assembly errors of the Cell don't affect it.
+You can run it with the arm mounted in OpenArm Cell.
+
 ## OpenArm Cell shuts off during zero-position calibration.
 
 The wiring around the elbow or other joints may enter the detection area of the area sensors and trigger the [Reach-In Stop](../hardware/openarm-cell/general.mdx#reach-in-stop).
