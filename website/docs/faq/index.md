@@ -26,7 +26,8 @@ See also the [safety guide](../overview/safety-guide.mdx).
 
 - Loose connectors and broken wires: a loose connector or a broken wire can stop a motor from moving or block communication.
   Check the connectors and wiring first.
-  The wiring around the elbow (J4) comes off easily, so check it carefully.
+  The wiring from the elbow (J4) to the gripper (J8) moves a lot during operation, so it wears out and comes off easily.
+  Check it carefully.
 - CAN bus-off: long wires or some cable routings can cause signal reflections that put the CAN bus into bus-off.
   This is rare, but it stops the arm.
   Bring the CAN interface down and up again to restore communication. See [Setup CAN Interface](../setup/openarm-setup/2-can-setup.mdx).
