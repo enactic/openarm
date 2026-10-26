@@ -98,6 +98,23 @@ openarm-can-zero-position-calibration --canport can3 --arm-side left_arm
   />
 </div>
 
+### Zero Position Calibration in OpenArm Cell
+
+If the arm is mounted in [OpenArm Cell](../../hardware/openarm-cell/general.mdx), use `openarm-can-calibration-in-cell` instead.
+The arm can run the calibration only when the lifter of OpenArm Cell is at the top.
+This command raises the lifter to its top mechanical limit, asks you to confirm it, and then runs the same calibration as `openarm-can-zero-position-calibration`.
+
+```bash
+# Right arm (can0)
+openarm-can-calibration-in-cell --arm-side right_arm
+
+# Left arm (can1)
+openarm-can-calibration-in-cell --arm-side left_arm
+```
+
+The lifter is connected to `can2` by default. Use `--lifter-canport` to change it.
+If OpenArm Cell shuts off during the calibration, see [the FAQ](../../faq/index.md#openarm-cell-shuts-off-during-zero-position-calibration).
+
 ## Step 3: Verify Motor Communication
 
 Run the monitor command to check motor status. Replace `1,2,3...` with your motor IDs.

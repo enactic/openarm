@@ -105,10 +105,9 @@ Check the following in order.
 
 ## Should I use the zero-position calibration jig with OpenArm Cell?
 
-We recommend the [zero-position calibration with the mechanical limits](../setup/openarm-setup/4-motor-config.mdx#step-2-zero-position-calibration) instead of the jig.
+We recommend the [zero-position calibration with the mechanical limits in OpenArm Cell](../setup/openarm-setup/4-motor-config.mdx#zero-position-calibration-in-openarm-cell) instead of the jig.
 The jig aligns the arm to OpenArm Cell, so assembly errors of the Cell shift the zero position.
 The calibration with the mechanical limits uses the mechanical limit of each joint, so the assembly errors of the Cell don't affect it.
-You can run it with the arm mounted in OpenArm Cell.
 
 ## OpenArm Cell shuts off during zero-position calibration.
 
