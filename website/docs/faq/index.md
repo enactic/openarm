@@ -85,6 +85,16 @@ To control the end effector accurately, use a frame at the tool center point (TC
 We don't define a standard TCP because the best point depends on the task.
 For reference, the lower end of the fingertips is 0.170 m from the origin of `openarm_<side>_ee_base_link` along its -Z axis when the gripper is closed.
 
+## How do I check that the arm has reached the target?
+
+In the default configuration of [ROS 2 control](../api-reference/ros2/control.mdx), the joint trajectory controllers don't check the goal tolerance.
+A trajectory can succeed even if the arm hasn't reached the target, for example because of the [steady-state error](#the-arm-doesnt-reach-the-commanded-position-or-the-end-effector-sags).
+Check the error between the target and the actual position yourself.
+We recommend checking the error at the end effector, not at each joint.
+
+You can also set the goal tolerance of each joint (`constraints.<joint>.goal`) in the [controller configuration](https://github.com/enactic/openarm_ros2/tree/main/openarm_bringup/config/controllers) to make a trajectory fail when the arm doesn't reach the target.
+The appropriate tolerance depends on your task and gains.
+
 ## The cameras disconnect.
 
 In the standard configuration in the [OpenArm 2.0 BOM](https://drive.google.com/drive/folders/14RM-fIPml0HTMnt2zcTXjNxJj9s2R_mG), the head stereo camera (ZED mini) and both wrist cameras share one USB hub and one USB repeater cable.
