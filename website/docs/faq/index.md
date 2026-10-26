@@ -74,6 +74,16 @@ See [Control Gains](../api-reference/ros2/control.mdx#control-gains) for how to 
 Start with low gains and increase them gradually.
 With high gains, a command far from the current position can move the arm dangerously fast.
 
+## The joint positions match the command, but the end effector is off.
+
+Check which frame you are controlling.
+The planning groups of the [MoveIt2 integration](../api-reference/ros2/control.mdx#getting-started-with-moveit2) end at J7, so MoveIt moves the origin of `openarm_<side>_ee_base_link`, which is on the J7 axis, to the target pose.
+The fingertips are about 0.17 m away from this point.
+
+To control the end effector accurately, use a frame at the tool center point (TCP) of your task as the control point.
+We don't define a standard TCP because the best point depends on the task.
+For reference, the lower end of the fingertips is 0.170 m from the origin of `openarm_<side>_ee_base_link` along its -Z axis when the gripper is closed.
+
 ## The cameras disconnect.
 
 In the standard configuration in the [OpenArm 2.0 BOM](https://drive.google.com/drive/folders/14RM-fIPml0HTMnt2zcTXjNxJj9s2R_mG), the head stereo camera (ZED mini) and both wrist cameras share one USB hub and one USB repeater cable.
