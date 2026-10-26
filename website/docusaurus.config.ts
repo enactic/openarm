@@ -135,7 +135,9 @@ const config: Config = {
           { from: '/api-reference/setup/motor-config', to: '/setup/openarm-setup/motor-config' },
           { from: '/api-reference/setup/run-demo', to: '/setup/openarm-setup/run-demo' },
           { from: '/api-reference/setup/motor-firmware-update', to: '/setup/openarm-setup/motor-firmware-update' },
-          { from: '/tutorial/data-collection', to: '/tutorial/data-collection-vr' }
+          { from: '/tutorial/data-collection', to: '/tutorial/data-collection-vr' },
+          // The OpenArm Cell jig is replaced by the calibration with the mechanical limits
+          { from: '/hardware/openarm-cell/calibration-workflow', to: '/setup/openarm-setup/motor-config' }
         ],
         createRedirects(existingPath: string) {
           const removedInV2 = [
