@@ -45,6 +45,35 @@ Turn off the power, then check the screws.
 - Vibration during operation tends to loosen the screws around the wrist.
 - Loose screws around the elbow can cause play in the joint and make the arm's motion unstable.
 
+## The arm doesn't reach the commanded position or the end effector sags.
+
+The default control gains are set low for safety.
+With low gains, gravity leaves a steady-state error in each joint, and the error grows at the end effector when the arm is extended.
+
+Increase the position gain (Kp) first.
+This fixes most of the steady-state error and the sagging.
+
+We recommend tuning in the following order:
+
+1. Kp
+2. Kd
+3. Gravity compensation
+4. Friction compensation
+5. Integral gain (Ki) and disturbance observer (DOB), only if still needed
+
+OpenArm software controls the arm motors only in MIT mode (PD control with feedforward torque).
+It doesn't provide an inner position or velocity loop with integral control or a disturbance observer.
+If you implement them yourself, we don't recommend combining Ki and DOB because they can interfere with each other and cause oscillation.
+
+For reference, see the gains used in our software:
+
+- [Default gains for ROS 2](https://github.com/enactic/openarm_description/blob/main/assets/robot/openarm_v2.0/config/arm/control/control_gains.yaml)
+- [Higher gains used with OpenArm Cell](https://github.com/enactic/openarm_driver/blob/5c73d835b31875057695f1b8688e0bf9c0bf87b0/src/openarm_driver/configs/openarm_cell_higher_pd_zero_offset.yaml#L87-L89)
+
+See [Control Gains](../api-reference/ros2/control.mdx#control-gains) for how to change the gains.
+Start with low gains and increase them gradually.
+With high gains, a command far from the current position can move the arm dangerously fast.
+
 ## The cameras disconnect.
 
 In the standard configuration in the [OpenArm 2.0 BOM](https://drive.google.com/drive/folders/14RM-fIPml0HTMnt2zcTXjNxJj9s2R_mG), the head stereo camera (ZED mini) and both wrist cameras share one USB hub and one USB repeater cable.
