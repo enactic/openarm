@@ -35,7 +35,10 @@ DISCORD_EPOCH_MS = 1420070400000
 def token():
     value = os.environ.get("DISCORD_TOKEN")
     if not value:
-        sys.exit("DISCORD_TOKEN is not set")
+        sys.exit(
+            "DISCORD_TOKEN is not set "
+            "(see .claude/skills/discord-supporter/README.md)"
+        )
     return value
 
 
