@@ -47,10 +47,10 @@ Join our Discord to find collaborators, share what you're building, and integrat
 
 | Channel | Purpose | Best For |
 |---------|---------|----------|
-| **#projects** | Share builds, ideas, and find collaborators | Showcasing work, finding project partners |
-| **#faq** | Quick questions and community answers | Getting started, troubleshooting |
-| **#updates** | Official announcements | Staying current with developments |
-| **#weekly** | Development progress highlights | Following project milestones |
+| **#🌱｜projects** | Share builds, ideas, and find collaborators | Showcasing work, finding project partners |
+| **#❓｜faq** | Quick questions and community answers | Getting started, troubleshooting |
+| **#📦｜purchase** | Buy and sell OpenArm, kits, and parts | Finding manufacturers, buying or selling used units |
+| **#🚀｜updates** | Official announcements | Staying current with developments |
 | **#hardware** | Hardware discussions and improvements | Mechanical issues, design ideas |
 | **#controls** | Control algorithms and software | Development discussions, theory |
 
