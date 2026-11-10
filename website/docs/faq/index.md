@@ -97,7 +97,7 @@ The appropriate tolerance depends on your task and gains.
 
 ## The cameras disconnect.
 
-In the standard configuration in the [OpenArm 2.0 BOM](https://drive.google.com/drive/folders/14RM-fIPml0HTMnt2zcTXjNxJj9s2R_mG), the head stereo camera (ZED mini) and both wrist cameras share one USB hub and one USB repeater cable.
+In the camera configuration in the [OpenArm 2.0 BOM](../hardware/openarm-2.0/general.mdx#manufacturing-information), the [head stereo camera](../hardware/openarm-2.0/general.mdx#head-stereo-camera) (ZED mini, optional) and both wrist cameras share one USB hub and one USB repeater cable.
 
 ```text
 PC ── USB repeater cable (5 Gbps) ── USB hub ─┬─ Head stereo camera (ZED mini)
@@ -112,6 +112,12 @@ Check the following in order.
 - Connect the USB repeater cable to a USB Type-C port of 5 Gbps or faster on the PC.
 - If the cameras still disconnect, connect the head stereo camera directly to the PC instead of the USB hub.
   Some PCs share an internal hub among several ports, so run `lsusb -t` to make sure that it is not under the same hub as the wrist cameras.
+
+## The head stereo camera mount interferes with the covers.
+
+The head cover and the chest cover for the head stereo camera released before 2026-11-09 had a design error, and they interfere with the camera mount.
+If you have trouble assembling them, print the current covers from the [Options](https://drive.google.com/drive/folders/1ZJhmpndp_9CWCtUnLToTrYCXSu-fMuxj) folder.
+See [Head Stereo Camera](../hardware/openarm-2.0/general.mdx#head-stereo-camera).
 
 ## Should I use the zero-position calibration jig with OpenArm Cell?
 
