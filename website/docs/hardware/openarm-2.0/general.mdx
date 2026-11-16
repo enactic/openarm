@@ -32,6 +32,38 @@ import BlockImage from '@site/src/components/BlockImage';
   }}>View Drive</a>
 </div>
 
+## Head Stereo Camera
+
+The head stereo camera (ZED mini) is optional.
+You need it for `ROBOT=cell` in data collection.
+See [Setup](../../tutorial/setup.mdx#3-check-the-vendor-and-product-id-for-the-head-stereo-camera) to use it.
+
+- The parts to buy are listed in the "Head Camera" section of the BOM.
+- The 3D CAD data is in the [Options](https://drive.google.com/drive/folders/1ZJhmpndp_9CWCtUnLToTrYCXSu-fMuxj) folder:
+  - `OpenArm_2.0_w_Head_Camera.STEP`: The assembly with the head stereo camera
+  - `OpenArm_2.0_Head_Cover.STEP` and `OpenArm_2.0_Chest_Cover.STEP`: The covers to 3D print.
+    The head cover has two bodies, and you need both.
+    The chest cover has two bodies, too.
+    Body 1 (back) is the same as the one in `OpenArm_2.0.STEP`, and body 2 (front) is for the head stereo camera.
+    If you already printed the chest cover without the head stereo camera, print only body 2.
+
+Attach the head stereo camera before the front chest cover.
+The front chest cover has a large slit on the top so that it can be attached after the camera.
+The slit is intentional.
+There is no lid to cover it yet.
+If you have an idea to improve it, share it on [Discord](https://discord.gg/FsZaZ4z3We) or [GitHub](https://github.com/enactic/openarm/issues).
+
+:::warning
+
+The head cover and the chest cover released before 2026-11-09 interfere with the camera mount.
+If you have trouble attaching them, print them again with the current files.
+If you could assemble the old ones, you can keep using them.
+
+The covers in `OpenArm_2.0_w_Head_Camera.STEP` are still the old ones.
+Use `OpenArm_2.0_Head_Cover.STEP` and `OpenArm_2.0_Chest_Cover.STEP` for printing.
+
+:::
+
 ## General Dimensions
 
 OpenArm 2.0 has a small human-like physique.
